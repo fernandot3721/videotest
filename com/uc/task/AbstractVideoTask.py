@@ -1,6 +1,7 @@
 # encoding: utf-8
 from abc import ABCMeta, abstractmethod
 
+from com.uc.conf import Conf
 from com.uc.html.DataStruct import DataStruct
 from com.uc.html.HtmlNode import HtmlNode
 from com.uc.html.StyleTemplate import StyleTemplate
@@ -23,7 +24,7 @@ class AbstractVideoTask(HtmlNode,TaskDataAdapt,VideoEventLogListener):
         
     def __init__(self):
         self.template = StyleTemplate()
-        self.loopCount = 0
+        self.loopCount = Conf.LOOP_TIME
         self.currentLoopIndex = 0
         self.hasComplatePlay = False
         self.hasStartPlay = False
@@ -47,8 +48,6 @@ class AbstractVideoTask(HtmlNode,TaskDataAdapt,VideoEventLogListener):
         self.currentCategory = self.urlList.keys()[i] 
          
     def dataInit(self):
-        self.setLoopCount(self.repeatCount)
-        
         for key in self.urlList.keys():
             self.keyValue[key] = []
                 

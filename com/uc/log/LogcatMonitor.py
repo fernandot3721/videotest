@@ -27,10 +27,7 @@ class  LogcatMonitor (threading.Thread):
     
     def setLogListener(self,listener):
         self.logListener = listener
-        
-    def setLogEventListener(self,listener):
-        self.eventListener = listener
-        
+           
     def run(self):
         try:
             print u"开启监听器"
@@ -41,6 +38,9 @@ class  LogcatMonitor (threading.Thread):
                     line = popen.stdout.readline()
                     if self.logListener is not None:
                         self.logListener.onRead(line)
+                    else:
+                        print u"没有正确设置logcat监听器，程序退出"
+                        isStop = true
                     if self.isStop:
                         popen.terminate()
                 except Exception as e:

@@ -11,7 +11,6 @@ from com.uc.utils.BrowserUtils import setCDParams
 
 
 class T1TestTask(AbstractVideoTask):
-    repeatCount = 10
     urlList={
         '50_l':Conf.SEVER_ADDRESS + "t1_50k/test_video_long.html",
         '50_s':Conf.SEVER_ADDRESS + "t1_50k/test_video_short.html",

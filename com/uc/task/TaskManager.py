@@ -10,7 +10,6 @@ from com.uc.log.LogcatMonitor import LogcatMonitor
 __author__ = 'Administrator'
 class TaskManager:
     taskList = []
-    builder = HtmlBuilder()
     monitorThread = LogcatMonitor()
     htmlBuilder = HtmlBuilder()
     
@@ -29,7 +28,6 @@ class TaskManager:
             print u"执行测试案例..."
             for task in self.taskList:
                 self.monitorThread.setLogListener(task)
-                self.monitorThread.setLogEventListener(task)
                 task.run()
                 
             print u"生成报表..."
