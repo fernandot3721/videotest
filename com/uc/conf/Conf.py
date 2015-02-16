@@ -11,12 +11,12 @@ import os
 PACKAGE_NAME = 'com.UCMobile'
 ACTIVITE_NAME = PACKAGE_NAME +'.main.UCMobile'
 WAIT_TIME = 3
-EXTTOOLS_PATH = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) + "/ext_tools")
+EXTTOOLS_PATH = os.getcwd() + os.sep + 'ext_tools'
 SEVER_ADDRESS = "http://100.84.35.173:8080/"
-#"http://10.1.93.169/"
-URLLIST_PATH = os.path.dirname(os.path.dirname(__file__) + "/conf")
+URLLIST_PATH = os.getcwd() + os.sep + 'com' + os.sep + 'uc' + os.sep + 'conf'
 
-LOOP_TIME = 2
+REPORT_DIR = os.environ['HOME'] + os.sep + 'work' + os.sep + 'vr' + os.sep
+LOOP_TIME = 10
 PLAYER_COUNT = 2
 PLAYER_LIB = ['/home/tangjp/work/vr/apolloso/2.8.8.888/', 
 				#'/home/tangjp/work/vr/apolloso/2.9.9.999/', 

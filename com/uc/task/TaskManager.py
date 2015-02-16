@@ -43,7 +43,7 @@ class TaskManager:
             print ingreen("===========GERNERATE REPORT===========")
             htmlcode = self.htmlBuilder.generatingRepors()
             timelog = time.strftime('%Y%m%d%H%M')[2:]
-            resultFile = '/home/tangjp/work/vr/report-{}.html'.format(timelog)
+            resultFile = '{}report-{}.html'.format(Conf.REPORT_DIR, timelog)
             f1 = open(resultFile,'w')
             print inblue("view result: file://{}".format(resultFile))
             f1.write(htmlcode)
@@ -51,7 +51,6 @@ class TaskManager:
                 
             return 0
         except:
-            # print inred("Unexpected error:" + str(sys.exc_info()))
             exc_type, exc_value, exc_traceback = sys.exc_info()
             print inred("Exception: {}".format(exc_value))
             print inred("#######STACK TRACE:")

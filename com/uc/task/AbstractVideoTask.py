@@ -85,11 +85,11 @@ class AbstractVideoTask(HtmlNode,TaskDataAdapt,VideoEventLogListener):
                 
     def run(self):
         self.dataInit()
-        print ingreen(self.getTitle() + " TEST START for " + str(self.loopCount) + " times")
+        print ingreen("{} TEST START for {} times".format(self.getTitle(), str(self.loopCount)))
         for i in range(0,self.loopCount):
             self.currentLoopIndex = i
             for j in range(0,len(self.urlList)):
-                print inyellow("Loop " +str(i) + " Case "+str(j)+" is running")
+                print inyellow("Loop {} Case {} is running".format(i, j))
                 if self.initTest(j):
                     self.doTest()
                 

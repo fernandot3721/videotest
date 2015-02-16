@@ -51,9 +51,9 @@ class  LogcatMonitor (threading.Thread):
                     if self.isStop:
                         popen.terminate()
                 except Exception as e:
-                    print e
+                    print inred(e)
         except Exception as e1:
-            print e1
+            print inred(e1)
         finally:
             print inred('===========THREAD logcat end===========')
             self.isRunning = False

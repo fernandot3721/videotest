@@ -2,9 +2,9 @@
 # coding=utf-8
 
 
-from os.path import sys
+import os, sys
 
-sys.path.append('/home/tangjp/work/videotest')
+sys.path.append(os.getcwd())
 
 from com.uc.task.TaskManager import TaskManager
 from com.uc.taskImpl.CoreT1TestTask import CoreT1TestTask
@@ -20,7 +20,6 @@ import datetime
 
 if __name__ == '__main__':
     starttime = datetime.datetime.now()
-    # print ingreen("===========ADD TASK===========")
     manager = TaskManager()
 
     playerCount = Conf.PLAYER_COUNT

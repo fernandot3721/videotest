@@ -40,7 +40,7 @@ class VideoEventLogListener(LogListener):
             
         if coreT1KeyWorld in lineStr:
             t1Time = parseLog(lineStr, coreT1KeyWorld)#t1Keyword
-            print inblue("内核tl = " + str(t1Time))
+            print inblue("CORE T1 = {}".format(t1Time))
             self.onVideoFirstCoreT1(t1Time)
         
         if t2Keyword in lineStr:
