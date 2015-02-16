@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 from time import sleep
+import os
 
 from com.uc.conf import Conf
 from com.uc.html.AverageTemplate import AverageTemplate
@@ -13,7 +14,7 @@ from com.uc.utils.BrowserUtils import readExcelToUrlist
 
 class ErrorBeforePlayTestTask(AbstractVideoTask):
     repeatCount = 2
-    file_path = Conf.URLLIST_PATH +"\urllist.xls"
+    file_path = Conf.URLLIST_PATH + os.sep + "urllist.xls"
     urlList = readExcelToUrlist(file_path)
 #     urlList = {
 #         'g1':"http://10.1.35.173:8080/t1_50k/test_video_long.html",

@@ -8,6 +8,7 @@ from abc import abstractmethod
 
 from com.uc.log.LogListener import LogListener
 from com.uc.task.Filter import Filter
+from com.uc.utils.ColorUtil import *
 
 
 t1Keyword = "shell_t1="
@@ -38,7 +39,7 @@ class VideoEventLogListener(LogListener):
             
         if coreT1KeyWorld in lineStr:
             t1Time = parseLog(lineStr, coreT1KeyWorld)#t1Keyword
-            print "内核tl = ", t1Time
+            print inblue("内核tl = " + str(t1Time))
             self.onVideoFirstCoreT1(t1Time)
         
         if t2Keyword in lineStr:
@@ -52,7 +53,7 @@ class VideoEventLogListener(LogListener):
             
         if playResultword in lineStr:
             isSuccessful = parseLog(lineStr,retcodeword)
-            print u"播放结果返回码=", isSuccessful
+            print inblue("播放结果返回码=" + str(isSuccessful))
             self.onPlayResult(isSuccessful)
         
         if endKeyword in lineStr:

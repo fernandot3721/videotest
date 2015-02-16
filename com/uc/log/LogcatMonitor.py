@@ -10,10 +10,10 @@ import subprocess
 import thread
 import threading
 from time import sleep
-
+import shlex
 from com.uc.log.LogListener import LogListener
 from com.uc.utils import BrowserUtils
-
+from com.uc.utils.ColorUtil import *
 
 class  LogcatMonitor (threading.Thread):
     isStop = False
@@ -33,9 +33,10 @@ class  LogcatMonitor (threading.Thread):
         
     def run(self):
         try:
-            print u"开启监听器"
+            print ingreen("===========THREAD logcat start===========")
             print BrowserUtils.timeout_command("adb logcat -c", 3)
-            popen = subprocess.Popen(args="adb shell su -c \"logcat\"", stdout=subprocess.PIPE, shell=False)
+            command="adb shell su -c \"logcat\""
+            popen = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, shell=False)
             while popen != None and popen.stdout is not None and popen.poll() == None:
                 try:
                     line = popen.stdout.readline()
@@ -45,8 +46,10 @@ class  LogcatMonitor (threading.Thread):
                         popen.terminate()
                 except Exception as e:
                     print e
+        except Exception as e1:
+            print e1
         finally:
-            print 'logcat 线程退出!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+            print inred('===========THREAD logcat end===========')
             thread.exit_thread()
     
     def stop(self):

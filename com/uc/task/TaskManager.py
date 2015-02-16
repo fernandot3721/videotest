@@ -5,6 +5,7 @@ import threading
 
 from com.uc.html.HtmlBuilder import HtmlBuilder
 from com.uc.log.LogcatMonitor import LogcatMonitor
+from com.uc.utils.ColorUtil import *
 
 
 __author__ = 'Administrator'
@@ -24,24 +25,22 @@ class TaskManager:
     
     def startTest(self):
         try:
-            print u"环境初始化..."
-
-            print u"执行测试案例..."
+            print ingreen("===========EXECUTE TASK===========")
             for task in self.taskList:
                 self.monitorThread.setLogListener(task)
                 self.monitorThread.setLogEventListener(task)
                 task.run()
                 
-            print u"生成报表..."
+            print ingreen("===========GERNERATE REPORT===========")
             htmlcode = self.htmlBuilder.generatingRepors()
-            
-            f1 = open('C:\\Users\\Administrator\\Desktop\\report.html','w')
+            f1 = open('/home/tangjp/work/vr/report.html','w')
+            print "view result: " + inblue('file:///home/tangjp/work/vr/report.html')
             f1.write(htmlcode)
             f1.close()
                 
             return 0
         except:
-            print "Unexpected error:", sys.exc_info()
+            print inred("Unexpected error:", sys.exc_info())
             return -1
     def stopTest(self):
         self.monitorThread.stop()

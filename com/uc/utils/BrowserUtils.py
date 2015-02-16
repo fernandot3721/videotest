@@ -7,6 +7,7 @@ import os
 
 from com.uc.conf import Conf
 import xlrd
+import shlex
 
 
 def launchBrowser():
@@ -90,7 +91,7 @@ def timeout_command(command, timeout):
     if it doesn't normally exit within timeout seconds and return None"""
     import subprocess, datetime, time
     start = datetime.datetime.now()
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,shell=False)
+    process = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.PIPE,shell=False)
     while process.poll() is None:
         time.sleep(0.1)
         now = datetime.datetime.now()

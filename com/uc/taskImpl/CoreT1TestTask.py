@@ -8,6 +8,7 @@ from com.uc.task.AbstractVideoTask import AbstractVideoTask
 from com.uc.utils import BrowserUtils
 from com.uc.html.DataStruct import DataStruct
 from com.uc.utils.BrowserUtils import setCDParams
+from com.uc.utils.ColorUtil import *
 
 
 class CoreT1TestTask(AbstractVideoTask):
@@ -31,22 +32,26 @@ class CoreT1TestTask(AbstractVideoTask):
         
         setCDParams(self.cdkey,self.cdvalue)
         
-        print u"打开浏览器"
+        print "STARTUP UC"
         BrowserUtils.launchBrowser()
         
         sleep(Conf.WAIT_TIME)
         
-        print u"清空历史"
+        print "CLEAR HISTROY"
         BrowserUtils.clearVideoCache()
         
-        print u"打开视频"
+        print "PLAY VIDEO: " + inyellow(self.urlList[self.currentCategory])
         BrowserUtils.openURI(self.urlList[self.currentCategory])
         
         #等待视频播起来
         myloop = 0
         while True:
             sleep(1)
-            if self.hasStartPlay is True or myloop > 15:
+            if self.hasStartPlay is True:
+                print inblue('play sucess')
+                break
+            elif myloop > 10:
+                print inred('play time out')
                 break
             myloop += 1
             
@@ -54,7 +59,7 @@ class CoreT1TestTask(AbstractVideoTask):
         
         sleep(Conf.WAIT_TIME)
         
-        print u"关闭浏览器"
+        print "SHUTDOWN UC"
         BrowserUtils.closeBrowser()
         
     def onVideoFirstCoreT1(self, t1):

@@ -6,6 +6,7 @@ from com.uc.html.HtmlNode import HtmlNode
 from com.uc.html.StyleTemplate import StyleTemplate
 from com.uc.html.TaskDataAdapt import TaskDataAdapt
 from com.uc.log.VideoEventLogListener import VideoEventLogListener
+from com.uc.utils.ColorUtil import *
 
 
 __author__ = 'Administrator'
@@ -54,12 +55,11 @@ class AbstractVideoTask(HtmlNode,TaskDataAdapt,VideoEventLogListener):
                 
     def run(self):
         self.dataInit()
-        print self.getTitle(),u"测试开始"
+        print ingreen(self.getTitle() + " TEST START for " + str(self.loopCount) + " times")
         for i in range(0,self.loopCount):
             self.currentLoopIndex = i
             for j in range(0,len(self.urlList)):
-                print "loopIndex:"+str(i)
-                print "case"+str(j)+" is running"
+                print inyellow("Loop " +str(i) + " Case "+str(j)+" is running")
                 self.initTest(j)
                 self.doTest()
                 
