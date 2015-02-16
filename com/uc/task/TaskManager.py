@@ -7,6 +7,8 @@ from com.uc.html.HtmlBuilder import HtmlBuilder
 from com.uc.log.LogcatMonitor import LogcatMonitor
 from com.uc.utils.ColorUtil import *
 import traceback
+from com.uc.conf import Conf
+import os
 
 __author__ = 'Administrator'
 class TaskManager:
@@ -15,12 +17,12 @@ class TaskManager:
     htmlBuilder = HtmlBuilder()
     
     def __init__(self):
+        os.system('adb logcat -c')
         self.monitorThread.start()
         pass
 
     def shouldTerminate(self):
         if self.monitorThread.isRunning:
-            print "TJPDEBUG"
             return False
         else:
             return True
@@ -37,21 +39,22 @@ class TaskManager:
             for task in self.taskList:
                 self.monitorThread.setLogListener(task)
                 task.run()
-                
+
             print ingreen("===========GERNERATE REPORT===========")
             htmlcode = self.htmlBuilder.generatingRepors()
             timelog = time.strftime('%Y%m%d%H%M')[2:]
-            resultFile = '/home/tangjp/work/vr/report-' + timelog + '.html'
+            resultFile = '/home/tangjp/work/vr/report-{}.html'.format(timelog)
             f1 = open(resultFile,'w')
-            print "view result: " + inblue('file://' + resultFile)
+            print inblue("view result: file://{}".format(resultFile))
             f1.write(htmlcode)
             f1.close()
                 
             return 0
         except:
-            print inred("Unexpected error:" + str(sys.exc_info()))
+            # print inred("Unexpected error:" + str(sys.exc_info()))
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            print "*** print_tb:"
+            print inred("Exception: {}".format(exc_value))
+            print inred("#######STACK TRACE:")
             traceback.print_tb(exc_traceback)
             return -1
     def stopTest(self):

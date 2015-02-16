@@ -65,3 +65,8 @@ class CoreT1TestTask(AbstractVideoTask):
         if t1 <= 0:
             return
         self.getCurrentReultList().append(DataStruct(1,t1))
+
+    def onPlayerVersion(self, version):
+        self.setPlayerVersion(version)
+        pass
+

@@ -8,6 +8,8 @@ from com.uc.html.TaskDataAdapt import TaskDataAdapt
 from com.uc.log.VideoEventLogListener import VideoEventLogListener
 from com.uc.utils.ColorUtil import *
 from com.uc.conf import Conf
+from com.uc.utils import AndroidUtil
+import re
 
 __author__ = 'Administrator'
 
@@ -15,6 +17,9 @@ class AbstractVideoTask(HtmlNode,TaskDataAdapt,VideoEventLogListener):
     
     def setManager(self, manager):
         self.manager = manager
+
+    def setPlayerPath(self, playPath):
+        self.playPath = playPath
 
     def setValueCount(self,count):
         self.valueCount = count
@@ -24,6 +29,13 @@ class AbstractVideoTask(HtmlNode,TaskDataAdapt,VideoEventLogListener):
     
     def setTitle(self,titleStr):
         self.title = titleStr
+
+    def setPlayerVersion(self, version):
+        if not self.playDetected:
+            self.playerVersion = version;
+            self.playDetected = True
+            print inred('##################player version is: {}'.format(self.playerVersion))
+            self.setTitle('{}-{}'.format(self.playerVersion, self.title))
         
     def __init__(self):
         self.template = StyleTemplate()
@@ -39,6 +51,9 @@ class AbstractVideoTask(HtmlNode,TaskDataAdapt,VideoEventLogListener):
         self.cdkey = ""
         self.cdvalue = ""
         self.manager = None
+        self.playerVersion = ""
+        self.playDetected = False
+        self.playPath = ""
         
     def setTemplate(self,template):
         self.template = template
@@ -58,6 +73,13 @@ class AbstractVideoTask(HtmlNode,TaskDataAdapt,VideoEventLogListener):
         
          
     def dataInit(self):
+        print ingreen("===========SWITCH PLAYER LIB===========")
+        print "player path is: {}".format(self.playPath)
+        AndroidUtil.switchApollo(self.playPath)
+        match = re.search(r'\d\.\d+', self.playPath)
+        libName = match.group(0)
+        print inred('&&&&&&&&&&&&&&&&&libName: {}'.format(libName))
+        # self.setTitle('{}-{}'.format(libName, self.title))
         for key in self.urlList.keys():
             self.keyValue[key] = []
                 

@@ -18,6 +18,7 @@ NFt1Keyword = "shell_nf_t1="
 endKeyword = "shell_end_play"
 playResultword = "ac_pl_re"
 retcodeword = "retcode="
+apolloVersion = "[apollo"
 
 class VideoEventLogListener(LogListener):
     '''
@@ -59,7 +60,10 @@ class VideoEventLogListener(LogListener):
         if endKeyword in lineStr:
             self.onVideoEndPlay()
         
-        
+        if apolloVersion in lineStr:
+            version = parseLogStr(lineStr, apolloVersion, ']')
+            self.onPlayerVersion(version)
+
         if self.myfilter:
             if self.myfilter.match(lineStr):
                 self.onInterested(lineStr);
@@ -91,10 +95,24 @@ class VideoEventLogListener(LogListener):
     @abstractmethod
     def onPlayResult(self,retcode):
         pass
+
+    @abstractmethod
+    def onPlayerVersion(self, version):
+        pass
     
     @abstractmethod
     def onInterested(self,lineStr):
         pass
+
+def parseLogStr(lineStr,prefix,suffix='`'):
+    start = lineStr.find(prefix)
+    if start >= 0:
+        if len(suffix) > 0:
+            end = lineStr.find(suffix,start + len(prefix))
+        else:
+            end = len(lineStr)
+        result = lineStr[start + len(prefix):end].strip()
+        return result
 
 def parseLog(lineStr,prefix,suffix='`'):
     start = lineStr.find(prefix)

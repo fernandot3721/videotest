@@ -36,7 +36,8 @@ class  LogcatMonitor (threading.Thread):
         self.isRunning = True
         try:
             print ingreen("===========THREAD logcat start===========")
-            print BrowserUtils.timeout_command("adb logcat -c", 3)
+            # BrowserUtils.timeout_command("adb logcat -c", 10)
+            # It won't work to clean log in the subprocess
             command="adb shell su -c \"logcat\""
             popen = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, shell=False)
             while popen != None and popen.stdout is not None and popen.poll() == None:

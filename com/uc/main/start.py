@@ -13,24 +13,26 @@ from com.uc.taskImpl.NotFirstT1TestTask import NotFirstT1TestTask
 from com.uc.taskImpl.T1TestTask import T1TestTask
 from com.uc.taskImpl.T2TestTask import T2TestTask
 from com.uc.utils.ColorUtil import *
+from com.uc.conf import Conf
+import datetime
 
 
 
 if __name__ == '__main__':
-    
-    print ingreen("===========ADD TASK===========")
+    starttime = datetime.datetime.now()
+    # print ingreen("===========ADD TASK===========")
     manager = TaskManager()
-    t1task = CoreT1TestTask()
-    manager.addTask(t1task)
-#   playResultTask = ErrorBeforePlayTestTask()
-#     t2task = T2TestTask()
-#     NFt1task = NotFirstT1TestTask()
-#     manager.addTask(playResultTask1)
 
-#    manager.addTask(playResultTask)
-#     manager.addTask(t2task)
-#     manager.addTask(NFt1task)
-    
+    playerCount = Conf.PLAYER_COUNT
+    if Conf.PLAYER_COUNT > len(Conf.PLAYER_LIB):
+        playerCount = len(Conf.PLAYER_LIB)
+    for i in range(playerCount):
+        print ingreen("===========ADD TASK {}===========".format(i))
+        t1task = CoreT1TestTask()
+        t1task.setPlayerPath(Conf.PLAYER_LIB[i])
+        manager.addTask(t1task)
+        t1task = None
+
     result = manager.startTest()
      
     if result == 0:
@@ -39,4 +41,6 @@ if __name__ == '__main__':
     else:
         print inred('===========TEST FAILED===========')
     manager.stopTest()
+    endtime = datetime.datetime.now()
+    print ingreen("TEST COSTS {} seconds".format((endtime-starttime).seconds))
 
