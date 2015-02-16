@@ -24,11 +24,16 @@ class  LogcatMonitor (threading.Thread):
         self.threadID = threadID
         self.name = name
         self.counter = counter
+        self.isRunning = True
     
+    def isRunning():
+        return self.isRunning
+
     def setLogListener(self,listener):
         self.logListener = listener
         
     def run(self):
+        self.isRunning = True
         try:
             print ingreen("===========THREAD logcat start===========")
             print BrowserUtils.timeout_command("adb logcat -c", 3)
@@ -50,6 +55,7 @@ class  LogcatMonitor (threading.Thread):
             print e1
         finally:
             print inred('===========THREAD logcat end===========')
+            self.isRunning = False
             thread.exit_thread()
     
     def stop(self):

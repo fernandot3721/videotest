@@ -53,7 +53,7 @@ class VideoEventLogListener(LogListener):
             
         if playResultword in lineStr:
             isSuccessful = parseLog(lineStr,retcodeword)
-            print inblue("播放结果返回码=" + str(isSuccessful))
+            #print inblue("播放结果返回码=" + str(isSuccessful))
             self.onPlayResult(isSuccessful)
         
         if endKeyword in lineStr:

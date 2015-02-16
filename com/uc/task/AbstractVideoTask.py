@@ -13,6 +13,9 @@ __author__ = 'Administrator'
 
 class AbstractVideoTask(HtmlNode,TaskDataAdapt,VideoEventLogListener):
     
+    def setManager(self, manager):
+        self.manager = manager
+
     def setValueCount(self,count):
         self.valueCount = count
     
@@ -35,6 +38,7 @@ class AbstractVideoTask(HtmlNode,TaskDataAdapt,VideoEventLogListener):
         self.keyValue = {}
         self.cdkey = ""
         self.cdvalue = ""
+        self.manager = None
         
     def setTemplate(self,template):
         self.template = template
@@ -42,10 +46,16 @@ class AbstractVideoTask(HtmlNode,TaskDataAdapt,VideoEventLogListener):
         
     def initTest(self,i):
         ##每次测试之前做一下初始化
+        if self.manager is not None and self.manager.shouldTerminate():
+            print inred('ERROR: manager Terminate')
+            return False
+
         self.hasComplatePlay = False
         self.hasStartPlay = False
         self.currentCategoryIndex = i
         self.currentCategory = self.urlList.keys()[i] 
+        return True
+        
          
     def dataInit(self):
         for key in self.urlList.keys():
@@ -58,8 +68,8 @@ class AbstractVideoTask(HtmlNode,TaskDataAdapt,VideoEventLogListener):
             self.currentLoopIndex = i
             for j in range(0,len(self.urlList)):
                 print inyellow("Loop " +str(i) + " Case "+str(j)+" is running")
-                self.initTest(j)
-                self.doTest()
+                if self.initTest(j):
+                    self.doTest()
                 
     @abstractmethod
     def doTest(self):

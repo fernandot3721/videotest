@@ -49,7 +49,7 @@ class CoreT1TestTask(AbstractVideoTask):
             if self.hasStartPlay is True:
                 print inblue('play sucess')
                 break
-            elif myloop > 10:
+            elif myloop > 7:
                 print inred('play time out')
                 break
             myloop += 1

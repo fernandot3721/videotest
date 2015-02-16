@@ -2,11 +2,11 @@
 from os.path import sys
 import thread
 import threading
-
+import time
 from com.uc.html.HtmlBuilder import HtmlBuilder
 from com.uc.log.LogcatMonitor import LogcatMonitor
 from com.uc.utils.ColorUtil import *
-
+import traceback
 
 __author__ = 'Administrator'
 class TaskManager:
@@ -17,9 +17,18 @@ class TaskManager:
     def __init__(self):
         self.monitorThread.start()
         pass
+
+    def shouldTerminate(self):
+        if self.monitorThread.isRunning:
+            print "TJPDEBUG"
+            return False
+        else:
+            return True
+
     def addTask(self,task):
         self.taskList.append(task)
         self.htmlBuilder.addNode(task)
+        task.setManager(self)
         pass
     
     def startTest(self):
@@ -31,14 +40,19 @@ class TaskManager:
                 
             print ingreen("===========GERNERATE REPORT===========")
             htmlcode = self.htmlBuilder.generatingRepors()
-            f1 = open('/home/tangjp/work/vr/report.html','w')
-            print "view result: " + inblue('file:///home/tangjp/work/vr/report.html')
+            timelog = time.strftime('%Y%m%d%H%M')[2:]
+            resultFile = '/home/tangjp/work/vr/report-' + timelog + '.html'
+            f1 = open(resultFile,'w')
+            print "view result: " + inblue('file://' + resultFile)
             f1.write(htmlcode)
             f1.close()
                 
             return 0
         except:
-            print inred("Unexpected error:", sys.exc_info())
+            print inred("Unexpected error:" + str(sys.exc_info()))
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            print "*** print_tb:"
+            traceback.print_tb(exc_traceback)
             return -1
     def stopTest(self):
         self.monitorThread.stop()
