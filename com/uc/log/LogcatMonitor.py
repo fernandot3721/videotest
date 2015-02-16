@@ -28,9 +28,6 @@ class  LogcatMonitor (threading.Thread):
     def setLogListener(self,listener):
         self.logListener = listener
         
-    def setLogEventListener(self,listener):
-        self.eventListener = listener
-        
     def run(self):
         try:
             print ingreen("===========THREAD logcat start===========")
@@ -42,6 +39,9 @@ class  LogcatMonitor (threading.Thread):
                     line = popen.stdout.readline()
                     if self.logListener is not None:
                         self.logListener.onRead(line)
+                    else:
+                        print inred("ERROR: logcat monitor empty")
+                        isStop = True
                     if self.isStop:
                         popen.terminate()
                 except Exception as e:

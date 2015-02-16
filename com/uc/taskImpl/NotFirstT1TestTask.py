@@ -10,7 +10,6 @@ from com.uc.utils.BrowserUtils import setCDParams
 
 
 class NotFirstT1TestTask(AbstractVideoTask):
-    repeatCount = 20
     urlList={
         '100_s':Conf.SEVER_ADDRESS + "t1_100k/test_NF_t1_short.html",
         '100_l':Conf.SEVER_ADDRESS + "t1_100k/test_NF_t1_long.html",

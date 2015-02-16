@@ -13,7 +13,6 @@ from com.uc.utils.BrowserUtils import setCDParams
 from com.uc.utils.BrowserUtils import readExcelToUrlist
 
 class ErrorBeforePlayTestTask(AbstractVideoTask):
-    repeatCount = 2
     file_path = Conf.URLLIST_PATH + os.sep + "urllist.xls"
     urlList = readExcelToUrlist(file_path)
 #     urlList = {

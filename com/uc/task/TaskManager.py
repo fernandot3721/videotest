@@ -11,7 +11,6 @@ from com.uc.utils.ColorUtil import *
 __author__ = 'Administrator'
 class TaskManager:
     taskList = []
-    builder = HtmlBuilder()
     monitorThread = LogcatMonitor()
     htmlBuilder = HtmlBuilder()
     
@@ -28,7 +27,6 @@ class TaskManager:
             print ingreen("===========EXECUTE TASK===========")
             for task in self.taskList:
                 self.monitorThread.setLogListener(task)
-                self.monitorThread.setLogEventListener(task)
                 task.run()
                 
             print ingreen("===========GERNERATE REPORT===========")

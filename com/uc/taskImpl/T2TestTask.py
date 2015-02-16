@@ -17,7 +17,6 @@ class T2TestTask(AbstractVideoTask):
         '50_s':Conf.SEVER_ADDRESS + "t1_50k/test_video_short_h.html",
         '50_l':Conf.SEVER_ADDRESS + "t1_50k/test_video_long_h.html"
     }
-    repeatCount = 20
     def __init__(self):
         super(T2TestTask, self).__init__()
         self.setTemplate(AverageTemplate())

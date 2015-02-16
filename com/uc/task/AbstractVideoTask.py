@@ -7,7 +7,7 @@ from com.uc.html.StyleTemplate import StyleTemplate
 from com.uc.html.TaskDataAdapt import TaskDataAdapt
 from com.uc.log.VideoEventLogListener import VideoEventLogListener
 from com.uc.utils.ColorUtil import *
-
+from com.uc.conf import Conf
 
 __author__ = 'Administrator'
 
@@ -24,7 +24,7 @@ class AbstractVideoTask(HtmlNode,TaskDataAdapt,VideoEventLogListener):
         
     def __init__(self):
         self.template = StyleTemplate()
-        self.loopCount = 0
+        self.loopCount = Conf.LOOP_TIME
         self.currentLoopIndex = 0
         self.hasComplatePlay = False
         self.hasStartPlay = False
@@ -48,8 +48,6 @@ class AbstractVideoTask(HtmlNode,TaskDataAdapt,VideoEventLogListener):
         self.currentCategory = self.urlList.keys()[i] 
          
     def dataInit(self):
-        self.setLoopCount(self.repeatCount)
-        
         for key in self.urlList.keys():
             self.keyValue[key] = []
                 
