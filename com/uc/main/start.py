@@ -16,10 +16,21 @@ from com.uc.utils.ColorUtil import *
 from com.uc.conf import Conf
 import datetime
 
-
+from com.uc.data.CSVRecorder import CSVRecorder
 
 if __name__ == '__main__':
     starttime = datetime.datetime.now()
+    recorder = CSVRecorder()
+    # recorder.testWrite()
+    # recorder.onData('2.25-CORE-T1-TEST', '50_l', '2230.0')
+    # recorder.onData('2.25-CORE-T1-TEST', '100_l', '2230.0')
+    # recorder.onData('2.25-CORE-T1-TEST', '200_l', '2230.0')
+    # recorder.onData('2.26-CORE-T1-TEST', '50_l', '2230.0')
+    # recorder.onData('2.26-CORE-T1-TEST', '100_l', '2230.0')
+    # recorder.onData('2.26-CORE-T1-TEST', '200_l', '2230.0')
+    # recorder.onComplete()
+    # raise Exception("end")
+
     manager = TaskManager()
 
     playerCount = Conf.PLAYER_COUNT
@@ -29,6 +40,7 @@ if __name__ == '__main__':
         print ingreen("===========ADD TASK {}===========".format(i))
         t1task = CoreT1TestTask()
         t1task.setPlayerPath(Conf.PLAYER_LIB[i])
+        t1task.setDataRecord(recorder)
         manager.addTask(t1task)
         t1task = None
 
@@ -36,6 +48,7 @@ if __name__ == '__main__':
      
     if result == 0:
         print ingreen('===========TEST COMPLETE===========')
+        recorder.onComplete()
         pass 
     else:
         print inred('===========TEST FAILED===========')

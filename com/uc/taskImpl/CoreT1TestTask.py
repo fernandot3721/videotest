@@ -9,6 +9,7 @@ from com.uc.utils import BrowserUtils
 from com.uc.html.DataStruct import DataStruct
 from com.uc.utils.BrowserUtils import setCDParams
 from com.uc.utils.ColorUtil import *
+from com.uc.data.DataRecord import DataRecord
 
 
 class CoreT1TestTask(AbstractVideoTask):
@@ -25,7 +26,7 @@ class CoreT1TestTask(AbstractVideoTask):
         #设置过滤器
         self.setTemplate(AverageTemplate())
         self.setValueCount(1)
-        self.setTitle("内核T1测试数据")
+        self.setTitle("CORE-T1-TEST")
         
     def doTest(self):
         
@@ -62,6 +63,7 @@ class CoreT1TestTask(AbstractVideoTask):
         BrowserUtils.closeBrowser()
         
     def onVideoFirstCoreT1(self, t1):
+        self.dataRecord.onData(self.title, self.currentCategory, t1)
         if t1 <= 0:
             return
         self.getCurrentReultList().append(DataStruct(1,t1))

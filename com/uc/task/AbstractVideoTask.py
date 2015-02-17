@@ -15,6 +15,9 @@ __author__ = 'Administrator'
 
 class AbstractVideoTask(HtmlNode,TaskDataAdapt,VideoEventLogListener):
     
+    def setDataRecord(self, dataRecord):
+        self.dataRecord = dataRecord
+
     def setManager(self, manager):
         self.manager = manager
 
@@ -54,6 +57,7 @@ class AbstractVideoTask(HtmlNode,TaskDataAdapt,VideoEventLogListener):
         self.playerVersion = ""
         self.playDetected = False
         self.playPath = ""
+        self.dataRecord = None
         
     def setTemplate(self,template):
         self.template = template
