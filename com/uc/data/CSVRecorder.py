@@ -37,7 +37,7 @@ class  CSVRecorder(DataRecord):
 		list2 = ['5', '6', '7', '8', '9']
 		dic = {'a': list1, 'b': list2}
 		listall = [list1, list2]
-		cvsfile = file('/tmp/test.csv', 'w')
+		cvsfile = file('/opt/test.csv', 'w')
 		writer = csv.writer(cvsfile)
 		# writer.writeheader()
 		# writer.writerow(['a'] + list1)
@@ -45,7 +45,7 @@ class  CSVRecorder(DataRecord):
 		writer.writerows(listall)
 
 	def saveData(self):
-		cvsfile = file('/tmp/test.csv', 'w')
+		cvsfile = file('/opt/lampp/htdocs/test/test.csv', 'w')
 		try:
 			for task in self.data.keys():
 				self.dataToWrite.append([task])
@@ -54,8 +54,8 @@ class  CSVRecorder(DataRecord):
 					value = result.get(case)
 					value.insert(0, case)
 					self.dataToWrite.append(value)
-			print ingreen(self.dataToWrite[0])
-			print ingreen(self.dataToWrite[1])
+			# print ingreen(self.dataToWrite[0])
+			# print ingreen(self.dataToWrite[1])
 			writer = csv.writer(cvsfile)
 			writer.writerows(self.dataToWrite)
 		except:
@@ -65,3 +65,5 @@ class  CSVRecorder(DataRecord):
 			traceback.print_tb(exc_traceback)
 		finally:
 			cvsfile.close()
+			print inblue("view Record: file:///opt/lampp/htdocs/test/test.csv")
+			print inblue("view Record: http://100.84.44.238//test/test.csv")

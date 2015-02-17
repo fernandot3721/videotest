@@ -16,7 +16,7 @@ SEVER_ADDRESS = "http://100.84.35.173:8080/"
 URLLIST_PATH = os.getcwd() + os.sep + 'com' + os.sep + 'uc' + os.sep + 'conf'
 
 REPORT_DIR = os.environ['HOME'] + os.sep + 'work' + os.sep + 'vr' + os.sep
-LOOP_TIME = 1
+LOOP_TIME = 50
 PLAYER_COUNT = 2
 PLAYER_LIB = ['/home/tangjp/work/vr/apolloso/2.8.8.888/', 
 				#'/home/tangjp/work/vr/apolloso/2.9.9.999/', 
