@@ -32,18 +32,6 @@ class  CSVRecorder(DataRecord):
 	def loadData(self):
 		pass
 
-	def testWrite(self):
-		list1 = ['1', '2', '3', '4', '5']
-		list2 = ['5', '6', '7', '8', '9']
-		dic = {'a': list1, 'b': list2}
-		listall = [list1, list2]
-		cvsfile = file('/opt/test.csv', 'w')
-		writer = csv.writer(cvsfile)
-		# writer.writeheader()
-		# writer.writerow(['a'] + list1)
-		# writer.writerow(['b'] + list2)
-		writer.writerows(listall)
-
 	def saveData(self):
 		cvsfile = file('/opt/lampp/htdocs/test/test.csv', 'w')
 		try:
@@ -67,3 +55,16 @@ class  CSVRecorder(DataRecord):
 			cvsfile.close()
 			print inblue("view Record: file:///opt/lampp/htdocs/test/test.csv")
 			print inblue("view Record: http://100.84.44.238//test/test.csv")
+
+
+	def testWrite(self):
+		list1 = ['1', '2', '3', '4', '5']
+		list2 = ['5', '6', '7', '8', '9']
+		dic = {'a': list1, 'b': list2}
+		listall = [list1, list2]
+		cvsfile = file('/opt/test.csv', 'w')
+		writer = csv.writer(cvsfile)
+		# writer.writeheader()
+		# writer.writerow(['a'] + list1)
+		# writer.writerow(['b'] + list2)
+		writer.writerows(listall)
