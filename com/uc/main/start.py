@@ -2,7 +2,8 @@
 # coding=utf-8
 
 
-import os, sys
+import os
+import sys
 
 sys.path.append(os.getcwd())
 
@@ -21,6 +22,8 @@ from com.uc.data.CSVRecorder import CSVRecorder
 if __name__ == '__main__':
     starttime = datetime.datetime.now()
     recorder = CSVRecorder()
+
+    recorder.loadData()
     # recorder.testWrite()
     # recorder.onData('2.25-CORE-T1-TEST', '50_l', '2230.0')
     # recorder.onData('2.25-CORE-T1-TEST', '100_l', '2230.0')
@@ -28,8 +31,19 @@ if __name__ == '__main__':
     # recorder.onData('2.26-CORE-T1-TEST', '50_l', '2230.0')
     # recorder.onData('2.26-CORE-T1-TEST', '100_l', '2230.0')
     # recorder.onData('2.26-CORE-T1-TEST', '200_l', '2230.0')
-    # recorder.onComplete()
-    # raise Exception("end")
+
+    recorder = CSVRecorder()
+    recorder.onData('2.25-CORE-T1-TEST', '50_l', '22550.0')
+    recorder.onData('2.25-CORE-T1-TEST', '100_l', '225100.0')
+    recorder.onData('2.25-CORE-T1-TEST', '200_l', '225200.0')
+    recorder.onData('2.26-CORE-T1-TEST', '50_l', '22650.0')
+    recorder.onData('2.26-CORE-T1-TEST', '100_l', '226100.0')
+    recorder.onData('2.26-CORE-T1-TEST', '200_l', '226200.0')
+
+    recorder.onComplete()
+
+    recorder.loadData()
+    raise Exception("end")
 
     manager = TaskManager()
 

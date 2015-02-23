@@ -14,9 +14,8 @@ class TaskData():
         if case in self.data:
             return self.data[case]
 
-    def getExtra(self, case):
-        if case in self.extra:
-            return self.extra[case]
+    def getExtra(self):
+        return self.extra
 
     def getCase(self):
         return self.cases
@@ -30,9 +29,30 @@ class TaskData():
         self.lock.release()
         pass
 
-    def addExtra(self, case, key, value):
+    def addExtra(self, key, value):
         self.lock.acquire()
-        if case not in self.extra:
-            self.extra[case] = []
-        self.extra[case][key] = value
+        if key not in extra:
+            self.extra[key] = value
         self.lock.release()
+
+    def setData(self, case, values):
+        self.lock.acquire()
+        if case not in self.data:
+            self.cases.append(case)
+        self.data[case] = values
+        self.lock.release()
+
+    def printData(self):
+        print ''
+        print '=====TASK DATA====='
+        print 'CASE:'
+        for case in self.data:
+            print 'NAME: %s, VALUE: %s' % (case, self.data[case])
+        print 'EXTRA:'
+        for extra in self.extra:
+            print 'KEY: %s, VALUE: %s' % (extra, self.extra[extra])
+        print '==================='
+        print ''
+
+    def __str__(self):
+        return str(self.cases)

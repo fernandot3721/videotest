@@ -24,3 +24,4 @@ PLAYER_LIB = ['/home/tangjp/work/vr/apolloso/2.8.8.888/',
 				#'/home/tangjp/work/vr/apolloso/2.9.9.999/',
 				'/home/tangjp/work/vr/apolloso/2.25/',
 				]
+DEBUG_LOG = 'true'
