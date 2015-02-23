@@ -35,13 +35,14 @@ class CSVRecorder(DataRecord):
 
     def saveData(self):
         cvsfile = file('/opt/lampp/htdocs/test/test.csv', 'w')
+        # cvsfile = file('/Users/tangjp/work/test/test.csv', 'w')
         try:
             dataToWrite = []
-            for key in self.taskData.keys():
-                dataToWrite.append(key)
-                cases = self.taskData[key].getCase
+            for task in self.taskData.keys():
+                dataToWrite.append([task])
+                cases = self.taskData[task].getCase()
                 for case in cases:
-                    value = self.taskData[key].getData(case)
+                    value = self.taskData[task].getData(case)
                     value.insert(0, case)
                     dataToWrite.append(value)
             writer = csv.writer(cvsfile)
