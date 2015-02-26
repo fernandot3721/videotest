@@ -25,6 +25,9 @@ class CSVRecorder(DataRecord):
     def init(self):
         self.taskData = {}
 
+    def getData(self):
+        return self.taskData
+
     def onData(self, task, case, data):
         print inblue('onData: {}, {}, {}'.format(task, case, data))
         if task not in self.taskData:

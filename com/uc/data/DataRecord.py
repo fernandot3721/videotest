@@ -1,12 +1,17 @@
 
 
-from abc import ABCMeta, abstractmethod
+from abc import abstractmethod
 
-class  DataRecord(object):
+
+class DataRecord():
     @abstractmethod
-    def onData(self, group, data, head=False):
+    def onData(self, group, data):
         pass
 
     @abstractmethod
     def onComplete(self):
+        pass
+
+    @abstractmethod
+    def getData(self):
         pass

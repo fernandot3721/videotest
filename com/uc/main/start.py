@@ -18,12 +18,14 @@ from com.uc.conf import Conf
 import datetime
 
 from com.uc.data.CSVRecorder import CSVRecorder
+from com.uc.data.ResultGenerator import ResultGenerator
+from com.uc.data.DataFilter import DataFilter
 
 if __name__ == '__main__':
     starttime = datetime.datetime.now()
-    recorder = CSVRecorder()
+    # recorder = CSVRecorder()
 
-    recorder.loadData()
+    # recorder.loadData()
     # recorder.testWrite()
     # recorder.onData('2.25-CORE-T1-TEST', '50_l', '2230.0')
     # recorder.onData('2.25-CORE-T1-TEST', '100_l', '2230.0')
@@ -32,17 +34,22 @@ if __name__ == '__main__':
     # recorder.onData('2.26-CORE-T1-TEST', '100_l', '2230.0')
     # recorder.onData('2.26-CORE-T1-TEST', '200_l', '2230.0')
 
-    recorder = CSVRecorder()
-    recorder.onData('2.25-CORE-T1-TEST', '50_l', '22550.0')
-    recorder.onData('2.25-CORE-T1-TEST', '100_l', '225100.0')
-    recorder.onData('2.25-CORE-T1-TEST', '200_l', '225200.0')
-    recorder.onData('2.26-CORE-T1-TEST', '50_l', '22650.0')
-    recorder.onData('2.26-CORE-T1-TEST', '100_l', '226100.0')
-    recorder.onData('2.26-CORE-T1-TEST', '200_l', '226200.0')
+    # recorder = CSVRecorder()
+    # recorder.onData('2.25-CORE-T1-TEST', '50_l', '22550.0')
+    # recorder.onData('2.25-CORE-T1-TEST', '100_l', '225100.0')
+    # recorder.onData('2.25-CORE-T1-TEST', '200_l', '225200.0')
+    # recorder.onData('2.26-CORE-T1-TEST', '50_l', '22650.0')
+    # recorder.onData('2.26-CORE-T1-TEST', '100_l', '226100.0')
+    # recorder.onData('2.26-CORE-T1-TEST', '200_l', '226200.0')
 
-    recorder.onComplete()
+    # recorder.onComplete()
 
-    recorder.loadData()
+    # recorder.loadData()
+
+    filter = DataFilter()
+    rg = ResultGenerator()
+    # rg.generateFilter('Normalize', filter)
+    rg.processT1Result(None)
     raise Exception("end")
 
     manager = TaskManager()
@@ -59,14 +66,12 @@ if __name__ == '__main__':
         t1task = None
 
     result = manager.startTest()
-     
     if result == 0:
         print ingreen('===========TEST COMPLETE===========')
         recorder.onComplete()
-        pass 
+        pass
     else:
         print inred('===========TEST FAILED===========')
     manager.stopTest()
     endtime = datetime.datetime.now()
     print ingreen("TEST COSTS {} seconds".format((endtime-starttime).seconds))
-
