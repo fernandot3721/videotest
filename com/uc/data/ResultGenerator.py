@@ -20,19 +20,17 @@ class ResultGenerator():
         # read data record and filter the data
         self.data = dataRecord.getData()
         for data in self.data:
-            self.processT1Result(data)
+            self.processData(data)
+        dataRecord.onComplete()
         pass
 
-    def processT1Result(self, data):
+    def processData(self, data):
         # use spcific config to make filter the data
-        t1Filter = DataFilter()
+        dataFilter = DataFilter()
         filters = Conf.FILTERS[data.getExtra('TASK_TYPE')]
-        for filter in filters:
-            debugLog('create filter: ' + str(filter))
-            t1Filter = self.generateFilter(filter, t1Filter)
-
-        debugLog('call %s procssData' % t1Filter)
-        t1Filter.processData(data)
+        for filterName in filters:
+            dataFilter = self.generateFilter(filterName, dataFilter)
+        dataFilter.processData(data)
         pass
 
     def generateFilter(self, key, filter):

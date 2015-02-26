@@ -16,6 +16,7 @@ class CSVRecorder(DataRecord):
     TAG_TASK = 'TASK-NAME'
     TAG_CASE = 'TASK-CASE'
     TAG_EXTRA = 'TASK-EXTRA'
+    TAG_CASE_EXTRA = 'TASK-CASE-EXTRA'
 
     def __init__(self):
         self.init()
@@ -45,15 +46,16 @@ class CSVRecorder(DataRecord):
         return self.recordPath
 
     def loadData(self, path=None):
-        debugLog('loadData from %s' % self.recordPath)
         self.init()
         try:
             csvfile = ''
             if (path is None):
                 # TODO you may choose the most recent one to load
                 csvfile = file(self.recordPath, 'rb')
+                debugLog('loadData from %s' % self.recordPath)
             else:
-                csvfile = path
+                csvfile = file(path, 'rb')
+                debugLog('loadData from %s' % path)
             reader = csv.reader(csvfile)
 
             tempData = None
@@ -67,6 +69,12 @@ class CSVRecorder(DataRecord):
                     tempData.setData(line[1], line[2:])
                 if (line[0] == self.TAG_EXTRA):
                     tempData.addExtra(line[1], line[2])
+                if (line[0] == self.TAG_CASE_EXTRA):
+                    extraCount = (len(line)-2)/2
+                    for i in range(0, extraCount):
+                        # in csv file the begin pos is 2
+                        tempData.addCaseExtra(line[1], line[2*i+2], line[2*i+3])
+                    pass
                 if (line[0] == self.TAG_END):
                     tempData.printData()  # DEBUG ONLY
                     tempData = None
@@ -86,23 +94,38 @@ class CSVRecorder(DataRecord):
         try:
             dataToWrite = []
             for task in self.taskData.keys():
-                debugLog('saveData: '+task)
+                debugLog('saveData: ' + task)
                 debugLog(self.taskData[task])
                 self.taskData[task].printData()  # DEBUG ONLY
-                dataToWrite.append([self.TAG_START])
-                dataToWrite.append([self.TAG_TASK, task])
+
+                dataToWrite.append([self.TAG_START])  # TASK-DATA-START
+                dataToWrite.append([self.TAG_TASK, task])  # TASK-NAME
+
                 cases = self.taskData[task].getCase()
                 for case in cases:
-                    value = self.taskData[task].getData(case)
+                    value = list(self.taskData[task].getData(case))
                     value.insert(0, case)
-                    value.insert(0, self.TAG_CASE)
+                    value.insert(0, self.TAG_CASE)  # TASK-CASE
                     dataToWrite.append(value)
+
                 extras = self.taskData[task].getAllExtra()
                 for extra in extras:
-                    value = [extra, extras[extra]]
-                    value.insert(0, self.TAG_EXTRA)
+                    value = list([extra, extras[extra]])
+                    value.insert(0, self.TAG_EXTRA)  # TASK-EXTRA
                     dataToWrite.append(value)
-                dataToWrite.append([self.TAG_END])
+
+                if self.taskData[task].ceExist:
+                    cases = self.taskData[task].getCase()
+                    for case in cases:
+                        value = [self.TAG_CASE_EXTRA]
+                        value.append(case)
+                        extraList = self.taskData[task].getCaseExtra(case)
+                        for extra in extraList:
+                            value.append(extra)
+                            value.append(extraList[extra])
+                        dataToWrite.append(value)
+
+                dataToWrite.append([self.TAG_END])  # TASK-END
             writer = csv.writer(cvsfile)
             writer.writerows(dataToWrite)
         except:

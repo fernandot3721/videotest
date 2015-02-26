@@ -35,20 +35,43 @@ if __name__ == '__main__':
     # recorder.onData('2.26-CORE-T1-TEST', '200_l', '2230.0')
 
     recorder = CSVRecorder()
-    recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '50_l', '22550.0')
-    recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '100_l', '225100.0')
-    recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '200_l', '225200.0')
-    recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '50_l', '22650.0')
-    recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '100_l', '226100.0')
-    recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '200_l', '226200.0')
+    # recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '50_l', '22550.0')
+    # recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '50_l', '22551.0')
+    # recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '50_l', '22552.0')
+    # recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '50_l', '22553.0')
 
-    recorder.onComplete()
+    # recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '100_l', '225101.0')
+    # recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '100_l', '225102.0')
+    # recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '100_l', '225103.0')
+    # recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '100_l', '225104.0')
 
-    # recorder.loadData()
+    # recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '200_l', '225200.0')
+    # recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '200_l', '225201.0')
+    # recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '200_l', '225202.0')
+    # recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '200_l', '225203.0')
+
+    # recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '50_l', '22651.0')
+    # recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '50_l', '22652.0')
+    # recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '50_l', '22653.0')
+    # recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '50_l', '22654.0')
+
+    # recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '100_l', '226100.0')
+    # recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '100_l', '226101.0')
+    # recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '100_l', '226102.0')
+    # recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '100_l', '226103.0')
+
+    # recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '200_l', '226201.0')
+    # recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '200_l', '226202.0')
+    # recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '200_l', '226203.0')
+    # recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '200_l', '226204.0')
+
+    # recorder.onComplete()
+
+    recorder.loadData('/opt/lampp/htdocs/videotest/origin/report-1502262130.csv')
 
     # filter = DataFilter()
-    rg = ResultGenerator()
-    rg.generateResult(recorder)
+    # rg = ResultGenerator()
+    # rg.generateResult(recorder)
     # rg.processT1Result(None)
     raise Exception("end")
 
