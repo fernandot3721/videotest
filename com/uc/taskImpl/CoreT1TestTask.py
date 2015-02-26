@@ -26,21 +26,21 @@ class CoreT1TestTask(AbstractVideoTask):
         # 设置过滤器
         self.setTemplate(AverageTemplate())
         self.setValueCount(1)
-        self.setTitle("CORE-T1-TEST")
+        self.setTitle(Conf.TASK_TYPE[0])
 
     def doTest(self):
 
         setCDParams(self.cdkey, self.cdvalue)
 
-        print "STARTUP UC"
+        print("STARTUP UC")
         BrowserUtils.launchBrowser()
 
         sleep(Conf.WAIT_TIME)
 
-        print "CLEAR HISTROY"
+        print("CLEAR HISTROY")
         BrowserUtils.clearVideoCache()
 
-        print "PLAY VIDEO: " + inyellow(self.urlList[self.currentCategory])
+        print("PLAY VIDEO: " + inyellow(self.urlList[self.currentCategory]))
         BrowserUtils.openURI(self.urlList[self.currentCategory])
 
         # 等待视频播起来
@@ -48,10 +48,10 @@ class CoreT1TestTask(AbstractVideoTask):
         while True:
             sleep(1)
             if self.hasStartPlay is True:
-                print inblue('play sucess')
+                print(inblue('play sucess'))
                 break
             elif myloop > 7:
-                print inred('play time out')
+                print(inred('play time out'))
                 break
             myloop += 1
 
@@ -59,7 +59,7 @@ class CoreT1TestTask(AbstractVideoTask):
 
         sleep(Conf.WAIT_TIME)
 
-        print "SHUTDOWN UC"
+        print("SHUTDOWN UC")
         BrowserUtils.closeBrowser()
 
     def onVideoFirstCoreT1(self, t1):

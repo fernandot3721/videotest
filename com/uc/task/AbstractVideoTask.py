@@ -37,8 +37,8 @@ class AbstractVideoTask(HtmlNode, TaskDataAdapt, VideoEventLogListener):
         if not self.playDetected:
             self.playerVersion = version
             self.playDetected = True
-            print inred('##################player version is: {}'.format(self.playerVersion))
-            self.setTitle('{}-{}'.format(self.playerVersion, self.title))
+            print(inred('player version is: {}'.format(self.playerVersion)))
+            self.setTitle('{}#{}'.format(self.title, self.playerVersion))
 
     def __init__(self):
         self.template = StyleTemplate()

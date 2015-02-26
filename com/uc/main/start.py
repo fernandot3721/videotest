@@ -34,22 +34,22 @@ if __name__ == '__main__':
     # recorder.onData('2.26-CORE-T1-TEST', '100_l', '2230.0')
     # recorder.onData('2.26-CORE-T1-TEST', '200_l', '2230.0')
 
-    # recorder = CSVRecorder()
-    # recorder.onData('2.25-CORE-T1-TEST', '50_l', '22550.0')
-    # recorder.onData('2.25-CORE-T1-TEST', '100_l', '225100.0')
-    # recorder.onData('2.25-CORE-T1-TEST', '200_l', '225200.0')
-    # recorder.onData('2.26-CORE-T1-TEST', '50_l', '22650.0')
-    # recorder.onData('2.26-CORE-T1-TEST', '100_l', '226100.0')
-    # recorder.onData('2.26-CORE-T1-TEST', '200_l', '226200.0')
+    recorder = CSVRecorder()
+    recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '50_l', '22550.0')
+    recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '100_l', '225100.0')
+    recorder.onData('{}#2.25'.format(Conf.TASK_TYPE[0]), '200_l', '225200.0')
+    recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '50_l', '22650.0')
+    recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '100_l', '226100.0')
+    recorder.onData('{}#2.26'.format(Conf.TASK_TYPE[0]), '200_l', '226200.0')
 
-    # recorder.onComplete()
+    recorder.onComplete()
 
     # recorder.loadData()
 
-    filter = DataFilter()
+    # filter = DataFilter()
     rg = ResultGenerator()
-    # rg.generateFilter('Normalize', filter)
-    rg.processT1Result(None)
+    rg.generateResult(recorder)
+    # rg.processT1Result(None)
     raise Exception("end")
 
     manager = TaskManager()
