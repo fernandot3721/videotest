@@ -1,6 +1,7 @@
 
 import importlib
 from com.uc.data.CsvViewer import CsvViewer
+from com.uc.data.HtmlViewer import HtmlViewer
 from com.uc.data.DataFilter import DataFilter
 from com.uc.conf import Conf
 from com.uc.utils.ColorUtil import *
@@ -12,6 +13,7 @@ class ResultGenerator():
         self.loadConfig()
         self.data = []
         self.viewer = CsvViewer()
+        # self.viewer = HtmlViewer()
         pass
 
     def loadConfig(self):
@@ -28,7 +30,7 @@ class ResultGenerator():
         #  show result
         for data in self.data:
             self.viewer.addData(data)
-        self.viewer.ShowResult()
+        self.viewer.showResult()
         pass
 
     def processData(self, data):
