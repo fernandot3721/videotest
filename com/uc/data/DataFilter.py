@@ -1,16 +1,13 @@
 
-
+from abc import abstractmethod
 from com.uc.utils.ColorUtil import *
 
 
 class DataFilter(object):
+    @abstractmethod
     def processData(self, data):
         # debugLog('PROCESS DATA ' + str(self.__class__))
         pass
-
-    # @abstractmethod
-    # def getFilterInfo(self):
-    #     pass
 
 
 class EmptyFilter(DataFilter):
@@ -21,15 +18,35 @@ class EmptyFilter(DataFilter):
             raise Exception("A filter should be used make a new one")
 
 
+class Count(EmptyFilter):
+    def processData(self, data):
+        self.filter.processData(data)
+        debugLog('PROCESS DATA ' + str(self.__class__))
+        debugLog('before==========')
+        data.printData()
+        for case in data.getCase():
+            count = len(data.getData(case))
+            data.addCaseExtra(case, 'COUNT', count)
+        debugLog('after==========')
+        data.printData()
+        pass
+
+
 class CutPeak(EmptyFilter):
     def processData(self, data):
         self.filter.processData(data)
-        data.printData()
         debugLog('PROCESS DATA ' + str(self.__class__))
+        debugLog('before==========')
+        data.printData()
         # do cut peak
         cases = data.getCase()
         for case in cases:
             single = data.getData(case)
+            # check count
+            if len(single) < 3:
+                debugLog('too few data, do not cut peak')
+                continue
+
             # debugLog("=======%s" % (single))
             maxValue = max(single)
             minValue = min(single)
@@ -37,6 +54,9 @@ class CutPeak(EmptyFilter):
             data.addCaseExtra(case, 'CUT-MIN', minValue)
             single.remove(maxValue)
             single.remove(minValue)
+            count = len(data.getData(case))
+            data.addCaseExtra(case, 'COUNT', count)
+        debugLog('after==========')
         data.printData()
         pass
 
@@ -52,17 +72,18 @@ class Normalize(EmptyFilter):
 class Average(EmptyFilter):
     def processData(self, data):
         self.filter.processData(data)
-        data.printData()
         debugLog('PROCESS DATA ' + str(self.__class__))
+        debugLog('before==========')
+        data.printData()
         # do average
         cases = data.getCase()
         for case in cases:
             total = 0
             single = data.getData(case)
-            # debugLog("=======%s" % (single))
             for value in single:
                 total += float(value)
             data.addCaseExtra(case, 'AVG', total/len(single))
+        debugLog('after==========')
         data.printData()
         pass
 

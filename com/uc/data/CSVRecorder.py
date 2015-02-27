@@ -20,7 +20,7 @@ class CSVRecorder(DataRecord):
 
     def __init__(self):
         self.init()
-        self.recordPath = '{}report-{}.csv'\
+        self.recordPath = '{}record-{}.csv'\
             .format(Conf.DATA_DIR, time.strftime('%Y%m%d%H%M')[2:])
 
     def init(self):
@@ -55,7 +55,7 @@ class CSVRecorder(DataRecord):
                 debugLog('loadData from %s' % self.recordPath)
             else:
                 csvfile = file(path, 'rb')
-                debugLog('loadData from %s' % path)
+                debugLog('loadData from file://%s' % path)
             reader = csv.reader(csvfile)
 
             tempData = None
@@ -64,7 +64,7 @@ class CSVRecorder(DataRecord):
                     tempData = TaskData()
                 if (line[0] == self.TAG_TASK):
                     # WARNING: see if after added tempData work or not
-                    self.taskData[line[0]] = tempData
+                    self.taskData[line[1]] = tempData
                 if (line[0] == self.TAG_CASE):
                     tempData.setData(line[1], line[2:])
                 if (line[0] == self.TAG_EXTRA):

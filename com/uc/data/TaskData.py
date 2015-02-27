@@ -85,4 +85,4 @@ class TaskData():
         print('')
 
     def __str__(self):
-        return str(self.cases)
+        return str("%s-%s" % (self.extra['TASK_TYPE'], self.extra['PLAYER_VERSION']))

@@ -26,4 +26,4 @@ PLAYER_LIB = ['/home/tangjp/work/vr/apolloso/2.8.8.888/',
 
 DEBUG_LOG = 'true'
 TASK_TYPE = ['CORE-T1']
-FILTERS = {'CORE-T1': ['CutPeak', 'Average']}
+FILTERS = {'CORE-T1': ['Count', 'CutPeak', 'Average']}

@@ -67,12 +67,11 @@ if __name__ == '__main__':
 
     # recorder.onComplete()
 
-    recorder.loadData('/opt/lampp/htdocs/videotest/origin/report-1502262130.csv')
+    recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1502271648.csv')
 
-    # filter = DataFilter()
-    # rg = ResultGenerator()
-    # rg.generateResult(recorder)
-    # rg.processT1Result(None)
+    filter = DataFilter()
+    rg = ResultGenerator()
+    rg.generateResult(recorder)
     raise Exception("end")
 
     manager = TaskManager()
