@@ -12,6 +12,7 @@ class TaskData():
         self.lock = thread.allocate_lock()
         self.caseExtra = {}
         self.ceExist = False
+        self.title = ''
 
     def getData(self, case):
         if case in self.data:
@@ -64,9 +65,13 @@ class TaskData():
         self.data[case] = values
         self.lock.release()
 
+    def setTitle(self, title):
+        self.title = title
+
     def printData(self):
         print('')
         print(ingreen('=====TASK DATA:====='))
+        print(self.title)
         print(ingreen('CASE'))
         for case in self.data:
             print('CASE: %s, VALUE: %s' % (case, self.data[case]))
@@ -85,4 +90,4 @@ class TaskData():
         print('')
 
     def __str__(self):
-        return str("%s-%s" % (self.extra['TASK_TYPE'], self.extra['PLAYER_VERSION']))
+        return self.title

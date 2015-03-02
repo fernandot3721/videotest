@@ -21,6 +21,7 @@ class TaskManager:
 
     def shouldTerminate(self):
         if self.monitorThread.isRunning:
+            debugLog("monitorThread failed")
             return False
         else:
             return True

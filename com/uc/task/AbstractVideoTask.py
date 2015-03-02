@@ -8,6 +8,7 @@ from com.uc.log.VideoEventLogListener import VideoEventLogListener
 from com.uc.utils.ColorUtil import *
 from com.uc.conf import Conf
 from com.uc.utils import AndroidUtil
+from com.uc.utils.BrowserUtils import setCDParams
 import re
 
 __author__ = 'Administrator'
@@ -33,13 +34,6 @@ class AbstractVideoTask(HtmlNode, TaskDataAdapt, VideoEventLogListener):
     def setTitle(self, titleStr):
         self.title = titleStr
 
-    def setPlayerVersion(self, version):
-        if not self.playDetected:
-            self.playerVersion = version
-            self.playDetected = True
-            print(inred('player version is: {}'.format(self.playerVersion)))
-            self.setTitle('{}#{}'.format(self.title, self.playerVersion))
-
     def __init__(self):
         self.template = StyleTemplate()
         self.loopCount = Conf.LOOP_TIME
@@ -51,8 +45,7 @@ class AbstractVideoTask(HtmlNode, TaskDataAdapt, VideoEventLogListener):
         self.currentCategoryIndex = 0
         self.title = ""
         self.keyValue = {}
-        self.cdkey = ""
-        self.cdvalue = ""
+        self.cdkey = {}
         self.manager = None
         self.playerVersion = ""
         self.playDetected = False
@@ -85,6 +78,10 @@ class AbstractVideoTask(HtmlNode, TaskDataAdapt, VideoEventLogListener):
         # self.setTitle('{}-{}'.format(libName, self.title))
         for key in self.urlList.keys():
             self.keyValue[key] = []
+
+        print ingreen("===========SET CD PARAM===========")
+        for key in self.cdkey:
+            setCDParams(key, self.cdkey[key])
 
     def run(self):
         self.dataInit()
@@ -129,5 +126,13 @@ class AbstractVideoTask(HtmlNode, TaskDataAdapt, VideoEventLogListener):
         return self.title
 
     def setCD(self, key, value):
-        self.cdkey = key
-        self.cdvalue = value
+        self.cdkey[key] = value
+        print(inred('set param %s to %s' % (key, value)))
+        self.setTitle('%s#%s#%s' % (self.title, key, value))
+
+    def setPlayerVersion(self, version):
+        if not self.playDetected:
+            self.playerVersion = version
+            self.playDetected = True
+            print(inred('player version is: {}'.format(self.playerVersion)))
+            self.setTitle('{}#{}'.format(self.title, self.playerVersion))

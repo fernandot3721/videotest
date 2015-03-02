@@ -7,19 +7,11 @@ from com.uc.html.AverageTemplate import AverageTemplate
 from com.uc.task.AbstractVideoTask import AbstractVideoTask
 from com.uc.utils import BrowserUtils
 from com.uc.html.DataStruct import DataStruct
-from com.uc.utils.BrowserUtils import setCDParams
 from com.uc.utils.ColorUtil import *
 
 
 class CoreT1TestTask(AbstractVideoTask):
-    urlList = {
-        '50_l': Conf.SEVER_ADDRESS + "t1_50k/test_video_long.html",
-        '50_s': Conf.SEVER_ADDRESS + "t1_50k/test_video_short.html",
-        '100_l': Conf.SEVER_ADDRESS + "t1_100k/test_video_long.html",
-        '100_s': Conf.SEVER_ADDRESS + "t1_100k/test_video_short.html",
-        '200_l': Conf.SEVER_ADDRESS + "t1_200k/test_video_long.html",
-        '200_s': Conf.SEVER_ADDRESS + "t1_200k/test_video_short.html",
-    }
+    urlList = Conf.CORE_T1_URL
 
     def __init__(self):
         super(CoreT1TestTask, self).__init__()
@@ -29,9 +21,6 @@ class CoreT1TestTask(AbstractVideoTask):
         self.setTitle(Conf.TASK_TYPE[0])
 
     def doTest(self):
-
-        setCDParams(self.cdkey, self.cdvalue)
-
         print("STARTUP UC")
         BrowserUtils.launchBrowser()
 

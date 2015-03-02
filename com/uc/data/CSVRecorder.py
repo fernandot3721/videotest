@@ -33,6 +33,7 @@ class CSVRecorder(DataRecord):
         print(inblue('onData: {}, {}, {}'.format(task, case, data)))
         if task not in self.taskData:
             self.taskData[task] = TaskData()
+            self.taskData[task].setTitle(task)
             title = task.split('#', 2)
             self.taskData[task].addExtra('TASK_TYPE', title[0])
             self.taskData[task].addExtra('PLAYER_VERSION', title[1])
@@ -65,6 +66,7 @@ class CSVRecorder(DataRecord):
                 if (line[0] == self.TAG_TASK):
                     # WARNING: see if after added tempData work or not
                     self.taskData[line[1]] = tempData
+                    tempData.setTitle(line[1])
                 if (line[0] == self.TAG_CASE):
                     tempData.setData(line[1], line[2:])
                 if (line[0] == self.TAG_EXTRA):
@@ -99,7 +101,7 @@ class CSVRecorder(DataRecord):
                 self.taskData[task].printData()  # DEBUG ONLY
 
                 dataToWrite.append([self.TAG_START])  # TASK-DATA-START
-                dataToWrite.append([self.TAG_TASK, task])  # TASK-NAME
+                dataToWrite.append([self.TAG_TASK, self.taskData[task]])  # TASK-NAME
 
                 cases = self.taskData[task].getCase()
                 for case in cases:

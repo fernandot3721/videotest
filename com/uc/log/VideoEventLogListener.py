@@ -12,7 +12,8 @@ from com.uc.utils.ColorUtil import *
 
 
 t1Keyword = "shell_t1="
-coreT1KeyWorld = "`tl="
+# coreT1KeyWorld = "`tl="
+coreT1KeyWorld = "mov_seg_dur T1 "
 t2Keyword = "shell_t2="
 NFt1Keyword = "shell_nf_t1="
 endKeyword = "shell_end_play"
@@ -40,7 +41,7 @@ class VideoEventLogListener(LogListener):
             self.onVideoFirstT1(t1Time)
 
         if coreT1KeyWorld in lineStr:
-            t1Time = parseLog(lineStr, coreT1KeyWorld)
+            t1Time = parseLog(lineStr, coreT1KeyWorld, 'ms')
             print inblue("CORE T1 = {}".format(t1Time))
             self.onVideoFirstCoreT1(t1Time)
 

@@ -20,6 +20,8 @@ import datetime
 from com.uc.data.CSVRecorder import CSVRecorder
 from com.uc.data.ResultGenerator import ResultGenerator
 from com.uc.data.DataFilter import DataFilter
+from com.uc.utils import AndroidUtil
+from com.uc.utils.BrowserUtils import setCDParams
 
 if __name__ == '__main__':
     starttime = datetime.datetime.now()
@@ -67,33 +69,53 @@ if __name__ == '__main__':
 
     # recorder.onComplete()
 
-    recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1502271648.csv')
+    # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1503011113.csv')
 
-    filter = DataFilter()
-    rg = ResultGenerator()
-    rg.generateResult(recorder)
-    raise Exception("end")
+    # filter = DataFilter()
+    # rg = ResultGenerator()
+    # rg.generateResult(recorder)
+
+    # AndroidUtil.switchApollo('/home/tangjp/work/vr/apolloso/2.13/')
+    # setCDParams('u3js_video_proxy', '0')
+    # setCDParams('apollo_str', 'mov_seg_dur=120')
+    # raise Exception("end")
 
     manager = TaskManager()
 
-    playerCount = Conf.PLAYER_COUNT
-    if Conf.PLAYER_COUNT > len(Conf.PLAYER_LIB):
-        playerCount = len(Conf.PLAYER_LIB)
-    for i in range(playerCount):
-        print ingreen("===========ADD TASK {}===========".format(i))
+    # playerCount = Conf.PLAYER_COUNT
+    # if Conf.PLAYER_COUNT > len(Conf.PLAYER_LIB):
+    #     playerCount = len(Conf.PLAYER_LIB)
+    # for i in range(playerCount):
+    #     print(ingreen("===========ADD TASK {}===========".format(i)))
+    #     t1task = CoreT1TestTask()
+    #     t1task.setPlayerPath(Conf.PLAYER_LIB[i])
+    #     t1task.setDataRecord(recorder)
+    #     manager.addTask(t1task)
+    #     t1task = None
+
+    cdCount = Conf.CD_COUNT
+    if Conf.CD_COUNT > len(Conf.CD_PARAM):
+        cdCount = len(Conf.CD_PARAM)
+    for i in range(cdCount):
+        print(ingreen("===========ADD TASK {}===========".format(i)))
         t1task = CoreT1TestTask()
-        t1task.setPlayerPath(Conf.PLAYER_LIB[i])
+        t1task.setCD('u3js_video_proxy', '0')
+        t1task.setCD('apollo_str', Conf.CD_PARAM[i])
+        t1task.setPlayerPath(Conf.PLAYER_LIB[0])
         t1task.setDataRecord(recorder)
         manager.addTask(t1task)
         t1task = None
 
     result = manager.startTest()
     if result == 0:
-        print ingreen('===========TEST COMPLETE===========')
+        print(ingreen('===========SAVE DATA==========='))
         recorder.onComplete()
+        print(ingreen('===========GENERATE RESULT==========='))
+        rg = ResultGenerator()
+        rg.generateResult(recorder)
         pass
     else:
-        print inred('===========TEST FAILED===========')
+        print(inred('===========TEST FAILED==========='))
     manager.stopTest()
     endtime = datetime.datetime.now()
-    print ingreen("TEST COSTS {} seconds".format((endtime-starttime).seconds))
+    print(ingreen("TEST COSTS {} seconds".format((endtime-starttime).seconds)))

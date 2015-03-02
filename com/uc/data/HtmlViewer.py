@@ -3,6 +3,7 @@ from com.uc.utils.ColorUtil import *
 from com.uc.conf import Conf
 import sys
 import traceback
+import time
 
 
 class HtmlViewer(ResultViewer):
@@ -10,10 +11,10 @@ class HtmlViewer(ResultViewer):
     def __init__(self):
         self.dataCount = 0
         self.data = {}
-        self.reportPath = '{}report.html'\
-            .format(Conf.REPORT_DIR)
-        # self.reportPath = '{}report-{}.html'\
-        #     .format(Conf.REPORT_DIR, time.strftime('%Y%m%d%H%M')[2:])
+        # self.reportPath = '{}report.html'\
+            # .format(Conf.REPORT_DIR)
+        self.reportPath = '{}report-{}.html'\
+            .format(Conf.REPORT_DIR, time.strftime('%Y%m%d%H%M')[2:])
         self.templatepath = Conf.HTML_TEMPLATE
 
     def addData(self, data):

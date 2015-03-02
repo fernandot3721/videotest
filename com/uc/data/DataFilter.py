@@ -21,23 +21,23 @@ class EmptyFilter(DataFilter):
 class Count(EmptyFilter):
     def processData(self, data):
         self.filter.processData(data)
-        debugLog('PROCESS DATA ' + str(self.__class__))
-        debugLog('before==========')
-        data.printData()
+        # debugLog('PROCESS DATA ' + str(self.__class__))
+        # debugLog('before==========')
+        # data.printData()
         for case in data.getCase():
             count = len(data.getData(case))
             data.addCaseExtra(case, 'COUNT', count)
-        debugLog('after==========')
-        data.printData()
+        # debugLog('after==========')
+        # data.printData()
         pass
 
 
 class CutPeak(EmptyFilter):
     def processData(self, data):
         self.filter.processData(data)
-        debugLog('PROCESS DATA ' + str(self.__class__))
-        debugLog('before==========')
-        data.printData()
+        # debugLog('PROCESS DATA ' + str(self.__class__))
+        # debugLog('before==========')
+        # data.printData()
         # do cut peak
         cases = data.getCase()
         for case in cases:
@@ -56,7 +56,7 @@ class CutPeak(EmptyFilter):
             single.remove(minValue)
             count = len(data.getData(case))
             data.addCaseExtra(case, 'COUNT', count)
-        debugLog('after==========')
+        # debugLog('after==========')
         data.printData()
         pass
 
@@ -72,9 +72,9 @@ class Normalize(EmptyFilter):
 class Average(EmptyFilter):
     def processData(self, data):
         self.filter.processData(data)
-        debugLog('PROCESS DATA ' + str(self.__class__))
-        debugLog('before==========')
-        data.printData()
+        # debugLog('PROCESS DATA ' + str(self.__class__))
+        # debugLog('before==========')
+        # data.printData()
         # do average
         cases = data.getCase()
         for case in cases:
@@ -83,8 +83,8 @@ class Average(EmptyFilter):
             for value in single:
                 total += float(value)
             data.addCaseExtra(case, 'AVG', total/len(single))
-        debugLog('after==========')
-        data.printData()
+        # debugLog('after==========')
+        # data.printData()
         pass
 
 

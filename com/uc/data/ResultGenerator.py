@@ -12,8 +12,8 @@ class ResultGenerator():
     def __init__(self):
         self.loadConfig()
         self.data = []
-        self.viewer = CsvViewer()
-        # self.viewer = HtmlViewer()
+        # self.viewer = CsvViewer()
+        self.viewer = HtmlViewer()
         pass
 
     def loadConfig(self):
@@ -29,6 +29,8 @@ class ResultGenerator():
 
         #  show result
         for data in self.data:
+            debugLog('addData %s' % data)
+            debugLog(data)
             self.viewer.addData(data)
         self.viewer.showResult()
         pass
