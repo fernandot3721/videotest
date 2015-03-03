@@ -12,7 +12,7 @@ PACKAGE_NAME = 'com.UCMobile'
 ACTIVITE_NAME = PACKAGE_NAME + '.main.UCMobile'
 WAIT_TIME = 3
 EXTTOOLS_PATH = os.getcwd() + os.sep + 'ext_tools'
-SEVER_ADDRESS = "http://100.84.35.173:8080/"
+SEVER_ADDRESS = "http://100.84.44.238/videocase/"
 URLLIST_PATH = os.getcwd() + os.sep + 'com' + os.sep + 'uc' + os.sep + 'conf'
 
 # REPORT_DIR = os.environ['HOME'] + os.sep + 'work' + os.sep + 'vr' + os.sep
@@ -37,19 +37,25 @@ CD_PARAM = [
             'mov_seg_dur=80',
             ]
 DEBUG_LOG = 'true'
+INFO_LOG = 'true'
+DETAIL_LOG = 'true'
+ERROR_LOG = 'true'
+NORMAL_LOG = 'true'
+TASK_LOG_PATH = '/opt/lampp/htdocs/videotest/log/'
+# LOGGER_LEVEL = DEBUG_LOG
 TASK_TYPE = ['CORE-T1']
 FILTERS = {'CORE-T1': ['Count', 'CutPeak', 'Average']}
 
-# CORE_T1_URL= {'50_l': SEVER_ADDRESS + "t1_50k/test_video_long.html",
-#         '50_s': SEVER_ADDRESS + "t1_50k/test_video_short.html",
-#         '100_l': SEVER_ADDRESS + "t1_100k/test_video_long.html",
-#         '100_s': SEVER_ADDRESS + "t1_100k/test_video_short.html",
-#         '200_l': SEVER_ADDRESS + "t1_200k/test_video_long.html",
-#         '200_s': SEVER_ADDRESS + "t1_200k/test_video_short.html",
-#     }
-CORE_T1_URL= {
-        'movie': SEVER_ADDRESS + "t1Test/mp4/t1Test_2577Kbps.html",
-        'tv': SEVER_ADDRESS + "t1Test/mp4/t1Test_1203Kbps.html",
-        'movie_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_2577Kbps.html",
-        'tv_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_1203Kbps.html",
+CORE_T1_URL= {#'50_l': SEVER_ADDRESS + "t1_50k/test_video_long.html",
+        # '50_s': SEVER_ADDRESS + "t1_50k/test_video_short.html",
+        '100_l': SEVER_ADDRESS + "t1_100k/test_video_long.html",
+        '100_s': SEVER_ADDRESS + "t1_100k/test_video_short.html",
+        # '200_l': SEVER_ADDRESS + "t1_200k/test_video_long.html",
+        # '200_s': SEVER_ADDRESS + "t1_200k/test_video_short.html",
     }
+# CORE_T1_URL= {
+#         'movie': SEVER_ADDRESS + "t1Test/mp4/t1Test_2577Kbps.html",
+#         'tv': SEVER_ADDRESS + "t1Test/mp4/t1Test_1203Kbps.html",
+#         'movie_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_2577Kbps.html",
+#         'tv_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_1203Kbps.html",
+#     }

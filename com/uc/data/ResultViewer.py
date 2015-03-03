@@ -1,6 +1,4 @@
 from abc import abstractmethod
-from com.uc.utils.ColorUtil import *
-import time
 
 
 class ResultViewer():

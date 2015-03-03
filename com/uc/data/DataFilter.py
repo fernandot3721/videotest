@@ -1,6 +1,6 @@
 
 from abc import abstractmethod
-from com.uc.utils.ColorUtil import *
+from com.uc.utils.TaskLogger import TaskLogger
 
 
 class DataFilter(object):
@@ -44,7 +44,7 @@ class CutPeak(EmptyFilter):
             single = data.getData(case)
             # check count
             if len(single) < 3:
-                debugLog('too few data, do not cut peak')
+                TaskLogger.debugLog('too few data, do not cut peak')
                 continue
 
             # debugLog("=======%s" % (single))
@@ -64,7 +64,7 @@ class CutPeak(EmptyFilter):
 class Normalize(EmptyFilter):
     def processData(self, data):
         self.filter.processData(data)
-        debugLog('PROCESS DATA ' + str(self.__class__))
+        TaskLogger.debugLog('PROCESS DATA ' + str(self.__class__))
         # do normal distribution
         pass
 
@@ -91,6 +91,6 @@ class Average(EmptyFilter):
 class InvalidData(EmptyFilter):
     def processData(self, data):
         self.filter.processData(data)
-        debugLog('PROCESS DATA ' + str(self.__class__))
+        TaskLogger.debugLog('PROCESS DATA ' + str(self.__class__))
         # do invalid
         pass

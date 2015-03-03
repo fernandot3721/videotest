@@ -1,5 +1,7 @@
 from com.uc.data.ResultViewer import ResultViewer
-from com.uc.utils.ColorUtil import *
+from com.uc.utils.TaskLogger import TaskLogger
+from com.uc.conf import Conf
+import sys
 import csv
 import traceback
 
@@ -25,12 +27,12 @@ class CsvViewer(ResultViewer):
                 writer.writerow('')
         except:
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            print(inred("Exception: {}".format(exc_value)))
-            print(inred("#######STACK TRACE:"))
+            TaskLogger.errorLog("Exception: {}".format(exc_value))
+            TaskLogger.errorLog("#######STACK TRACE:")
             traceback.print_tb(exc_traceback)
         finally:
             csvfile.close()
-            print(inblue("view Report: file://%s" % self.reportPath))
+            TaskLogger.detailLog("view Report: file://%s" % self.reportPath)
         pass
 
     def addData(self, data):

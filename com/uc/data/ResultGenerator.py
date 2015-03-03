@@ -4,7 +4,7 @@ from com.uc.data.CsvViewer import CsvViewer
 from com.uc.data.HtmlViewer import HtmlViewer
 from com.uc.data.DataFilter import DataFilter
 from com.uc.conf import Conf
-from com.uc.utils.ColorUtil import *
+from com.uc.utils.TaskLogger import TaskLogger
 
 
 class ResultGenerator():
@@ -25,12 +25,11 @@ class ResultGenerator():
         self.data = dataRecord.getData()
         for data in self.data:
             self.processData(data)
-        # dataRecord.onComplete()
 
         #  show result
         for data in self.data:
-            debugLog('addData %s' % data)
-            debugLog(data)
+            TaskLogger.debugLog('addData %s' % data)
+            TaskLogger.debugLog(data)
             self.viewer.addData(data)
         self.viewer.showResult()
         pass
@@ -48,9 +47,7 @@ class ResultGenerator():
         # produce corresponding filter according to keyword
         # NOTE the key is the name of filter class
         module = importlib.import_module("com.uc.data.DataFilter")
-        #print str(module)
         filterClass = getattr(module, key)
         filterObject = filterClass(filter)
-        # filterObject.procssData(None)
         return filterObject
         pass

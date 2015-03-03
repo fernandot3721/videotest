@@ -13,7 +13,7 @@ from com.uc.taskImpl.ErrorBeforePlayTestTask import ErrorBeforePlayTestTask
 from com.uc.taskImpl.NotFirstT1TestTask import NotFirstT1TestTask
 from com.uc.taskImpl.T1TestTask import T1TestTask
 from com.uc.taskImpl.T2TestTask import T2TestTask
-from com.uc.utils.ColorUtil import *
+from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.conf import Conf
 import datetime
 
@@ -25,6 +25,7 @@ from com.uc.utils.BrowserUtils import setCDParams
 
 if __name__ == '__main__':
     starttime = datetime.datetime.now()
+    TaskLogger.init()
     # recorder = CSVRecorder()
 
     # recorder.loadData()
@@ -86,7 +87,7 @@ if __name__ == '__main__':
     # if Conf.PLAYER_COUNT > len(Conf.PLAYER_LIB):
     #     playerCount = len(Conf.PLAYER_LIB)
     # for i in range(playerCount):
-    #     print(ingreen("===========ADD TASK {}===========".format(i)))
+    #     TaskLogger.infoLog("===========ADD TASK {}===========".format(i))
     #     t1task = CoreT1TestTask()
     #     t1task.setPlayerPath(Conf.PLAYER_LIB[i])
     #     t1task.setDataRecord(recorder)
@@ -97,7 +98,7 @@ if __name__ == '__main__':
     if Conf.CD_COUNT > len(Conf.CD_PARAM):
         cdCount = len(Conf.CD_PARAM)
     for i in range(cdCount):
-        print(ingreen("===========ADD TASK {}===========".format(i)))
+        TaskLogger.infoLog("===========ADD TASK {}===========".format(i))
         t1task = CoreT1TestTask()
         t1task.setCD('u3js_video_proxy', '0')
         t1task.setCD('apollo_str', Conf.CD_PARAM[i])
@@ -108,14 +109,16 @@ if __name__ == '__main__':
 
     result = manager.startTest()
     if result == 0:
-        print(ingreen('===========SAVE DATA==========='))
+        TaskLogger.infoLog('===========SAVE DATA===========')
         recorder.onComplete()
-        print(ingreen('===========GENERATE RESULT==========='))
+        TaskLogger.infoLog('===========GENERATE RESULT===========')
         rg = ResultGenerator()
         rg.generateResult(recorder)
         pass
     else:
-        print(inred('===========TEST FAILED==========='))
+        TaskLogger.errorLog('===========TEST FAILED===========')
     manager.stopTest()
     endtime = datetime.datetime.now()
-    print(ingreen("TEST COSTS {} seconds".format((endtime-starttime).seconds)))
+    duration = (endtime-starttime).seconds
+    TaskLogger.infoLog("TEST COSTS %s seconds" % duration)
+    TaskLogger.detailLog("Log file: file://%s" % TaskLogger.logfile)

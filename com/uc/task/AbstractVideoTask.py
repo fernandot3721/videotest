@@ -5,7 +5,7 @@ from com.uc.html.HtmlNode import HtmlNode
 from com.uc.html.StyleTemplate import StyleTemplate
 from com.uc.html.TaskDataAdapt import TaskDataAdapt
 from com.uc.log.VideoEventLogListener import VideoEventLogListener
-from com.uc.utils.ColorUtil import *
+from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.conf import Conf
 from com.uc.utils import AndroidUtil
 from com.uc.utils.BrowserUtils import setCDParams
@@ -59,7 +59,7 @@ class AbstractVideoTask(HtmlNode, TaskDataAdapt, VideoEventLogListener):
     def initTest(self, i):
         # 每次测试之前做一下初始化
         if self.manager is not None and self.manager.shouldTerminate():
-            print inred('ERROR: manager Terminate')
+            TaskLogger.errorLog('ERROR: manager Terminate')
             return False
 
         self.hasComplatePlay = False
@@ -69,27 +69,27 @@ class AbstractVideoTask(HtmlNode, TaskDataAdapt, VideoEventLogListener):
         return True
 
     def dataInit(self):
-        print ingreen("===========SWITCH PLAYER LIB===========")
-        print "player path is: {}".format(self.playPath)
+        TaskLogger.infoLog("===========SWITCH PLAYER LIB===========")
+        TaskLogger.normalLog("player path is: %s" % self.playPath)
         AndroidUtil.switchApollo(self.playPath)
         match = re.search(r'\d\.\d+', self.playPath)
         libName = match.group(0)
-        print inred('&&&&&&&&&&&&&&&&&libName: {}'.format(libName))
+        TaskLogger.errorLog('&&&&&&&&&&&&&&&&&libName: {}'.format(libName))
         # self.setTitle('{}-{}'.format(libName, self.title))
         for key in self.urlList.keys():
             self.keyValue[key] = []
 
-        print ingreen("===========SET CD PARAM===========")
+        TaskLogger.infoLog("===========SET CD PARAM===========")
         for key in self.cdkey:
             setCDParams(key, self.cdkey[key])
 
     def run(self):
         self.dataInit()
-        print ingreen("{} TEST START for {} times".format(self.getTitle(), str(self.loopCount)))
+        TaskLogger.infoLog("%s TEST START for %s times" % (self.getTitle(), str(self.loopCount)))
         for i in range(0, self.loopCount):
             self.currentLoopIndex = i
             for j in range(0, len(self.urlList)):
-                print inyellow("Loop {} Case {} is running".format(i, j))
+                TaskLogger.infoLog("Loop %s Case %s is running" % (i, j))
                 if self.initTest(j):
                     self.doTest()
 
@@ -127,12 +127,12 @@ class AbstractVideoTask(HtmlNode, TaskDataAdapt, VideoEventLogListener):
 
     def setCD(self, key, value):
         self.cdkey[key] = value
-        print(inred('set param %s to %s' % (key, value)))
+        TaskLogger.errorLog('set param %s to %s' % (key, value))
         self.setTitle('%s#%s#%s' % (self.title, key, value))
 
     def setPlayerVersion(self, version):
         if not self.playDetected:
             self.playerVersion = version
             self.playDetected = True
-            print(inred('player version is: {}'.format(self.playerVersion)))
+            TaskLogger.errorLog('player version is: %s' % self.playerVersion)
             self.setTitle('{}#{}'.format(self.title, self.playerVersion))

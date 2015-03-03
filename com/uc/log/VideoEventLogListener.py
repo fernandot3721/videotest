@@ -8,12 +8,12 @@ from abc import abstractmethod
 
 from com.uc.log.LogListener import LogListener
 from com.uc.task.Filter import Filter
-from com.uc.utils.ColorUtil import *
+from com.uc.utils.TaskLogger import TaskLogger
 
 
 t1Keyword = "shell_t1="
-# coreT1KeyWorld = "`tl="
-coreT1KeyWorld = "mov_seg_dur T1 "
+coreT1KeyWorld = "`tl="
+apolloT1KeyWorld = "mov_seg_dur T1 "
 t2Keyword = "shell_t2="
 NFt1Keyword = "shell_nf_t1="
 endKeyword = "shell_end_play"
@@ -31,19 +31,23 @@ class VideoEventLogListener(LogListener):
     def setFilter(self, myfilter):
         self.myfilter = myfilter
 
-    def __init__(self): pass
-
     def onRead(self, lineStr):
         if t1Keyword in lineStr:
             t1Time = parseLog(lineStr, t1Keyword)
-            print "tl = ", t1Time
+            TaskLogger.detailLog("tl = %s" % t1Time)
             self.onVideoStartPlay()
             self.onVideoFirstT1(t1Time)
 
         if coreT1KeyWorld in lineStr:
-            t1Time = parseLog(lineStr, coreT1KeyWorld, 'ms')
-            print inblue("CORE T1 = {}".format(t1Time))
+            t1Time = parseLog(lineStr, coreT1KeyWorld)
+            TaskLogger.detailLog("CORE T1 = {}".format(t1Time))
             self.onVideoFirstCoreT1(t1Time)
+
+        if apolloT1KeyWorld in lineStr:
+            t1Time = parseLog(lineStr, apolloT1KeyWorld, 'ms')
+            TaskLogger.detailLog("APOLLO T1 = {}".format(t1Time))
+            self.onVideoStartPlay()
+            self.onVideoFirstApolloT1(t1Time)
 
         if t2Keyword in lineStr:
             t2Time = parseLog(lineStr, t2Keyword)
@@ -51,12 +55,12 @@ class VideoEventLogListener(LogListener):
 
         if NFt1Keyword in lineStr:
             NFt1Time = parseLog(lineStr, NFt1Keyword)
-            print u"非首次t1 = ", NFt1Time
+            TaskLogger.normalLog("NOT FIRST T1 = %s" % NFt1Time)
             self.onVideoNotFirstT1(NFt1Time)
 
         if playResultword in lineStr:
             isSuccessful = parseLog(lineStr, retcodeword)
-            # print inblue("播放结果返回码=" + str(isSuccessful))
+            # TaskLogger.detailLog("播放结果返回码=" + str(isSuccessful))
             self.onPlayResult(isSuccessful)
 
         if endKeyword in lineStr:
@@ -80,6 +84,10 @@ class VideoEventLogListener(LogListener):
 
     @abstractmethod
     def onVideoFirstCoreT1(self, t1):
+        pass
+
+    @abstractmethod
+    def onVideoFirstApolloT1(self, t1):
         pass
 
     @abstractmethod

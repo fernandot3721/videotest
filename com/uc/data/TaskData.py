@@ -1,6 +1,6 @@
 
 import thread
-from com.uc.utils.ColorUtil import *
+from com.uc.utils.TaskLogger import TaskLogger
 
 
 class TaskData():
@@ -70,23 +70,23 @@ class TaskData():
 
     def printData(self):
         print('')
-        print(ingreen('=====TASK DATA:====='))
+        TaskLogger.infoLog('=====TASK DATA:=====')
         print(self.title)
-        print(ingreen('CASE'))
+        TaskLogger.infoLog('CASE')
         for case in self.data:
             print('CASE: %s, VALUE: %s' % (case, self.data[case]))
-        print(ingreen('EXTRA'))
+        TaskLogger.infoLog('EXTRA')
         for extra in self.extra:
             print('KEY: %s, VALUE: %s' % (extra, self.extra[extra]))
         if self.ceExist:
-            print(ingreen('CASE EXTRA'))
+            TaskLogger.infoLog('CASE EXTRA')
             for case in self.cases:
                 ceStr = 'CASE: %s' % case
                 for extra in self.caseExtra[case]:
                     ceStr = '%s, KEY: %s, VALUE: %s' % \
                         (ceStr, extra, self.caseExtra[case][extra])
                 print(ceStr)
-        print(ingreen('==================='))
+        TaskLogger.infoLog('===================')
         print('')
 
     def __str__(self):

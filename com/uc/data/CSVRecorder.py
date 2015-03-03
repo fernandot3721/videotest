@@ -1,6 +1,6 @@
 
 import time
-from com.uc.utils.ColorUtil import *
+from com.uc.utils.TaskLogger import TaskLogger
 import traceback
 from com.uc.conf import Conf
 import csv
@@ -30,7 +30,7 @@ class CSVRecorder(DataRecord):
         return self.taskData.values()
 
     def onData(self, task, case, data):
-        print(inblue('onData: {}, {}, {}'.format(task, case, data)))
+        TaskLogger.detailLog('onData: %s, %s, %s' % (task, case, data))
         if task not in self.taskData:
             self.taskData[task] = TaskData()
             self.taskData[task].setTitle(task)
@@ -53,10 +53,10 @@ class CSVRecorder(DataRecord):
             if (path is None):
                 # TODO you may choose the most recent one to load
                 csvfile = file(self.recordPath, 'rb')
-                debugLog('loadData from %s' % self.recordPath)
+                TaskLogger.debugLog('loadData from %s' % self.recordPath)
             else:
                 csvfile = file(path, 'rb')
-                debugLog('loadData from file://%s' % path)
+                TaskLogger.debugLog('loadData from file://%s' % path)
             reader = csv.reader(csvfile)
 
             tempData = None
@@ -80,11 +80,11 @@ class CSVRecorder(DataRecord):
                 if (line[0] == self.TAG_END):
                     tempData.printData()  # DEBUG ONLY
                     tempData = None
-            debugLog('loadData end')
+            TaskLogger.debugLog('loadData end')
         except:
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            print(inred("Exception: {}".format(exc_value)))
-            print(inred("#######STACK TRACE:"))
+            TaskLogger.errorLog("Exception: {}".format(exc_value))
+            TaskLogger.errorLog("#######STACK TRACE:")
             traceback.print_tb(exc_traceback)
         finally:
             csvfile.close()
@@ -96,8 +96,8 @@ class CSVRecorder(DataRecord):
         try:
             dataToWrite = []
             for task in self.taskData.keys():
-                debugLog('saveData: ' + task)
-                debugLog(self.taskData[task])
+                TaskLogger.debugLog('saveData: ' + task)
+                TaskLogger.debugLog(self.taskData[task])
                 self.taskData[task].printData()  # DEBUG ONLY
 
                 dataToWrite.append([self.TAG_START])  # TASK-DATA-START
@@ -132,13 +132,13 @@ class CSVRecorder(DataRecord):
             writer.writerows(dataToWrite)
         except:
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            print(inred("Exception: {}".format(exc_value)))
-            print(inred("#######STACK TRACE:"))
+            TaskLogger.errorLog("Exception: {}".format(exc_value))
+            TaskLogger.errorLog("#######STACK TRACE:")
             traceback.print_tb(exc_traceback)
         finally:
             cvsfile.close()
-            print(inblue("view Record: file://%s" % self.recordPath))
-            # print inblue("view Record: http://100.84.44.238//test/test.csv")
+            TaskLogger.detailLog("view Record: file://%s" % self.recordPath)
+            # TaskLogger.detailLog("view Record: http://100.84.44.238//test/test.csv")
 
     def testWrite(self):
         list1 = ['1', '2', '3', '4', '5']

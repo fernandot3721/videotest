@@ -7,7 +7,7 @@ from com.uc.html.AverageTemplate import AverageTemplate
 from com.uc.task.AbstractVideoTask import AbstractVideoTask
 from com.uc.utils import BrowserUtils
 from com.uc.html.DataStruct import DataStruct
-from com.uc.utils.ColorUtil import *
+from com.uc.utils.TaskLogger import TaskLogger
 
 
 class CoreT1TestTask(AbstractVideoTask):
@@ -29,7 +29,8 @@ class CoreT1TestTask(AbstractVideoTask):
         print("CLEAR HISTROY")
         BrowserUtils.clearVideoCache()
 
-        print("PLAY VIDEO: " + inyellow(self.urlList[self.currentCategory]))
+        TaskLogger.normalLog("PLAY VIDEO:")
+        TaskLogger.detailLog(self.urlList[self.currentCategory])
         BrowserUtils.openURI(self.urlList[self.currentCategory])
 
         # 等待视频播起来
@@ -37,10 +38,10 @@ class CoreT1TestTask(AbstractVideoTask):
         while True:
             sleep(1)
             if self.hasStartPlay is True:
-                print(inblue('play sucess'))
+                TaskLogger.detailLog('play sucess')
                 break
             elif myloop > 7:
-                print(inred('play time out'))
+                TaskLogger.errorLog('play time out')
                 break
             myloop += 1
 

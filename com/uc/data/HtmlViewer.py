@@ -1,5 +1,5 @@
 from com.uc.data.ResultViewer import ResultViewer
-from com.uc.utils.ColorUtil import *
+from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.conf import Conf
 import sys
 import traceback
@@ -62,20 +62,20 @@ class HtmlViewer(ResultViewer):
             self.writeTemplateEnd(htmlFile)
         except:
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            print(inred("Exception: {}".format(exc_value)))
-            print(inred("#######STACK TRACE:"))
+            TaskLogger.errorLog("Exception: {}".format(exc_value))
+            TaskLogger.errorLog("#######STACK TRACE:")
             traceback.print_tb(exc_traceback)
         finally:
             htmlFile.close()
             templateFile.close()
-            print(inblue("view Report: file://%s" % self.reportPath))
+            TaskLogger.detailLog("view Report: file://%s" % self.reportPath)
         pass
 
     def writeTitle(self, fileHandle, title):
         fileHandle.write("<h1>%s</h1>\n" % title)
 
     def writeExtra(self, fileHandle, extra):
-        debugLog("=============%s" % extra)
+        TaskLogger.debugLog("=============%s" % extra)
         fileHandle.write("<p>%s</p>\n" % extra)
         fileHandle.write("\n")
         fileHandle.write("\n")
