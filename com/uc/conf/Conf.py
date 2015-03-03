@@ -53,9 +53,12 @@ CORE_T1_URL= {#'50_l': SEVER_ADDRESS + "t1_50k/test_video_long.html",
         # '200_l': SEVER_ADDRESS + "t1_200k/test_video_long.html",
         # '200_s': SEVER_ADDRESS + "t1_200k/test_video_short.html",
     }
-# CORE_T1_URL= {
-#         'movie': SEVER_ADDRESS + "t1Test/mp4/t1Test_2577Kbps.html",
-#         'tv': SEVER_ADDRESS + "t1Test/mp4/t1Test_1203Kbps.html",
-#         'movie_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_2577Kbps.html",
-#         'tv_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_1203Kbps.html",
-#     }
+
+APOLLO_T1_URL= {
+        'movie': SEVER_ADDRESS + "t1Test/mp4/t1Test_2577Kbps.html",
+        'tv': SEVER_ADDRESS + "t1Test/mp4/t1Test_1203Kbps.html",
+        'movie_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_2577Kbps.html",
+        'tv_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_1203Kbps.html",
+        'movie_new': SEVER_ADDRESS + 't1Test/mp4/t1Test_850_480_720Kbps.html'
+        'movie_new_200': SEVER_ADDRESS + 't1Test_200k/mp4/t1Test_850_480_720Kbps.html'
+    }

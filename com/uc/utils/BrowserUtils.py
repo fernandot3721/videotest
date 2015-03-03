@@ -15,8 +15,8 @@ import time
 
 
 def launchBrowser():
-    launchCmd = "adb shell am start -a android.intent.action.VIEW -n {}/{} -d {} -e policy UCM_ONE_WINDOW".format(Conf.PACKAGE_NAME, Conf.ACTIVITE_NAME, "http://www.baidu.com")
-    # launchCmd = "adb shell am start -n {}/{}".format(Conf.PACKAGE_NAME, Conf.ACTIVITE_NAME)
+    # launchCmd = "adb shell am start -a android.intent.action.VIEW -n {}/{} -d {} -e policy UCM_ONE_WINDOW".format(Conf.PACKAGE_NAME, Conf.ACTIVITE_NAME, "http://www.baidu.com")
+    launchCmd = "adb shell am start -n {}/{}".format(Conf.PACKAGE_NAME, Conf.ACTIVITE_NAME)
     # TaskLogger.errorLog(launchCmd)
     mySystem(launchCmd)
 

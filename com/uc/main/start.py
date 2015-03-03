@@ -9,10 +9,7 @@ sys.path.append(os.getcwd())
 
 from com.uc.task.TaskManager import TaskManager
 from com.uc.taskImpl.CoreT1TestTask import CoreT1TestTask
-from com.uc.taskImpl.ErrorBeforePlayTestTask import ErrorBeforePlayTestTask
-from com.uc.taskImpl.NotFirstT1TestTask import NotFirstT1TestTask
-from com.uc.taskImpl.T1TestTask import T1TestTask
-from com.uc.taskImpl.T2TestTask import T2TestTask
+from com.uc.taskImpl.ApolloT1TestTask import ApolloT1TestTask
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.conf import Conf
 import datetime
@@ -99,7 +96,7 @@ if __name__ == '__main__':
         cdCount = len(Conf.CD_PARAM)
     for i in range(cdCount):
         TaskLogger.infoLog("===========ADD TASK {}===========".format(i))
-        t1task = CoreT1TestTask()
+        t1task = ApolloT1TestTask()
         t1task.setCD('u3js_video_proxy', '0')
         t1task.setCD('apollo_str', Conf.CD_PARAM[i])
         t1task.setPlayerPath(Conf.PLAYER_LIB[0])
