@@ -21,9 +21,9 @@ class TaskManager:
 
     def shouldTerminate(self):
         if self.monitorThread.isRunning:
-            TaskLogger.debugLog("monitorThread failed")
             return False
         else:
+            TaskLogger.debugLog("monitorThread failed")
             return True
 
     def addTask(self, task):

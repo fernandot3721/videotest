@@ -59,6 +59,6 @@ APOLLO_T1_URL= {
         'tv': SEVER_ADDRESS + "t1Test/mp4/t1Test_1203Kbps.html",
         'movie_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_2577Kbps.html",
         'tv_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_1203Kbps.html",
-        'movie_new': SEVER_ADDRESS + 't1Test/mp4/t1Test_850_480_720Kbps.html'
-        'movie_new_200': SEVER_ADDRESS + 't1Test_200k/mp4/t1Test_850_480_720Kbps.html'
+        'movie_new': SEVER_ADDRESS + 't1Test/mp4/t1Test_850_480_720Kbps.html',
+        'movie_new_200': SEVER_ADDRESS + 't1Test_200k/mp4/t1Test_850_480_720Kbps.html',
     }
