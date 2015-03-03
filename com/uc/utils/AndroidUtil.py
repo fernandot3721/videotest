@@ -16,25 +16,34 @@ def switchApollo(pathFrom):
     libu3player = 'libu3player.so'
     # pathFrom = ' /home/tangjp/work/vr/apolloso/2.8.8.888/'
     pathTmp = '/sdcard/UCDownloads/'
-    pathTo = '/data/data/{}/apollo1/'.format(Conf.PACKAGE_NAME)
+    pathTo1 = '/data/data/{}/apollo1/'.format(Conf.PACKAGE_NAME)
+    pathTo2 = '/data/data/{}/apollo2/'.format(Conf.PACKAGE_NAME)
 
     pushffInCmd = "adb push %s%s %s%s" % \
         (pathFrom, libffmpeg, pathTmp, libffmpeg)
     pushu3InCmd = "adb push %s%s %s%s" % \
         (pathFrom, libu3player, pathTmp, libu3player)
-    mvffInCmd = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libffmpeg, pathTo, libffmpeg)
-    mvu3InCmd = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libu3player, pathTo, libu3player)
+    mvffInCmd1 = "adb shell su -c \"cat %s%s > %s%s\"" % \
+        (pathTmp, libffmpeg, pathTo1, libffmpeg)
+    mvu3InCmd1 = "adb shell su -c \"cat %s%s > %s%s\"" % \
+        (pathTmp, libu3player, pathTo1, libu3player)
+    mvffInCmd2 = "adb shell su -c \"cat %s%s > %s%s\"" % \
+        (pathTmp, libffmpeg, pathTo2, libffmpeg)
+    mvu3InCmd2 = "adb shell su -c \"cat %s%s > %s%s\"" % \
+        (pathTmp, libu3player, pathTo2, libu3player)
 
     TaskLogger.normalLog(pushffInCmd)
     os.system(pushffInCmd)
     TaskLogger.normalLog(pushu3InCmd)
     os.system(pushu3InCmd)
-    TaskLogger.normalLog(mvffInCmd)
-    os.system(mvffInCmd)
-    TaskLogger.normalLog(mvu3InCmd)
-    os.system(mvu3InCmd)
+    TaskLogger.normalLog(mvffInCmd1)
+    os.system(mvffInCmd1)
+    TaskLogger.normalLog(mvffInCmd1)
+    os.system(mvu3InCmd1)
+    TaskLogger.normalLog(mvffInCmd2)
+    os.system(mvffInCmd2)
+    TaskLogger.normalLog(mvu3InCmd2)
+    os.system(mvu3InCmd2)
     pass
 
 # def testApollo():
