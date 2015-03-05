@@ -19,6 +19,9 @@ from com.uc.data.ResultGenerator import ResultGenerator
 from com.uc.data.DataFilter import DataFilter
 from com.uc.utils import AndroidUtil
 from com.uc.utils.BrowserUtils import setCDParams
+from com.uc.utils.BrowserUtils import launchBrowser
+from com.uc.utils.BrowserUtils import openURI
+from com.uc.utils import BrowserUtils
 
 if __name__ == '__main__':
     starttime = datetime.datetime.now()
@@ -74,6 +77,8 @@ if __name__ == '__main__':
     # rg.generateResult(recorder)
 
     # AndroidUtil.switchApollo('/home/tangjp/work/vr/apolloso/2.13/')
+    # BrowserUtils.launchBrowser()
+    # BrowserUtils.openURI('http://192.168.0.4/t1Test/mp4/t1Test_1203Kbps.html')
     # setCDParams('u3js_video_proxy', '0')
     # setCDParams('apollo_str', 'mov_seg_dur=120')
     # raise Exception("end")

@@ -12,7 +12,7 @@ PACKAGE_NAME = 'com.UCMobile'
 ACTIVITE_NAME = PACKAGE_NAME + '.main.UCMobile'
 WAIT_TIME = 3
 EXTTOOLS_PATH = os.getcwd() + os.sep + 'ext_tools'
-SEVER_ADDRESS = "http://100.84.44.238/videocase/"
+SEVER_ADDRESS = "http://100.84.35.173:8080/"
 URLLIST_PATH = os.getcwd() + os.sep + 'com' + os.sep + 'uc' + os.sep + 'conf'
 
 # REPORT_DIR = os.environ['HOME'] + os.sep + 'work' + os.sep + 'vr' + os.sep
@@ -28,19 +28,20 @@ PLAYER_LIB = [
                 ]
 CD_COUNT = 3
 CD_PARAM = [
-#'mov_seg_dur=0',
-#'mov_seg_dur=10',
-#'mov_seg_dur=20',
-#'mov_seg_dur=30',
-            'mov_seg_dur=40',
-            'mov_seg_dur=60',
-            'mov_seg_dur=80',
+            'mov_seg_dur=0',
+            # 'mov_seg_dur=10',
+            # 'mov_seg_dur=20',
+            # 'mov_seg_dur=30',
+            # 'mov_seg_dur=40',
+            # 'mov_seg_dur=60',
+            # 'mov_seg_dur=80',
             ]
-DEBUG_LOG = 'true'
-INFO_LOG = 'true'
-DETAIL_LOG = 'true'
-ERROR_LOG = 'true'
-NORMAL_LOG = 'true'
+DEBUG_LOG = True
+INFO_LOG = True
+DETAIL_LOG = True
+ERROR_LOG = True
+NORMAL_LOG = True
+FILE_LOG = False
 TASK_LOG_PATH = '/opt/lampp/htdocs/videotest/log/'
 # LOGGER_LEVEL = DEBUG_LOG
 TASK_TYPE = ['CORE-T1']
@@ -57,8 +58,21 @@ CORE_T1_URL= {#'50_l': SEVER_ADDRESS + "t1_50k/test_video_long.html",
 APOLLO_T1_URL= {
         'movie': SEVER_ADDRESS + "t1Test/mp4/t1Test_2577Kbps.html",
         'tv': SEVER_ADDRESS + "t1Test/mp4/t1Test_1203Kbps.html",
-        'movie_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_2577Kbps.html",
-        'tv_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_1203Kbps.html",
-        'movie_new': SEVER_ADDRESS + 't1Test/mp4/t1Test_850_480_720Kbps.html',
-        'movie_new_200': SEVER_ADDRESS + 't1Test_200k/mp4/t1Test_850_480_720Kbps.html',
+        # 'movie_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_2577Kbps.html",
+        # 'tv_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_1203Kbps.html",
+        # 'movie_new': SEVER_ADDRESS + 't1Test/mp4/t1Test_850_480_720Kbps.html',
+        # 'movie_new_200': SEVER_ADDRESS + 't1Test_200k/mp4/t1Test_850_480_720Kbps.html',
     }
+
+START_PLAY_TAG = {
+        'mov_seg_dur T1': '',
+        }
+PLAYER_VERSION_TAG = {
+        '[apollo': ']',
+        }
+CORE_T1_KEYWORD = {
+        '`tl=': 'ms',
+        }
+APOLLO_T1_KEYWORD = {
+        'mov_seg_dur T1 ': 'ms',
+        }
