@@ -1,6 +1,7 @@
 # encoding: utf-8
 from os.path import sys
-from com.uc.log.AndroidLogcat import AndroidLogcat
+from com.uc.monitor.AndroidLogcat import AndroidLogcat
+from com.uc.monitor.FileContentMonitor import FileContentMonitor
 from com.uc.utils.TaskLogger import TaskLogger
 import traceback
 import os
@@ -8,18 +9,20 @@ import os
 
 class TaskManager:
     taskList = []
-    monitorThread = AndroidLogcat()
+    logcatThread = AndroidLogcat()
+    meminfoThread = FileContentMonitor()
 
     def __init__(self):
         os.system('adb logcat -c')
-        self.monitorThread.start()
+        self.logcatThread.start()
+        self.meminfoThread.start()
         pass
 
     def shouldTerminate(self):
-        if self.monitorThread.isRunning:
+        if self.logcatThread.isRunning:
             return False
         else:
-            TaskLogger.debugLog("monitorThread failed")
+            TaskLogger.debugLog("logcatThread failed")
             return True
 
     def addTask(self, task):
@@ -31,8 +34,10 @@ class TaskManager:
         try:
             TaskLogger.infoLog("===========EXECUTE TASK===========")
             for task in self.taskList:
-                self.monitorThread.setHandler(task)
-                self.monitorThread.init()
+                self.logcatThread.setHandler(task)
+                self.meminfoThread.setHandler(task)
+                self.logcatThread.init()
+                self.meminfoThread.init()
                 task.run()
             return 0
         except:
@@ -43,5 +48,5 @@ class TaskManager:
             return -1
 
     def stopTest(self):
-        self.monitorThread.stop()
-        self.monitorThread.join()
+        self.logcatThread.stop()
+        self.logcatThread.join()

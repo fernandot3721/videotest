@@ -53,3 +53,7 @@ class CoreT1TestTask(AbstractVideoTask):
 
     def getKeywords(self):
         return self.__keywords
+
+    def onContentKeyDetected(self, key, value):
+        TaskLogger.debugLog('onContentKeyDetected %s %s' % (key, value))
+        pass

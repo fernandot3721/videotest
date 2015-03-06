@@ -5,13 +5,14 @@ from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.conf import Conf
 from com.uc.utils import AndroidUtil
 from com.uc.utils.BrowserUtils import setCDParams
-from com.uc.log.LogcatHandler import LogcatHandler
+from com.uc.monitor.LogcatHandler import LogcatHandler
+from com.uc.monitor.ContentHandler import ContentHandler
 import re
 
 __author__ = 'Administrator'
 
 
-class AbstractVideoTask(LogcatHandler):
+class AbstractVideoTask(LogcatHandler, ContentHandler):
 
     def setDataRecord(self, dataRecord):
         self.dataRecord = dataRecord
