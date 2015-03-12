@@ -30,10 +30,13 @@ def createstripeschart(picpath, title, timelist, infolist):
     usslist = map(float, b)
 
     datalist = memfreelist+usslist
+    timeduration = range(0, 11)
 
     # set max & min line for axis Y
     max_y = (int(max(datalist)/INTERVAL)+1)*INTERVAL
     min_y = (int(min(datalist)/INTERVAL)-1)*INTERVAL
+    if min_y < 0:
+        min_y = 0
 
     # Chart size of 704x396 pixels and specifying the range for the Y axis
     chart = SimpleLineChart(800, 375, y_range=[min_y, max_y])
@@ -49,14 +52,14 @@ def createstripeschart(picpath, title, timelist, infolist):
     # Set the vertical stripes
     chart.fill_linear_gradient(Chart.CHART, 0, '272822', 0.2, '000000', 0.1)
     # Set the horizontal dotted lines
-    chart.set_grid(len(timelist), INTERVAL*100/(max_y-min_y+1))
+    chart.set_grid(10, INTERVAL*100/(max_y-min_y+1))
 
     # Y axis labels
     left_axis = list(range(min_y, max_y + 1, INTERVAL))
     chart.set_axis_labels(Axis.LEFT, left_axis)
 
     # X axis labels
-    chart.set_axis_labels(Axis.BOTTOM, timelist)
+    chart.set_axis_labels(Axis.BOTTOM, timeduration)
 
     chart.set_line_style(0, 3)
     chart.set_title(title)
