@@ -18,13 +18,43 @@ class AdbTimingMonitor(LogMonitor):
         while not self.isStop:
             # monito privateDirty
             privateDirty = AndroidUtil.getPrivateDirty().strip()
-            if privateDirty != '':
+            try:
                 self.handler.onTimingKeyDetected('PrivateDirty', float(privateDirty)/1024)
+            except:
+                TaskLogger.errorLog('parse PrivateDirty failed [%s]' % privateDirty)
+                pass
+
+            # monitor privateClean
+            privateClean = AndroidUtil.getPrivateClean().strip()
+            try:
+                self.handler.onTimingKeyDetected('PrivateClean', float(privateClean)/1024)
+            except:
+                TaskLogger.errorLog('parse PrivateClean failed [%s]' % privateClean)
+                pass
 
             # monitor memfree
             MemFree = AndroidUtil.getMemFree().strip()
-            if MemFree != '':
+            try:
                 self.handler.onTimingKeyDetected('MemFree', float(MemFree)/1024)
+            except:
+                TaskLogger.errorLog('parse MemFree failed [%s]' % MemFree)
+                pass
+
+            # monitor memfree
+            Buffers = AndroidUtil.getBuffers().strip()
+            try:
+                self.handler.onTimingKeyDetected('Buffers', float(Buffers)/1024)
+            except:
+                TaskLogger.errorLog('parse Buffers failed [%s]' % Buffers)
+                pass
+
+            # monitor memfree
+            Cached = AndroidUtil.getCached().strip()
+            try:
+                self.handler.onTimingKeyDetected('Cached', float(Cached)/1024)
+            except:
+                TaskLogger.errorLog('parse Cached failed [%s]' % Cached)
+                pass
 
             sleep(5)
         pass

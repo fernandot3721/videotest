@@ -52,9 +52,22 @@ def getPrivateDirty():
     # TaskLogger.infoLog(cmd)
     return os.popen(cmd).read()
 
+def getPrivateClean():
+    cmd = 'adb shell dumpsys meminfo %s | grep TOTAL | awk \'{print $4}\'' % Conf.PACKAGE_NAME
+    # TaskLogger.infoLog(cmd)
+    return os.popen(cmd).read()
 
 def getMemFree():
     cmd = 'adb shell su -c \'cat /proc/meminfo\' | grep MemFree | awk \'{print $2}\''
+    return os.popen(cmd).read()
+
+def getBuffers():
+    cmd = 'adb shell su -c \'cat /proc/meminfo\' | grep Buffers | awk \'{print $2}\''
+    return os.popen(cmd).read()
+
+def getCached():
+    cmd = 'adb shell su -c \'cat /proc/meminfo\' | grep Cached | awk \'NR==1 {print $2}\''
+    # TaskLogger.debugLog(cmd)
     return os.popen(cmd).read()
 
 # def testApollo():
