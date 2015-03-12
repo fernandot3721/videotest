@@ -22,6 +22,7 @@ class AdbTimingMonitor(LogMonitor):
                 self.handler.onTimingKeyDetected('PrivateDirty', float(privateDirty)/1024)
             except:
                 TaskLogger.errorLog('parse PrivateDirty failed [%s]' % privateDirty)
+                self.handler.onTimingKeyDetected('PrivateDirty', 0)
                 pass
 
             # monitor privateClean
@@ -30,6 +31,7 @@ class AdbTimingMonitor(LogMonitor):
                 self.handler.onTimingKeyDetected('PrivateClean', float(privateClean)/1024)
             except:
                 TaskLogger.errorLog('parse PrivateClean failed [%s]' % privateClean)
+                self.handler.onTimingKeyDetected('PrivateClean', 0)
                 pass
 
             # monitor memfree
@@ -38,6 +40,7 @@ class AdbTimingMonitor(LogMonitor):
                 self.handler.onTimingKeyDetected('MemFree', float(MemFree)/1024)
             except:
                 TaskLogger.errorLog('parse MemFree failed [%s]' % MemFree)
+                self.handler.onTimingKeyDetected('MemFree', 0)
                 pass
 
             # monitor memfree
@@ -46,6 +49,7 @@ class AdbTimingMonitor(LogMonitor):
                 self.handler.onTimingKeyDetected('Buffers', float(Buffers)/1024)
             except:
                 TaskLogger.errorLog('parse Buffers failed [%s]' % Buffers)
+                self.handler.onTimingKeyDetected('Buffers', 0)
                 pass
 
             # monitor memfree
@@ -54,6 +58,7 @@ class AdbTimingMonitor(LogMonitor):
                 self.handler.onTimingKeyDetected('Cached', float(Cached)/1024)
             except:
                 TaskLogger.errorLog('parse Cached failed [%s]' % Cached)
+                self.handler.onTimingKeyDetected('Cached', 0)
                 pass
 
             sleep(5)
