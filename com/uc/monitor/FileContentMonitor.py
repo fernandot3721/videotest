@@ -16,17 +16,18 @@ class FileContentMonitor(LogMonitor):
 
     def doMonitor(self):
         self.setName('FileContentMonitor')
+        TaskLogger.\
+            infoLog("===========THREAD %s start===========" % self.getName())
         # open target file
-        while True:
+        while not self.isStop:
             fileHandle = open(self.targetFile, 'rb')
             for line in fileHandle:
                 # TaskLogger.debugLog(line)
                 self.onRead(line)
                 pass
             fileHandle.close()
-            if self.isStop:
-                raise Exception('End FileContentMonitor Thread')
-            sleep(4)
+
+            sleep(5)
         pass
 
     def init(self):

@@ -1,7 +1,7 @@
 # encoding: utf-8
 from os.path import sys
 from com.uc.monitor.AndroidLogcat import AndroidLogcat
-from com.uc.monitor.FileContentMonitor import FileContentMonitor
+from com.uc.monitor.AdbTimingMonitor import AdbTimingMonitor
 from com.uc.utils.TaskLogger import TaskLogger
 import traceback
 import os
@@ -10,7 +10,7 @@ import os
 class TaskManager:
     taskList = []
     logcatThread = AndroidLogcat()
-    meminfoThread = FileContentMonitor()
+    meminfoThread = AdbTimingMonitor()
 
     def __init__(self):
         os.system('adb logcat -c')
@@ -45,8 +45,9 @@ class TaskManager:
             TaskLogger.errorLog("Exception: {}".format(exc_value))
             TaskLogger.errorLog("#######STACK TRACE:")
             traceback.print_tb(exc_traceback)
-            return -1
+            return 0
 
     def stopTest(self):
         self.logcatThread.stop()
+        self.meminfoThread.stop()
         self.logcatThread.join()

@@ -75,7 +75,7 @@ def openURIInCurrentWindow(url):
 
 def fresh():
     '''打开页面'''
-    refreshCmd = "adb shell am start -n {}/{} -e refresh_current_page 1".format(Conf.PACKAGE_NAME, Conf.ACTIVITE_NAME)
+    refreshCmd = "adb shell am start -n {}/{} -e click refresh".format(Conf.PACKAGE_NAME, Conf.ACTIVITE_NAME)
     mySystem(refreshCmd)
 
 

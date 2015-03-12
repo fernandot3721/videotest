@@ -46,6 +46,17 @@ def switchApollo(pathFrom):
     os.system(mvu3InCmd2)
     pass
 
+
+def getPrivateDirty():
+    cmd = 'adb shell dumpsys meminfo %s | grep TOTAL | awk \'{print $3}\'' % Conf.PACKAGE_NAME
+    # TaskLogger.infoLog(cmd)
+    return os.popen(cmd).read()
+
+
+def getMemFree():
+    cmd = 'adb shell su -c \'cat /proc/meminfo\' | grep MemFree | awk \'{print $2}\''
+    return os.popen(cmd).read()
+
 # def testApollo():
 #   videoPath = Conf.SEVER_ADDRESS + "t1_200k/test_video_short.html"
 #   BrowserUtils.launchBrowser()

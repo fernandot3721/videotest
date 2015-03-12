@@ -13,7 +13,7 @@ class ApolloT1TestTask(AbstractVideoTask):
 
     def __init__(self):
         super(ApolloT1TestTask, self).__init__()
-        self.setTitle(Conf.TASK_TYPE[0])
+        self.setTitle(Conf.TASK_TYPE[1])
         self.keywords = Conf.APOLLO_T1_KEYWORD
 
     def doTest(self):
@@ -54,7 +54,3 @@ class ApolloT1TestTask(AbstractVideoTask):
 
     def getKeywords(self):
         return self.keywords
-
-    def onContentKeyDetected(self, key, value):
-        TaskLogger.debugLog('onContentKeyDetected %s %s' % (key, value))
-        pass

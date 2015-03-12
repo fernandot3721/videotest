@@ -6,13 +6,13 @@ from com.uc.conf import Conf
 from com.uc.utils import AndroidUtil
 from com.uc.utils.BrowserUtils import setCDParams
 from com.uc.monitor.LogcatHandler import LogcatHandler
-from com.uc.monitor.ContentHandler import ContentHandler
+from com.uc.monitor.TimingHandler import TimingHandler
 import re
 
 __author__ = 'Administrator'
 
 
-class AbstractVideoTask(LogcatHandler, ContentHandler):
+class AbstractVideoTask(LogcatHandler, TimingHandler):
 
     def setDataRecord(self, dataRecord):
         self.dataRecord = dataRecord
@@ -45,6 +45,7 @@ class AbstractVideoTask(LogcatHandler, ContentHandler):
         self.playDetected = False
         self.playPath = ""
         self.dataRecord = None
+        self.playerVersion = ""
 
     def initTest(self, i):
         # 每次测试之前做一下初始化
@@ -93,14 +94,14 @@ class AbstractVideoTask(LogcatHandler, ContentHandler):
     def setCD(self, key, value):
         self.cdkey[key] = value
         TaskLogger.errorLog('set param %s to %s' % (key, value))
-        self.setTitle('%s#%s#%s' % (self.title, key, value))
+        self.setTitle('%s_%s_%s' % (self.title, key, value))
 
     def setPlayerVersion(self, version):
         if not self.playDetected:
             self.playerVersion = version
             self.playDetected = True
             TaskLogger.errorLog('player version is: %s' % self.playerVersion)
-            self.setTitle('{}#{}'.format(self.title, self.playerVersion))
+            self.setTitle('{}_{}'.format(self.title, self.playerVersion))
 
     def onVideoStartPlay(self):
         self.hasStartPlay = True

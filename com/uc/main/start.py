@@ -10,6 +10,7 @@ sys.path.append(os.getcwd())
 from com.uc.task.TaskManager import TaskManager
 from com.uc.taskImpl.CoreT1TestTask import CoreT1TestTask
 from com.uc.taskImpl.ApolloT1TestTask import ApolloT1TestTask
+from com.uc.taskImpl.MemoryTestTask import MemoryTestTask
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.conf import Conf
 import datetime
@@ -70,13 +71,15 @@ if __name__ == '__main__':
 
     # recorder.onComplete()
 
-    # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1503011113.csv')
+    # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1503112159.csv')
 
     # filter = DataFilter()
     # rg = ResultGenerator()
     # rg.generateResult(recorder)
 
     # AndroidUtil.switchApollo('/home/tangjp/work/vr/apolloso/2.13/')
+    # result = AndroidUtil.getPrivateDirty()
+    # TaskLogger.debugLog(result)
     # BrowserUtils.launchBrowser()
     # BrowserUtils.openURI('http://192.168.0.4/t1Test/mp4/t1Test_1203Kbps.html')
     # setCDParams('u3js_video_proxy', '0')
@@ -96,31 +99,49 @@ if __name__ == '__main__':
     #     manager.addTask(t1task)
     #     t1task = None
 
+    # cdCount = Conf.CD_COUNT
+    # if Conf.CD_COUNT > len(Conf.CD_PARAM):
+    #     cdCount = len(Conf.CD_PARAM)
+    # for i in range(cdCount):
+    #     TaskLogger.infoLog("===========ADD TASK {}===========".format(i))
+    #     t1task = ApolloT1TestTask()
+    #     t1task.setCD('u3js_video_proxy', '0')
+    #     t1task.setCD('apollo_str', Conf.CD_PARAM[i])
+    #     t1task.setPlayerPath(Conf.PLAYER_LIB[0])
+    #     t1task.setDataRecord(recorder)
+    #     manager.addTask(t1task)
+    #     t1task = None
+
     cdCount = Conf.CD_COUNT
     if Conf.CD_COUNT > len(Conf.CD_PARAM):
         cdCount = len(Conf.CD_PARAM)
     for i in range(cdCount):
         TaskLogger.infoLog("===========ADD TASK {}===========".format(i))
-        t1task = ApolloT1TestTask()
-        t1task.setCD('u3js_video_proxy', '0')
-        t1task.setCD('apollo_str', Conf.CD_PARAM[i])
-        t1task.setPlayerPath(Conf.PLAYER_LIB[0])
-        t1task.setDataRecord(recorder)
-        manager.addTask(t1task)
-        t1task = None
+        memtask = MemoryTestTask()
+        # t1task.setCD('u3js_video_proxy', '0')
+        # t1task.setCD('apollo_str', Conf.CD_PARAM[i])
+        memtask.setPlayerPath(Conf.PLAYER_LIB[0])
+        memtask.setDataRecord(recorder)
+        manager.addTask(memtask)
+        memtask = None
 
-    result = manager.startTest()
-    if result == 0:
-        TaskLogger.infoLog('===========SAVE DATA===========')
-        recorder.onComplete()
-        TaskLogger.infoLog('===========GENERATE RESULT===========')
-        rg = ResultGenerator()
-        rg.generateResult(recorder)
-        pass
-    else:
-        TaskLogger.errorLog('===========TEST FAILED===========')
-    manager.stopTest()
-    endtime = datetime.datetime.now()
-    duration = (endtime-starttime).seconds
-    TaskLogger.infoLog("TEST COSTS %s seconds" % duration)
-    TaskLogger.detailLog("Log file: file://%s" % TaskLogger.logfile)
+    try:
+        TaskLogger.infoLog('===========TEST START===========')
+        result = manager.startTest()
+    except:
+        TaskLogger.errorLog('===========TEST ABOART===========')
+    finally:
+        if result == 0:
+            TaskLogger.infoLog('===========SAVE DATA===========')
+            recorder.onComplete()
+            TaskLogger.infoLog('===========GENERATE RESULT===========')
+            rg = ResultGenerator()
+            rg.generateResult(recorder)
+            pass
+        else:
+            TaskLogger.errorLog('===========TEST FAILED===========')
+        manager.stopTest()
+        endtime = datetime.datetime.now()
+        duration = (endtime-starttime).seconds
+        TaskLogger.infoLog("TEST COSTS %s seconds" % duration)
+        # TaskLogger.detailLog("Log file: file://%s" % TaskLogger.logfile)

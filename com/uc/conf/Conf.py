@@ -26,7 +26,7 @@ PLAYER_LIB = [
                 '/home/tangjp/work/vr/apolloso/2.8.8.888/',
                 '/home/tangjp/work/vr/apolloso/2.25/',
                 ]
-CD_COUNT = 3
+CD_COUNT = 1
 CD_PARAM = [
             'mov_seg_dur=0',
             # 'mov_seg_dur=10',
@@ -44,8 +44,12 @@ NORMAL_LOG = True
 FILE_LOG = False
 TASK_LOG_PATH = '/opt/lampp/htdocs/videotest/log/'
 # LOGGER_LEVEL = DEBUG_LOG
-TASK_TYPE = ['CORE-T1']
-FILTERS = {'CORE-T1': ['Count', 'CutPeak', 'Average']}
+TASK_TYPE = ['CORE-T1', 'APOLLO_T1', 'MEMEROY']
+FILTERS = {
+    'CORE-T1': ['Count', 'CutPeak', 'Average'],
+    'APOLLO_T1': ['Count', 'CutPeak', 'Average'],
+    'MEMEROY': ['Average'],
+    }
 
 CORE_T1_URL= {#'50_l': SEVER_ADDRESS + "t1_50k/test_video_long.html",
         # '50_s': SEVER_ADDRESS + "t1_50k/test_video_short.html",
@@ -64,6 +68,11 @@ APOLLO_T1_URL= {
         # 'movie_new_200': SEVER_ADDRESS + 't1Test_200k/mp4/t1Test_850_480_720Kbps.html',
     }
 
+MEMEROY_URL= {
+        # 'normal': SEVER_ADDRESS + "t1Test/mp4/t1Test_2577Kbps.html",
+        'local': "file:///sdcard/test.mp4",
+    }
+
 START_PLAY_TAG = {
         'mov_seg_dur T1': '',
         }
@@ -75,4 +84,7 @@ CORE_T1_KEYWORD = {
         }
 APOLLO_T1_KEYWORD = {
         'mov_seg_dur T1 ': 'ms',
+        }
+MEMORY_KEYWORD = {
+        'MemFree:': 'kB',
         }

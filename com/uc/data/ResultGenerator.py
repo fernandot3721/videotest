@@ -2,6 +2,7 @@
 import importlib
 from com.uc.data.CsvViewer import CsvViewer
 from com.uc.data.HtmlViewer import HtmlViewer
+from com.uc.data.ChartViewer import ChartViewer
 from com.uc.data.DataFilter import DataFilter
 from com.uc.conf import Conf
 from com.uc.utils.TaskLogger import TaskLogger
@@ -13,7 +14,8 @@ class ResultGenerator():
         self.loadConfig()
         self.data = []
         # self.viewer = CsvViewer()
-        self.viewer = HtmlViewer()
+        # self.viewer = HtmlViewer()
+        self.viewer = ChartViewer()
         pass
 
     def loadConfig(self):
@@ -29,7 +31,6 @@ class ResultGenerator():
         #  show result
         for data in self.data:
             TaskLogger.debugLog('addData %s' % data)
-            TaskLogger.debugLog(data)
             self.viewer.addData(data)
         self.viewer.showResult()
         pass
