@@ -40,6 +40,18 @@ class CSVRecorder(DataRecord):
             self.taskData[task].addExtra('PLAYER_VERSION', title[1])
         self.taskData[task].addData(case, data)
 
+    def onData(self, task, dtype, key, value):
+        TaskLogger.detailLog('onData: %s, %s, %s, %s' % (task, dtype, key, value))
+        if task not in self.taskData:
+            self.taskData[task] = TaskData()
+        self.taskData[task].addData(case, data)
+        
+        self.taskData[task].setTitle(task)
+        title = task.split('_', 2)
+        TaskLogger.debugLog(title)
+        self.taskData[task].addExtra('TASK_TYPE', title[0])
+        self.taskData[task].addExtra('PLAYER_VERSION', title[1])
+
     def onComplete(self):
         self.saveData()
         pass
