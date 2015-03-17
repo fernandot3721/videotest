@@ -19,7 +19,7 @@ class AndroidLogcat(LogMonitor):
         self.setName('AndroidLogcat')
         TaskLogger.\
             infoLog("===========THREAD %s start===========" % self.getName())
-        command = "adb shell su -c \"logcat\""
+        command = "adb shell \"logcat\""
         popen = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, shell=False)
         while popen is not None and popen.stdout is not None and popen.poll() is None:
             try:

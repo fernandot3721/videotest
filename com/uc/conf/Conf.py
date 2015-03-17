@@ -8,9 +8,9 @@ Created on 2015年1月22日
 '''
 import os
 
-PACKAGE_NAME = 'com.UCMobile'
-ACTIVITE_NAME = PACKAGE_NAME + '.main.UCMobile'
-WAIT_TIME = 3
+PACKAGE_NAME = 'com.UCMobile.apollo'
+ACTIVITE_NAME = 'com.UCMobile.main.UCMobile'
+WAIT_TIME = 15
 EXTTOOLS_PATH = os.getcwd() + os.sep + 'ext_tools'
 SEVER_ADDRESS = "http://100.84.35.173:8080/"
 URLLIST_PATH = os.getcwd() + os.sep + 'com' + os.sep + 'uc' + os.sep + 'conf'
@@ -22,6 +22,7 @@ HTML_TEMPLATE = os.getcwd() + os.sep + 'template' + os.sep + 'tableTemplate.html
 LOOP_TIME = 1
 PLAYER_COUNT = 1
 PLAYER_LIB = [
+                '/home/tangjp/work/vr/apolloso/2.2.0.122/',
                 '/home/tangjp/work/vr/apolloso/2.2.0/',
                 '/home/tangjp/work/vr/apolloso/2.8.8.888/',
                 '/home/tangjp/work/vr/apolloso/2.25/',
@@ -41,7 +42,8 @@ INFO_LOG = True
 DETAIL_LOG = True
 ERROR_LOG = True
 NORMAL_LOG = True
-FILE_LOG = False
+FILE_LOG = True
+HARDCODE_APOLLO = True
 TASK_LOG_PATH = '/opt/lampp/htdocs/videotest/log/'
 # LOGGER_LEVEL = DEBUG_LOG
 TASK_TYPE = ['CORE-T1', 'APOLLO_T1', 'MEMEROY']

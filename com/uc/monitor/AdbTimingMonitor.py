@@ -16,49 +16,17 @@ class AdbTimingMonitor(LogMonitor):
             infoLog("===========THREAD %s start===========" % self.getName())
         # open target file
         while not self.isStop:
-            # monito privateDirty
-            privateDirty = AndroidUtil.getPrivateDirty().strip()
             try:
-                self.handler.onTimingKeyDetected('PrivateDirty', float(privateDirty)/1024)
-            except:
-                TaskLogger.errorLog('parse PrivateDirty failed [%s]' % privateDirty)
-                self.handler.onTimingKeyDetected('PrivateDirty', 0)
-                pass
+                # monito uss
+                uss = float(AndroidUtil.getUss())/1024
+                # monitor memfree
+                MemFree = float(AndroidUtil.getRealMemfree())/1024
 
-            # monitor privateClean
-            privateClean = AndroidUtil.getPrivateClean().strip()
-            try:
-                self.handler.onTimingKeyDetected('PrivateClean', float(privateClean)/1024)
+                self.handler.onTimingKeyDetected('uss', uss)
+                self.handler.onTimingKeyDetected('MemFree', MemFree)
             except:
-                TaskLogger.errorLog('parse PrivateClean failed [%s]' % privateClean)
-                self.handler.onTimingKeyDetected('PrivateClean', 0)
-                pass
-
-            # monitor memfree
-            MemFree = AndroidUtil.getMemFree().strip()
-            try:
-                self.handler.onTimingKeyDetected('MemFree', float(MemFree)/1024)
-            except:
-                TaskLogger.errorLog('parse MemFree failed [%s]' % MemFree)
-                self.handler.onTimingKeyDetected('MemFree', 0)
-                pass
-
-            # monitor memfree
-            Buffers = AndroidUtil.getBuffers().strip()
-            try:
-                self.handler.onTimingKeyDetected('Buffers', float(Buffers)/1024)
-            except:
-                TaskLogger.errorLog('parse Buffers failed [%s]' % Buffers)
-                self.handler.onTimingKeyDetected('Buffers', 0)
-                pass
-
-            # monitor memfree
-            Cached = AndroidUtil.getCached().strip()
-            try:
-                self.handler.onTimingKeyDetected('Cached', float(Cached)/1024)
-            except:
-                TaskLogger.errorLog('parse Cached failed [%s]' % Cached)
-                self.handler.onTimingKeyDetected('Cached', 0)
+                TaskLogger.debugLog('parse uss failed')
+                TaskLogger.debugLog('parse MemFree failed')
                 pass
 
             sleep(5)

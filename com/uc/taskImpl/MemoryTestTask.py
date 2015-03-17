@@ -6,6 +6,7 @@ from com.uc.conf import Conf
 from com.uc.task.AbstractVideoTask import AbstractVideoTask
 from com.uc.utils import BrowserUtils
 from com.uc.utils.TaskLogger import TaskLogger
+from com.uc.utils import AndroidUtil
 
 
 class MemoryTestTask(AbstractVideoTask):
@@ -19,44 +20,46 @@ class MemoryTestTask(AbstractVideoTask):
 
     def doTest(self):
         print("STARTUP UC")
+        if not AndroidUtil.testMemfree():
+            return
+        self.logMemory = True
         BrowserUtils.launchBrowser()
 
         sleep(Conf.WAIT_TIME)
-        self.logMemory = True
 
-        print("CLEAR HISTROY")
-        BrowserUtils.clearVideoCache()
+        # print("CLEAR HISTROY")
+        # BrowserUtils.clearVideoCache()
 
         TaskLogger.normalLog("PLAY VIDEO:")
         TaskLogger.detailLog(self.urlList[self.currentCategory])
         BrowserUtils.openURI(self.urlList[self.currentCategory])
 
         myloop = 0
-        refresh = False
+        # refresh = False
         while True:
             sleep(1)
             if self.hasStartPlay is True:
-                TaskLogger.detailLog('play sucess')
                 break
-            elif not refresh and myloop > 20:
-                BrowserUtils.fresh()
-                TaskLogger.detailLog('refresh')
-                refresh = True
-            elif myloop > 60:
+            # elif not refresh and myloop > 20:
+            #     BrowserUtils.fresh()
+            #     TaskLogger.detailLog('refresh')
+            #     refresh = True
+            elif myloop > 600:
                 raise Exception('Can not play video')
             myloop += 1
 
         # 等待视频播起来
         myloop = 0
+        TaskLogger.detailLog('play sucess')
         while True:
             sleep(1)
-            if myloop > 60:
+            if myloop > 5300:
                 TaskLogger.detailLog('play complete')
                 break
             myloop += 1
 
-        sleep(Conf.WAIT_TIME)
         self.logMemory = False
+        # sleep(Conf.WAIT_TIME)
 
         print("SHUTDOWN UC")
         BrowserUtils.closeBrowser()

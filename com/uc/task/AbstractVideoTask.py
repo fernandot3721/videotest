@@ -62,7 +62,10 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
     def dataInit(self):
         TaskLogger.infoLog("===========SWITCH PLAYER LIB===========")
         TaskLogger.normalLog("player path is: %s" % self.playPath)
-        AndroidUtil.switchApollo(self.playPath)
+        if Conf.HARDCODE_APOLLO:
+            AndroidUtil.switchHardCodeApollo(self.playPath)
+        else:
+            AndroidUtil.switchApollo(self.playPath)
         match = re.search(r'\d\.\d+', self.playPath)
         libName = match.group(0)
         TaskLogger.errorLog('&&&&&&&&&&&&&&&&&libName: {}'.format(libName))
