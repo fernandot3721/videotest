@@ -35,16 +35,16 @@ class MemoryTestTask(AbstractVideoTask):
         BrowserUtils.openURI(self.urlList[self.currentCategory])
 
         myloop = 0
-        # refresh = False
+        refresh = False
         while True:
             sleep(1)
             if self.hasStartPlay is True:
                 break
-            # elif not refresh and myloop > 20:
-            #     BrowserUtils.fresh()
-            #     TaskLogger.detailLog('refresh')
-            #     refresh = True
-            elif myloop > 600:
+            elif not refresh and (myloop == 20 or myloop == 40 or myloop == 60):
+                BrowserUtils.fresh()
+                TaskLogger.detailLog('refresh')
+                refresh = True
+            elif myloop > 100:
                 raise Exception('Can not play video')
             myloop += 1
 
@@ -53,7 +53,7 @@ class MemoryTestTask(AbstractVideoTask):
         TaskLogger.detailLog('play sucess')
         while True:
             sleep(1)
-            if myloop > 5300:
+            if myloop > 2700:
                 TaskLogger.detailLog('play complete')
                 break
             myloop += 1
@@ -72,5 +72,5 @@ class MemoryTestTask(AbstractVideoTask):
         if self.logMemory and self.playerVersion != "":
             # TaskLogger.debugLog('onTimingKeyDetected %s %s' % (key, value))
             # if key in self.keywords:
-            self.dataRecord.onData(self.title, key, value)
+            self.dataRecord.onData(self.title, self.currentCategory+key, value)
         pass

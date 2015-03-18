@@ -11,14 +11,14 @@ class AdbTimingMonitor(LogMonitor):
         self.keywords = []
 
     def doMonitor(self):
-        self.setName('FileContentMonitor')
+        self.setName('AdbTimingMonitor')
         TaskLogger.\
             infoLog("===========THREAD %s start===========" % self.getName())
         # open target file
         while not self.isStop:
             try:
                 # monito uss
-                uss = float(AndroidUtil.getUss())/1024
+                uss = float(AndroidUtil.getPrivateDirty())/1024
                 # monitor memfree
                 MemFree = float(AndroidUtil.getRealMemfree())/1024
 

@@ -52,10 +52,10 @@ def createstripeschart(picpath, title, timelist, infolist):
     # Set the vertical stripes
     chart.fill_linear_gradient(Chart.CHART, 0, '272822', 0.2, '000000', 0.1)
     # Set the horizontal dotted lines
-    chart.set_grid(10, INTERVAL*100/(max_y-min_y+1))
+    chart.set_grid(10, INTERVAL*100/(max_y-min_y+1)/5)
 
     # Y axis labels
-    left_axis = list(range(min_y, max_y + 1, INTERVAL))
+    left_axis = list(range(min_y, max_y + 1, INTERVAL/5))
     chart.set_axis_labels(Axis.LEFT, left_axis)
 
     # X axis labels

@@ -20,10 +20,12 @@ DATA_DIR = '/opt/lampp/htdocs/videotest/origin/'
 REPORT_DIR = '/opt/lampp/htdocs/videotest/'
 HTML_TEMPLATE = os.getcwd() + os.sep + 'template' + os.sep + 'tableTemplate.html'
 LOOP_TIME = 1
-PLAYER_COUNT = 1
+PLAYER_COUNT = 2
 PLAYER_LIB = [
-                '/home/tangjp/work/vr/apolloso/2.2.0.122/',
-                '/home/tangjp/work/vr/apolloso/2.2.0/',
+                '/home/tangjp/work/vr/apolloso/2.2.0.129/',
+                '/home/tangjp/work/vr/apolloso/2.2.0.128/',
+                '/home/tangjp/work/vr/apolloso/2.0.0.122/',
+                '/home/tangjp/work/vr/apolloso/1.0.0.117/',
                 '/home/tangjp/work/vr/apolloso/2.8.8.888/',
                 '/home/tangjp/work/vr/apolloso/2.25/',
                 ]
@@ -72,7 +74,9 @@ APOLLO_T1_URL= {
 
 MEMEROY_URL= {
         # 'normal': SEVER_ADDRESS + "t1Test/mp4/t1Test_2577Kbps.html",
-        'local': "file:///sdcard/test.mp4",
+        'hd_online_': "http://100.84.35.173:8080/t1Test/m3u8/m3u8_high.html",
+        'hd_local_': "file:///sdcard/test.mp4",
+        'st_online_': "http://100.84.35.173:8080/t1Test/mp4/t1Test_normal.html",
     }
 
 START_PLAY_TAG = {

@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
     # recorder.onComplete()
 
-    # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1503112159.csv')
+    # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1503172140.csv')
 
     # filter = DataFilter()
     # rg = ResultGenerator()
@@ -84,6 +84,11 @@ if __name__ == '__main__':
     # BrowserUtils.openURI('http://192.168.0.4/t1Test/mp4/t1Test_1203Kbps.html')
     # setCDParams('u3js_video_proxy', '0')
     # setCDParams('apollo_str', 'mov_seg_dur=120')
+    # TaskLogger.errorLog(AndroidUtil.getUss())
+    # if AndroidUtil.testMemfree():
+    #     TaskLogger.debugLog('true')
+    # else:
+    #     TaskLogger.debugLog('false')
     # raise Exception("end")
 
     manager = TaskManager()
@@ -112,15 +117,16 @@ if __name__ == '__main__':
     #     manager.addTask(t1task)
     #     t1task = None
 
-    cdCount = Conf.CD_COUNT
-    if Conf.CD_COUNT > len(Conf.CD_PARAM):
-        cdCount = len(Conf.CD_PARAM)
-    for i in range(cdCount):
+    playerCount = Conf.PLAYER_COUNT
+    if Conf.PLAYER_COUNT > len(Conf.PLAYER_LIB):
+        playerCount = len(Conf.PLAYER_LIB)
+    TaskLogger.debugLog('playerCount: %s' % playerCount)
+    for i in range(playerCount):
         TaskLogger.infoLog("===========ADD TASK {}===========".format(i))
         memtask = MemoryTestTask()
         # t1task.setCD('u3js_video_proxy', '0')
         # t1task.setCD('apollo_str', Conf.CD_PARAM[i])
-        memtask.setPlayerPath(Conf.PLAYER_LIB[0])
+        memtask.setPlayerPath(Conf.PLAYER_LIB[i])
         memtask.setDataRecord(recorder)
         manager.addTask(memtask)
         memtask = None
