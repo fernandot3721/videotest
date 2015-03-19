@@ -27,23 +27,21 @@ class MemoryTestTask(AbstractVideoTask):
 
         sleep(Conf.WAIT_TIME)
 
-        # print("CLEAR HISTROY")
-        # BrowserUtils.clearVideoCache()
+        print("CLEAR HISTROY")
+        BrowserUtils.clearVideoCache()
 
         TaskLogger.normalLog("PLAY VIDEO:")
         TaskLogger.detailLog(self.urlList[self.currentCategory])
         BrowserUtils.openURI(self.urlList[self.currentCategory])
 
         myloop = 0
-        refresh = False
         while True:
             sleep(1)
             if self.hasStartPlay is True:
                 break
-            elif not refresh and (myloop == 20 or myloop == 40 or myloop == 60):
+            elif myloop == 20 or myloop == 40 or myloop == 60:
                 BrowserUtils.fresh()
                 TaskLogger.detailLog('refresh')
-                refresh = True
             elif myloop > 100:
                 raise Exception('Can not play video')
             myloop += 1
