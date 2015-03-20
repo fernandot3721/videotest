@@ -3,6 +3,7 @@ import importlib
 from com.uc.data.CsvViewer import CsvViewer
 from com.uc.data.HtmlViewer import HtmlViewer
 from com.uc.data.ChartViewer import ChartViewer
+from com.uc.data.VsChartViewer import VsChartViewer
 from com.uc.data.DataFilter import DataFilter
 from com.uc.conf import Conf
 from com.uc.utils.TaskLogger import TaskLogger
@@ -15,7 +16,7 @@ class ResultGenerator():
         self.data = []
         # self.viewer = CsvViewer()
         # self.viewer = HtmlViewer()
-        self.viewer = ChartViewer()
+        self.viewer = VsChartViewer()
         pass
 
     def loadConfig(self):

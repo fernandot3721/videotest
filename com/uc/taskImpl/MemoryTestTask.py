@@ -29,6 +29,7 @@ class MemoryTestTask(AbstractVideoTask):
 
         print("CLEAR HISTROY")
         BrowserUtils.clearVideoCache()
+        sleep(Conf.WAIT_TIME)
 
         TaskLogger.normalLog("PLAY VIDEO:")
         TaskLogger.detailLog(self.urlList[self.currentCategory])
@@ -51,7 +52,7 @@ class MemoryTestTask(AbstractVideoTask):
         TaskLogger.detailLog('play sucess')
         while True:
             sleep(1)
-            if myloop > 2700:
+            if myloop > 1300:
                 TaskLogger.detailLog('play complete')
                 break
             myloop += 1

@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
     # recorder.onComplete()
 
-    # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1503172140.csv')
+    # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1503192335.csv')
 
     # filter = DataFilter()
     # rg = ResultGenerator()
@@ -150,4 +150,4 @@ if __name__ == '__main__':
         endtime = datetime.datetime.now()
         duration = (endtime-starttime).seconds
         TaskLogger.infoLog("TEST COSTS %s seconds" % duration)
-        # TaskLogger.detailLog("Log file: file://%s" % TaskLogger.logfile)
+        TaskLogger.detailLog("Log file: file://%s" % TaskLogger.logfile)

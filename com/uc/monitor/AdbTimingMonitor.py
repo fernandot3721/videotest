@@ -18,7 +18,8 @@ class AdbTimingMonitor(LogMonitor):
         while not self.isStop:
             try:
                 # monito uss
-                uss = float(AndroidUtil.getPrivateDirty())/1024
+                # uss = float(AndroidUtil.getPrivateDirty())/1024  # N4
+                uss = float(AndroidUtil.getPrivateClean())/1024  # SAMSUM
                 # monitor memfree
                 MemFree = float(AndroidUtil.getRealMemfree())/1024
 
