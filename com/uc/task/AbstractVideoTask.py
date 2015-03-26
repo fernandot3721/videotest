@@ -7,6 +7,7 @@ from com.uc.utils import AndroidUtil
 from com.uc.utils.BrowserUtils import setCDParams
 from com.uc.monitor.LogcatHandler import LogcatHandler
 from com.uc.monitor.TimingHandler import TimingHandler
+from com.uc.data.DataRecord import DataRecord
 import re
 
 __author__ = 'Administrator'
@@ -100,6 +101,7 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
         if not self.playDetected:
             self.playerVersion = version
             self.playDetected = True
+            self.dataRecord.onData(self, DataRecord.TAG_EXTRA, 'PLAYER_VERSION', version)
             TaskLogger.errorLog('player version is: %s' % self.playerVersion)
             self.setTitle('{}_{}'.format(self.title, self.playerVersion))
 

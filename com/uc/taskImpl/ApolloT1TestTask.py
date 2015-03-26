@@ -6,6 +6,7 @@ from com.uc.conf import Conf
 from com.uc.task.AbstractVideoTask import AbstractVideoTask
 from com.uc.utils import BrowserUtils
 from com.uc.utils.TaskLogger import TaskLogger
+from com.uc.data.DataRecord import DataRecord
 
 
 class ApolloT1TestTask(AbstractVideoTask):
@@ -18,6 +19,8 @@ class ApolloT1TestTask(AbstractVideoTask):
 
     def doTest(self):
         print("STARTUP UC")
+        self.dataRecord.\
+            onData(self, DataRecord.TAG_EXTRA, 'TASK_TYPE', Conf.TASK_TYPE[1])
         BrowserUtils.launchBrowser()
 
         sleep(Conf.WAIT_TIME)

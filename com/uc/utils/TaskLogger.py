@@ -60,7 +60,9 @@ class TaskLogger():
                 TaskLogger.instance.writeLog('%s\n' % s)
 
     def __init__(self):
-        self.__fileHandle = open(TaskLogger.logfile, 'wb')
+        if Conf.FILE_LOG:
+            self.__fileHandle = open(TaskLogger.logfile, 'wb')
+            pass
         self.__instance = None
 
     def __del__(self):
