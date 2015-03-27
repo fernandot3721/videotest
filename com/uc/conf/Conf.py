@@ -22,6 +22,8 @@ HTML_TEMPLATE = os.getcwd() + os.sep + 'template' + os.sep + 'tableTemplate.html
 LOOP_TIME = 1
 PLAYER_COUNT = 2
 PLAYER_LIB = [
+                '/home/tangjp/work/vr/apolloso/3.1.0.100/',
+                '/home/tangjp/work/vr/apolloso/2.1.0.128/',
                 '/home/tangjp/work/vr/apolloso/2.2.0.129/',
                 '/home/tangjp/work/vr/apolloso/2.2.0.128/',
                 '/home/tangjp/work/vr/apolloso/2.0.0.122/',
@@ -74,9 +76,9 @@ APOLLO_T1_URL= {
 
 MEMEROY_URL= {
         # 'normal': SEVER_ADDRESS + "t1Test/mp4/t1Test_2577Kbps.html",
-        'hd_online_': "http://100.84.35.173:8080/t1Test/m3u8/m3u8_high.html",
+        'hd_online_': "http://192.168.0.4/t1Test/m3u8/m3u8_high.html",
         'hd_local_': "file:///sdcard/test.mp4",
-        'st_online_': "http://100.84.35.173:8080/t1Test/mp4/t1Test_normal.html",
+        'st_online_': "http://192.168.0.4/t1Test/mp4/t1Test_normal.html",
     }
 
 START_PLAY_TAG = {

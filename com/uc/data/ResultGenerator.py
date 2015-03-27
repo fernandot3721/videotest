@@ -7,6 +7,8 @@ from com.uc.data.VsChartViewer import VsChartViewer
 from com.uc.data.DataFilter import DataFilter
 from com.uc.conf import Conf
 from com.uc.utils.TaskLogger import TaskLogger
+from os.path import sys
+import traceback
 
 
 class ResultGenerator():
@@ -33,7 +35,13 @@ class ResultGenerator():
         for data in self.data:
             TaskLogger.debugLog('addData %s' % data)
             self.viewer.addData(data)
-        self.viewer.showResult()
+        try:
+            self.viewer.showResult()
+        except:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            TaskLogger.errorLog("Exception: {}".format(exc_value))
+            TaskLogger.errorLog("#######STACK TRACE:")
+            traceback.print_tb(exc_traceback)
         pass
 
     def processData(self, data):

@@ -44,6 +44,7 @@ class MemoryTestTask(AbstractVideoTask):
                 BrowserUtils.fresh()
                 TaskLogger.detailLog('refresh')
             elif myloop > 100:
+                self.logMemory = False
                 raise Exception('Can not play video')
             myloop += 1
 
@@ -52,7 +53,7 @@ class MemoryTestTask(AbstractVideoTask):
         TaskLogger.detailLog('play sucess')
         while True:
             sleep(1)
-            if myloop > 1300:
+            if myloop > 2700:
                 TaskLogger.detailLog('play complete')
                 break
             myloop += 1
