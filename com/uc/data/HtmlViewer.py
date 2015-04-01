@@ -1,5 +1,6 @@
 from com.uc.data.ResultViewer import ResultViewer
 from com.uc.utils.TaskLogger import TaskLogger
+from com.uc.data.TaskData import TaskData
 from com.uc.conf import Conf
 import sys
 import traceback
@@ -9,8 +10,9 @@ import time
 class HtmlViewer(ResultViewer):
 
     def __init__(self):
-        self.dataCount = 0
         self.data = {}
+        self.dataCount = {}
+        self.header = {}
         # self.reportPath = '{}report.html'\
             # .format(Conf.REPORT_DIR)
         self.reportPath = '{}report-{}.html'\
@@ -29,19 +31,30 @@ class HtmlViewer(ResultViewer):
         taskInfo['extra'] = extraData
 
         #  case data & head
-        self.dataCount = 0
-        taskInfo['case'] = []
-        for case in data.getCase():
-            lineContent = data.getData(case)
-            count = len(lineContent)
-            if count > self.dataCount:
-                self.dataCount = count
-
-            caseExtras = data.getCaseExtra(case)
-            lineContent.insert(0, caseExtras['AVG'])
-            lineContent.insert(0, case)
-            taskInfo['case'].append(lineContent)
+        self.parseDataType(data, TaskData.DATA_TYPE_TIMING, taskInfo)
+        self.parseDataType(data, TaskData.DATA_TYPE_NORMAL, taskInfo)
         pass
+
+    def parseDataType(self, data, dataType, taskInfo):
+        taskInfo[dataType] = []
+        self.dataCount[dataType] = 0
+        self.header[dataType] = []
+        for key in data.getKeysByType(dataType):
+            caseData = data.getDataByTypeAndKey(dataType, key)
+            lineContent = caseData.data
+            extras = data.getDataExtra(dataType, key)
+
+            count = len(lineContent)
+            if count > self.dataCount[dataType]:
+                self.dataCount[dataType] = count
+                for extra in extras:
+                    self.header[dataType].append(extra)
+
+            for extra in extras:
+                lineContent.insert(0, extras[extra])
+            TaskLogger.infoLog(self.header[dataType])
+            lineContent.insert(0, key)
+            taskInfo[dataType].append(lineContent)
 
     def showResult(self):
         # self.init()
@@ -56,8 +69,10 @@ class HtmlViewer(ResultViewer):
                 self.writeTitle(htmlFile, taskInfo)
                 self.writeExtra(htmlFile, self.data[taskInfo]['extra'])
 
-                self.writeTableHead(htmlFile, self.dataCount, ['case', 'AVG'])
-                self.writeTableContent(htmlFile, self.data[taskInfo]['case'])
+                self.writeTableHead(htmlFile, self.dataCount[TaskData.DATA_TYPE_NORMAL], self.header[TaskData.DATA_TYPE_NORMAL])
+                self.writeTableContent(htmlFile, self.data[taskInfo][TaskData.DATA_TYPE_NORMAL])
+                self.writeTableHead(htmlFile, self.dataCount[TaskData.DATA_TYPE_TIMING], self.header[TaskData.DATA_TYPE_TIMING])
+                self.writeTableContent(htmlFile, self.data[taskInfo][TaskData.DATA_TYPE_TIMING])
                 self.writeTableEnd(htmlFile)
             self.writeTemplateEnd(htmlFile)
         except:
@@ -75,7 +90,6 @@ class HtmlViewer(ResultViewer):
         fileHandle.write("<h1>%s</h1>\n" % title)
 
     def writeExtra(self, fileHandle, extra):
-        TaskLogger.debugLog("=============%s" % extra)
         fileHandle.write("<p>%s</p>\n" % extra)
         fileHandle.write("\n")
         fileHandle.write("\n")
@@ -94,6 +108,7 @@ class HtmlViewer(ResultViewer):
         fileHandle.write("<td align = \"center\" colspan = '%s'>duration(ms)</td>\n" % str(length+extra))
         fileHandle.write("</tr>\n")
         fileHandle.write("<tr class = \'passClass\'>\n")
+        fileHandle.write("<td><strong>CASE</strong></td>\n")
         for i in range(0, extra):
             fileHandle.write("<td><strong>%s</strong></td>\n" % prefix[i])
         for j in range(0, length):
