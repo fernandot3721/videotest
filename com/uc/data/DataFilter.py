@@ -22,63 +22,49 @@ class EmptyFilter(DataFilter):
 class Count(EmptyFilter):
     def processData(self, data):
         self.filter.processData(data)
-        # debugLog('PROCESS DATA ' + str(self.__class__))
-        # debugLog('before==========')
+        TaskLogger.debugLog('PROCESS DATA ' + str(self.__class__))
+        # TaskLogger.debugLog('before==========')
         # data.printData()
-        for key in data.getKeysByType(TaskData.DATA_TYPE_TIMING):
-            caseData = data.getDataByTypeAndKey(TaskData.DATA_TYPE_TIMING, key)
-            count = len(caseData.data)
-            data.addDataExtra(TaskData.DATA_TYPE_TIMING, key, 'COUNT', count)
-        for key in data.getKeysByType(TaskData.DATA_TYPE_TIMING):
-            caseData = data.getDataByTypeAndKey(TaskData.DATA_TYPE_NORMAL, key)
-            count = len(caseData.data)
-            data.addDataExtra(TaskData.DATA_TYPE_NORMAL, key, 'COUNT', count)
-        # debugLog('after==========')
+        self.countData(data, TaskData.DATA_TYPE_TIMING)
+        self.countData(data, TaskData.DATA_TYPE_NORMAL)
+        # TaskLogger.debugLog('after==========')
         # data.printData()
         pass
+
+    def countData(self, data, dataType):
+        for key in data.getKeysByType(dataType):
+            caseData = data.getDataByTypeAndKey(dataType, key)
+            count = len(caseData.data)
+            data.addDataExtra(dataType, key, 'COUNT', count)
 
 
 class CutPeak(EmptyFilter):
     def processData(self, data):
         self.filter.processData(data)
-        # debugLog('PROCESS DATA ' + str(self.__class__))
-        # debugLog('before==========')
+        TaskLogger.debugLog('PROCESS DATA ' + str(self.__class__))
+        # TaskLogger.debugLog('before==========')
         # data.printData()
         # do cut peak
-        # for key in data.getKeysByType(TaskData.DATA_TYPE_TIMING):
-        #     caseData = data.getDataByTypeAndKey(TaskData.DATA_TYPE_TIMING, key)
-        #     # self.cutPeakAndChangeCount(data, caseData)
-        #     if len(caseData.data) < 3:
-        #         TaskLogger.debugLog('too few data, do not cut peak')
-        #         continue
-        #     maxValue = max(caseData.data)
-        #     minValue = min(caseData.data)
-        #     data.addDataExtra(TaskData.DATA_TYPE_TIMING, key, 'CUT-MAX', maxValue)
-        #     data.addDataExtra(TaskData.DATA_TYPE_TIMING, key, 'CUT-MIN', minValue)
-        #     caseData.remove(maxValue)
-        #     caseData.remove(minValue)
-        #     count = len(data.getData(case))
+        self.cutData(data, TaskData.DATA_TYPE_TIMING)
+        self.cutData(data, TaskData.DATA_TYPE_NORMAL)
+        # TaskLogger.debugLog('after==========')
+        # data.printData()
+        pass
 
-        cases = data.getCase()
-        for case in cases:
-            single = data.getData(case)
-            # check count
-            if len(single) < 3:
+    def cutData(self, data, dataType):
+        for key in data.getKeysByType(dataType):
+            caseData = data.getDataByTypeAndKey(dataType, key)
+            if len(caseData.data) < 3:
                 TaskLogger.debugLog('too few data, do not cut peak')
                 continue
-
-            # debugLog("=======%s" % (single))
-            maxValue = max(single)
-            minValue = min(single)
-            data.addCaseExtra(case, 'CUT-MAX', maxValue)
-            data.addCaseExtra(case, 'CUT-MIN', minValue)
-            single.remove(maxValue)
-            single.remove(minValue)
-            count = len(data.getData(case))
-            data.addCaseExtra(case, 'COUNT', count)
-        # debugLog('after==========')
-        data.printData()
-        pass
+            maxValue = max(caseData.data)
+            minValue = min(caseData.data)
+            data.addDataExtra(dataType, key, 'CUT-MAX', maxValue)
+            data.addDataExtra(dataType, key, 'CUT-MIN', minValue)
+            caseData.data.remove(maxValue)
+            caseData.data.remove(minValue)
+            count = len(caseData.data)
+            data.addDataExtra(dataType, key, 'COUNT', count)
 
 
 class Normalize(EmptyFilter):
@@ -92,21 +78,30 @@ class Normalize(EmptyFilter):
 class Average(EmptyFilter):
     def processData(self, data):
         self.filter.processData(data)
-        # debugLog('PROCESS DATA ' + str(self.__class__))
-        # debugLog('before==========')
+        TaskLogger.debugLog('PROCESS DATA ' + str(self.__class__))
+        # TaskLogger.debugLog('before==========')
         # data.printData()
         # do average
-        cases = data.getCase()
-        for case in cases:
-            total = 0
-            single = data.getData(case)
-            for value in single:
-                total += float(value)
-            data.addCaseExtra(case, 'AVG', total/len(single))
-        # debugLog('after==========')
+        self.avgData(data, TaskData.DATA_TYPE_TIMING)
+        self.avgData(data, TaskData.DATA_TYPE_NORMAL)
+        # cases = data.getCase()
+        # for case in cases:
+        #     total = 0
+        #     single = data.getData(case)
+        #     for value in single:
+        #         total += float(value)
+        #     data.addCaseExtra(case, 'AVG', total/len(single))
+        # TaskLogger.debugLog('after==========')
         # data.printData()
         pass
 
+    def avgData(self, data, dataType):
+        for key in data.getKeysByType(dataType):
+            caseData = data.getDataByTypeAndKey(dataType, key)
+            total = 0
+            for value in caseData.data:
+                total += float(value)
+            data.addDataExtra(dataType, key, 'AVG', total/len(caseData.data))
 
 class InvalidData(EmptyFilter):
     def processData(self, data):

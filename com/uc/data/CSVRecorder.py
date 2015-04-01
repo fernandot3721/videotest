@@ -97,20 +97,24 @@ class CSVRecorder(DataRecord):
             dataToWrite = []
             for task in self.taskData.keys():
                 TaskLogger.debugLog('saveData: %s' % task)
-                TaskLogger.debugLog(self.taskData[task])
+                # TaskLogger.debugLog(self.taskData[task])
                 self.taskData[task].printData()  # DEBUG ONLY
 
                 dataToWrite.append([DataRecord.TAG_START])  # TASK-DATA-START
-                # TASK-NAME
-                dataToWrite.\
-                    append([DataRecord.TAG_TASK, self.taskData[task]])
 
                 # extras
                 extras = self.taskData[task].getAllExtra()
+                title = '#'
                 for extra in extras:
+                    title += extras[extra] + '#'
                     value = list([extra, extras[extra]])
                     value.insert(0, DataRecord.TAG_EXTRA)  # TASK-EXTRA
                     dataToWrite.append(value)
+
+                # TASK-NAME
+                # title = self.taskData[task].getAllExtra()
+                dataToWrite.\
+                    append([DataRecord.TAG_TASK, title])
 
                 # normal data
                 normalKeys = self.taskData[task].\

@@ -17,16 +17,7 @@ class TaskData():
         self.lock = thread.allocate_lock()
         self.title = ''
 
-    def getTimingDataByKey(self, key):
-        if key in self.timingData:
-            return self.timingData[key]
-
-    def getNormalDataByKey(self, key):
-        if key in self.normalData:
-            return self.normalData[key]
-
     def getDataByTypeAndKey(self, type, key):
-        TaskLogger.debugLog('getDataByTypeAndKey: %s | %s' % (type, key))
         if type == self.DATA_TYPE_NORMAL and key in self.normalData:
             return self.normalData[key]
         elif type == self.DATA_TYPE_TIMING and key in self.timingData:
@@ -39,36 +30,12 @@ class TaskData():
     def getExtra(self, key):
         return self.extra[key]
 
-    def getTimingKeys(self):
-        return self.timingKeys
-
-    def getNormalKeys(self):
-        return self.normalKeys
-
     def getKeysByType(self, type):
         if type == self.DATA_TYPE_NORMAL:
             return self.normalKeys
         elif type == self.DATA_TYPE_TIMING:
             return self.timingKeys
         return None
-
-    def addTimingData(self, key, value):
-        self.lock.acquire()
-        if key not in self.timingData:
-            self.timingKeys.append(key)
-            self.timingData[key] = CaseData()
-        self.timingData[key].data.append(value)
-        self.lock.release()
-        pass
-
-    def addNormalData(self, key, value):
-        self.lock.acquire()
-        if key not in self.normalData:
-            self.normalKeys.append(key)
-            self.normalData[key] = CaseData()
-        self.normalData[key].data.append(value)
-        self.lock.release()
-        pass
 
     def addData(self, type, key, value):
         self.lock.acquire()
@@ -82,22 +49,6 @@ class TaskData():
                 self.timingKeys.append(key)
                 self.timingData[key] = CaseData()
             self.timingData[key].data.append(value)
-        self.lock.release()
-
-    def setTimingData(self, key, values):
-        self.lock.acquire()
-        if key not in self.timingData:
-            self.timingKeys.append(key)
-            self.timingData[key] = CaseData()
-        self.timingData[key].data = values
-        self.lock.release()
-
-    def setNormalData(self, key, values):
-        self.lock.acquire()
-        if key not in self.normalData:
-            self.normalKeys.append(key)
-            self.normalData[key] = CaseData()
-        self.normalData[key].data = values
         self.lock.release()
 
     def setData(self, type, key, values):
@@ -120,20 +71,6 @@ class TaskData():
             self.extra[key] = value
         self.lock.release()
 
-    def addTimingExtra(self, key, extra, value):
-        self.lock.acquire()
-        if key in self.timingData:
-            self.timingData[key].extra[extra] = value
-        self.lock.release()
-        pass
-
-    def addNormalExtra(self, key, extra, value):
-        self.lock.acquire()
-        if key in self.normalData:
-            self.normalData[key].extra[extra] = value
-        self.lock.release()
-        pass
-
     def addDataExtra(self, type, key, extra, value):
         self.lock.acquire()
         if type == self.DATA_TYPE_NORMAL:
@@ -144,8 +81,19 @@ class TaskData():
                 self.timingData[key].extra[extra] = value
         self.lock.release()
 
+    def getDataExtra(self, type, key):
+        if type == self.DATA_TYPE_NORMAL:
+            if key in self.normalData:
+                return self.normalData[key].extra
+        elif type == self.DATA_TYPE_TIMING:
+            if key in self.timingData:
+                return self.timingData[key].extra
+
     def setTitle(self, title):
         self.title = str(title)
+
+    def getTitle(self):
+        return self.title
 
     def printData(self):
         print('')
@@ -164,7 +112,7 @@ class TaskData():
             print('CASE: %s, VALUE: %s' % (key, self.normalData[key].data))
 
             for extra in caseData.extra:
-                print('EXTRA: %s, VALUE: %s' % extra, caseData.extra[extra])
+                print('EXTRA: %s, VALUE: %s' % (extra, caseData.extra[extra]))
 
         # timing data
         TaskLogger.infoLog('TIMING DATA')
@@ -173,7 +121,7 @@ class TaskData():
             print('CASE: %s, VALUE: %s' % (key, self.timingData[key].data))
 
             for extra in caseData.extra:
-                print('EXTRA: %s, VALUE: %s' % extra, caseData.extra[extra])
+                print('EXTRA: %s, VALUE: %s' % (extra, caseData.extra[extra]))
 
         TaskLogger.infoLog('===================')
         print('')
