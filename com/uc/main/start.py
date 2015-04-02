@@ -74,6 +74,36 @@ if __name__ == '__main__':
     # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1503192335.csv')
 
     # filter = DataFilter()
+    memtask = MemoryTestTask()
+    recorder.onData(memtask, CSVRecorder.TYPE_EXTRA, 'PLAYER_VERSION', '2.2.2.123')
+    recorder.onData(memtask, CSVRecorder.TYPE_EXTRA, 'TASK_TYPE', Conf.TASK_TYPE[0])
+    recorder.onData(memtask, CSVRecorder.TYPE_EXTRA, 'cd key', 'apollo_str:12345')
+    recorder.onData(memtask, CSVRecorder.TYPE_NORMAL, '50k', '235.3')
+    recorder.onData(memtask, CSVRecorder.TYPE_NORMAL, '50k', '335.3')
+    recorder.onData(memtask, CSVRecorder.TYPE_NORMAL, '50k', '435.3')
+    recorder.onData(memtask, CSVRecorder.TYPE_NORMAL, '50k', '535.3')
+    recorder.onData(memtask, CSVRecorder.TYPE_NORMAL, '500k', '235.3')
+    recorder.onData(memtask, CSVRecorder.TYPE_NORMAL, '500k', '335.3')
+    recorder.onData(memtask, CSVRecorder.TYPE_NORMAL, '500k', '435.3')
+    recorder.onData(memtask, CSVRecorder.TYPE_NORMAL, '500k', '535.3')
+    recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'memfree', '5000')
+    recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'memfree', '5020')
+    recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'memfree', '5100')
+    recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'memfree', '5000')
+    recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'memfree', '7000')
+    recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'memfree', '4000')
+    recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'memfree', '3000')
+    recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'memfree', '2000')
+
+    recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'privateDirty', '5000')
+    recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'privateDirty', '5020')
+    recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'privateDirty', '5100')
+    recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'privateDirty', '5000')
+    recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'privateDirty', '7000')
+    recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'privateDirty', '4000')
+    recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'privateDirty', '3000')
+    recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'privateDirty', '2000')
+    recorder.onComplete()
     # rg = ResultGenerator()
     # rg.generateResult(recorder)
 
@@ -90,6 +120,7 @@ if __name__ == '__main__':
     # else:
     #     TaskLogger.debugLog('false')
     # raise Exception("end")
+
 
     manager = TaskManager()
 

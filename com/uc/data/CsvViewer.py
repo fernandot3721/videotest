@@ -1,5 +1,6 @@
 from com.uc.data.ResultViewer import ResultViewer
 from com.uc.utils.TaskLogger import TaskLogger
+from com.uc.data.TaskData import TaskData
 from com.uc.conf import Conf
 import sys
 import csv
@@ -36,6 +37,7 @@ class CsvViewer(ResultViewer):
         pass
 
     def addData(self, data):
+        data.printData()
         taskInfo = []
         self.lineInfo[str(data)] = taskInfo
         #  extra info
@@ -45,25 +47,32 @@ class CsvViewer(ResultViewer):
             taskInfo.append([extra, extras[extra]])
 
         #  case data & head
+        self.parseDataType(data, TaskData.DATA_TYPE_TIMING, taskInfo)
+        self.parseDataType(data, TaskData.DATA_TYPE_NORMAL, taskInfo)
+        pass
+
+    def parseDataType(self, data, dataType, taskInfo):
         lineHead = []
         lineHeadPos = len(taskInfo)
-        self.dataCount = 0
-        for case in data.getCase():
-            lineContent = data.getData(case)
+        dataCount = 0
+        for key in data.getKeysByType(dataType):
+            caseData = data.getDataByTypeAndKey(dataType, key)
+            lineContent = caseData.data
+            extras = data.getDataExtra(dataType, key)
+
             count = len(lineContent)
-            if count > self.dataCount:
-                self.dataCount = count
-                lineHead = [n for n in range(1, self.dataCount+1)]
-                lineHead.insert(0, 'AVG')
+            if count > dataCount:
+                dataCount = count
+                lineHead = [n for n in range(1, dataCount+1)]
+                # lineHead.insert(0, 'AVG')
+                for extra in extras:
+                    lineHead.insert(0, extra)
                 lineHead.insert(0, 'CASE')
                 # debugLog(lineHead)
 
-            caseExtras = data.getCaseExtra(case)
-            lineContent.insert(0, caseExtras['AVG'])
-            lineContent.insert(0, case)
+            for extra in extras:
+                lineContent.insert(0, extras[extra])
+            lineContent.insert(0, key)
             taskInfo.append(lineContent)
-
         # header
         taskInfo.insert(lineHeadPos, lineHead)
-        # debugLog(lineHead)
-        pass

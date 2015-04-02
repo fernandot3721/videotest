@@ -5,18 +5,24 @@ from com.uc.utils.TaskLogger import TaskLogger
 
 class TaskData():
 
+    DATA_TYPE_TIMING = 'TimingData'
+    DATA_TYPE_NORMAL = 'NormalData'
+
     def __init__(self):
-        self.data = {}
+        self.timingData = {}
+        self.normalData = {}
+        self.timingKeys = []
+        self.normalKeys = []
         self.extra = {}
-        self.cases = []
         self.lock = thread.allocate_lock()
-        self.caseExtra = {}
-        self.ceExist = False
         self.title = ''
 
-    def getData(self, case):
-        if case in self.data:
-            return self.data[case]
+    def getDataByTypeAndKey(self, type, key):
+        if type == self.DATA_TYPE_NORMAL and key in self.normalData:
+            return self.normalData[key]
+        elif type == self.DATA_TYPE_TIMING and key in self.timingData:
+            return self.timingData[key]
+        return None
 
     def getAllExtra(self):
         return self.extra
@@ -24,23 +30,40 @@ class TaskData():
     def getExtra(self, key):
         return self.extra[key]
 
-    def getCaseExtra(self, case):
-        return self.caseExtra[case]
+    def getKeysByType(self, type):
+        if type == self.DATA_TYPE_NORMAL:
+            return self.normalKeys
+        elif type == self.DATA_TYPE_TIMING:
+            return self.timingKeys
+        return None
 
-    def getCase(self):
-        return self.cases
-
-    def ceExist(self):
-        return self.ceExist
-
-    def addData(self, case, value):
+    def addData(self, type, key, value):
         self.lock.acquire()
-        if case not in self.data:
-            self.cases.append(case)
-            self.data[case] = []
-        self.data[case].append(value)
+        if type == self.DATA_TYPE_NORMAL:
+            if key not in self.normalData:
+                self.normalKeys.append(key)
+                self.normalData[key] = CaseData()
+            self.normalData[key].data.append(value)
+        elif type == self.DATA_TYPE_TIMING:
+            if key not in self.timingData:
+                self.timingKeys.append(key)
+                self.timingData[key] = CaseData()
+            self.timingData[key].data.append(value)
         self.lock.release()
-        pass
+
+    def setData(self, type, key, values):
+        self.lock.acquire()
+        if type == self.DATA_TYPE_NORMAL:
+            if key not in self.normalData:
+                self.normalKeys.append(key)
+                self.normalData[key] = CaseData()
+            self.normalData[key].data = values
+        elif type == self.DATA_TYPE_TIMING:
+            if key not in self.timingData:
+                self.timingKeys.append(key)
+                self.timingData[key] = CaseData()
+            self.timingData[key].data = values
+        self.lock.release()
 
     def addExtra(self, key, value):
         self.lock.acquire()
@@ -48,46 +71,67 @@ class TaskData():
             self.extra[key] = value
         self.lock.release()
 
-    def addCaseExtra(self, case, key, value):
+    def addDataExtra(self, type, key, extra, value):
         self.lock.acquire()
-        if not self.ceExist:
-            self.ceExist = True
-        if case not in self.caseExtra:
-            self.caseExtra[case] = {}
-        self.caseExtra[case][key] = value
+        if type == self.DATA_TYPE_NORMAL:
+            if key in self.normalData:
+                self.normalData[key].extra[extra] = value
+        elif type == self.DATA_TYPE_TIMING:
+            if key in self.timingData:
+                self.timingData[key].extra[extra] = value
         self.lock.release()
-        pass
 
-    def setData(self, case, values):
-        self.lock.acquire()
-        if case not in self.data:
-            self.cases.append(case)
-        self.data[case] = values
-        self.lock.release()
+    def getDataExtra(self, type, key):
+        if type == self.DATA_TYPE_NORMAL:
+            if key in self.normalData:
+                return self.normalData[key].extra
+        elif type == self.DATA_TYPE_TIMING:
+            if key in self.timingData:
+                return self.timingData[key].extra
 
     def setTitle(self, title):
-        self.title = title
+        self.title = str(title)
+
+    def getTitle(self):
+        return self.title
 
     def printData(self):
         print('')
         TaskLogger.infoLog('=====TASK DATA:=====')
         print(self.title)
-        TaskLogger.infoLog('CASE')
-        for case in self.data:
-            print('CASE: %s, VALUE: %s' % (case, self.data[case]))
+
+        # extras
         TaskLogger.infoLog('EXTRA')
         for extra in self.extra:
             print('KEY: %s, VALUE: %s' % (extra, self.extra[extra]))
-        if self.ceExist:
-            TaskLogger.infoLog('CASE EXTRA')
-            for case in self.cases:
-                ceStr = 'CASE: %s' % case
-                for extra in self.caseExtra[case]:
-                    ceStr = '%s, KEY: %s, VALUE: %s' % \
-                        (ceStr, extra, self.caseExtra[case][extra])
-                print(ceStr)
+
+        # normal data
+        TaskLogger.infoLog('NORMAL DATA')
+        for key in self.normalData:
+            caseData = self.normalData[key]
+            print('CASE: %s, VALUE: %s' % (key, self.normalData[key].data))
+
+            for extra in caseData.extra:
+                print('EXTRA: %s, VALUE: %s' % (extra, caseData.extra[extra]))
+
+        # timing data
+        TaskLogger.infoLog('TIMING DATA')
+        for key in self.timingData:
+            caseData = self.timingData[key]
+            print('CASE: %s, VALUE: %s' % (key, self.timingData[key].data))
+
+            for extra in caseData.extra:
+                print('EXTRA: %s, VALUE: %s' % (extra, caseData.extra[extra]))
+
         TaskLogger.infoLog('===================')
         print('')
 
     def __str__(self):
         return self.title
+
+
+class CaseData():
+
+    def __init__(self):
+        self.data = []
+        self.extra = {}

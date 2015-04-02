@@ -1,10 +1,6 @@
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.monitor.LogMonitor import LogMonitor
-from com.uc.conf import Conf
 from time import sleep
-
-import traceback
-import sys
 
 
 class FileContentMonitor(LogMonitor):

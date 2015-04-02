@@ -7,6 +7,7 @@ from com.uc.task.AbstractVideoTask import AbstractVideoTask
 from com.uc.utils import BrowserUtils
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.utils import AndroidUtil
+from com.uc.data.DataRecord import DataRecord
 
 
 class MemoryTestTask(AbstractVideoTask):
@@ -20,6 +21,8 @@ class MemoryTestTask(AbstractVideoTask):
 
     def doTest(self):
         print("STARTUP UC")
+        self.dataRecord.\
+            onData(self, DataRecord.TAG_EXTRA, 'TASK_TYPE', Conf.TASK_TYPE[2])
         if not AndroidUtil.testMemfree():
             return
         self.logMemory = True
