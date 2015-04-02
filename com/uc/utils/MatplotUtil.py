@@ -14,7 +14,7 @@ def createChrat(path, data, seq, row, col):
         dataA, dataB = data[case]
         a = map(float, dataA[1])
         b = map(float, dataB[1])
-        TaskLogger.infoLog('case: %s, 1:%s, 2:%s' % (case, dataA[0], dataB[0]))
+        # TaskLogger.debugLog('case: %s, 1:%s, 2:%s' % (case, dataA[0], dataB[0]))
 
         plt.subplot(row, col, i)
         plt.plot(a, label=dataA[0], color='red')
@@ -24,8 +24,7 @@ def createChrat(path, data, seq, row, col):
         ax = plt.gca()
         maxValue = int(math.ceil((max(max(a), max(b))/10)))*10
         minValue = int(math.floor((min(min(a), min(b))/10)))*10
-        # ax.set_yticks(np.arange(minValue, maxValue, 20))
-        TaskLogger.detailLog("max: %s, min:%s" % (maxValue, minValue))
+        # TaskLogger.debugLog("max: %s, min:%s" % (maxValue, minValue))
         ax.set_yticks(np.linspace(minValue, maxValue, 5))
 
         plt.xlabel("Count(per 5s)", fontsize='x-small')
@@ -33,7 +32,5 @@ def createChrat(path, data, seq, row, col):
         plt.title(case)
 
     plt.subplots_adjust(wspace=0.4, hspace=1)
-    plt.savefig('/opt/lampp/htdocs/videotest/report-test/test.svg', dpi=200, format='svg')
-    TaskLogger.detailLog('file:///opt/lampp/htdocs/videotest/report-test/test.svg')
-    TaskLogger.detailLog('http://100.84.44.238/videotest/report-test/test.svg')
+    plt.savefig(path, dpi=200, format='svg')
     pass

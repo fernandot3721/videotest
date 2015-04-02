@@ -13,10 +13,10 @@ class HtmlViewer(ResultViewer):
         self.data = {}
         self.dataCount = {}
         self.header = {}
-        self.reportPath = '{}report.html'\
-            .format(Conf.REPORT_DIR)
-        # self.reportPath = '{}report-{}.html'\
-            # .format(Conf.REPORT_DIR, time.strftime('%Y%m%d%H%M')[2:])
+        # self.reportPath = '{}report.html'\
+            # .format(Conf.REPORT_DIR)
+        self.reportPath = '{}report-{}.html'\
+            .format(Conf.REPORT_DIR, time.strftime('%Y%m%d%H%M')[2:])
         self.templatepath = Conf.HTML_TEMPLATE
 
     def addData(self, data):
@@ -74,6 +74,7 @@ class HtmlViewer(ResultViewer):
                 self.writeTableContent(htmlFile, self.data[taskInfo][TaskData.DATA_TYPE_TIMING])
                 self.writeTableEnd(htmlFile)
             self.writeTemplateEnd(htmlFile)
+            return self.reportPath
         except:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             TaskLogger.errorLog("Exception: {}".format(exc_value))

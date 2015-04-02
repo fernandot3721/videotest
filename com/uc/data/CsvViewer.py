@@ -12,10 +12,10 @@ class CsvViewer(ResultViewer):
     def __init__(self):
         self.dataCount = 0
         self.lineInfo = {}
-        self.reportPath = '{}report.csv'\
-            .format(Conf.REPORT_DIR)
-        # self.reportPath = '{}report-{}.csv'\
-        #     .format(Conf.REPORT_DIR, time.strftime('%Y%m%d%H%M')[2:])
+        # self.reportPath = '{}report.csv'\
+            # .format(Conf.REPORT_DIR)
+        self.reportPath = '{}report-{}.csv'\
+            .format(Conf.REPORT_DIR, time.strftime('%Y%m%d%H%M')[2:])
 
     def showResult(self):
         # self.init()
@@ -26,6 +26,7 @@ class CsvViewer(ResultViewer):
                 writer.writerow([task])
                 writer.writerows(self.lineInfo[task])
                 writer.writerow('')
+            return self.reportPath
         except:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             TaskLogger.errorLog("Exception: {}".format(exc_value))
