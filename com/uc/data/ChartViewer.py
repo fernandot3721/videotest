@@ -39,5 +39,5 @@ class ChartViewer(ResultViewer):
             # path
             saveFile = '%s/%s.png' % (self.reportPath, i)
             i = i + 1
-            TaskLogger.detailLog('file://%s' % saveFile)
+            TaskLogger.detailLog('view Report: file://%s' % saveFile)
             ChartUtils.createstripeschart(saveFile, taskInfo, countLine, self.data[taskInfo]['case'])

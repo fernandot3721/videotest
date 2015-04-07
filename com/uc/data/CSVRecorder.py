@@ -23,20 +23,25 @@ class CSVRecorder(DataRecord):
     def getData(self):
         return self.taskData.values()
 
-    def onData(self, task, dtype, key, value):
+    def onData(self, task, dtype, key, value, rtype=None):
         TaskLogger.\
-            detailLog('onData: %s, %s, %s, %s' % (task, dtype, key, value))
+            detailLog('onData: %s, %s, %s, %s, %s' % (task, dtype, key, value, rtype))
         if task not in self.taskData:  # init
-            TaskLogger.debugLog('record: %s' % task)
+            # TaskLogger.debugLog('record: %s' % task)
             self.taskData[task] = TaskData()
             self.taskData[task].setTitle(task)
 
+        if rtype is not None:
+            realKey = key + '|' + rtype
+        else:
+            realKey = key
+
         if dtype == DataRecord.TYPE_EXTRA:  # extra
-            self.taskData[task].addExtra(key, value)
+            self.taskData[task].addExtra(realKey, value)
         elif dtype == DataRecord.TYPE_NORMAL:  # normal data
-            self.taskData[task].addData(TaskData.DATA_TYPE_NORMAL, key, value)
+            self.taskData[task].addData(TaskData.DATA_TYPE_NORMAL, realKey, value)
         elif dtype == DataRecord.TYPE_TIMING:  # timing data
-            self.taskData[task].addData(TaskData.DATA_TYPE_TIMING, key, value)
+            self.taskData[task].addData(TaskData.DATA_TYPE_TIMING, realKey, value)
 
     def onComplete(self):
         self.saveData()

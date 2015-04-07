@@ -1,6 +1,7 @@
 # encoding: utf-8
 from com.uc.conf import Conf
 import time
+import threading
 
 
 def inred(s):
@@ -34,6 +35,7 @@ class TaskLogger():
     @staticmethod
     def errorLog(s):
         if Conf.ERROR_LOG:
+            print(inred(threading.currentThread()))
             print(inred(s))
             if TaskLogger.instance is not None:
                 TaskLogger.instance.writeLog('%s\n' % s)

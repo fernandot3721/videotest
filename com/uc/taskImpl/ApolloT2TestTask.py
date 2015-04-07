@@ -6,26 +6,23 @@ from com.uc.conf import Conf
 from com.uc.task.AbstractVideoTask import AbstractVideoTask
 from com.uc.utils import BrowserUtils
 from com.uc.utils.TaskLogger import TaskLogger
-from com.uc.utils import AndroidUtil
 from com.uc.data.DataRecord import DataRecord
 
 
-class MemoryTestTask(AbstractVideoTask):
-    urlList = Conf.MEMEROY_URL
+class ApolloT2TestTask(AbstractVideoTask):
+    urlList = Conf.APOLLO_T2_URL
 
     def __init__(self):
-        super(MemoryTestTask, self).__init__()
-        self.setTitle(Conf.TASK_TYPE[2])
-        self.keywords = Conf.MEMORY_KEYWORD
-        self.logMemory = False
+        super(ApolloT2TestTask, self).__init__()
+        self.setTitle(Conf.TASK_TYPE[3])
+        self.keyevents = Conf.APOLLO_T2_KEYEVENT
+        self.ignore = False
+        self.timeStart = None
 
     def doTest(self):
         print("STARTUP UC")
         self.dataRecord.\
-            onData(self, DataRecord.TYPE_EXTRA, 'TASK_TYPE', Conf.TASK_TYPE[2])
-        if not AndroidUtil.testMemfree():
-            return
-        self.logMemory = True
+            onData(self, DataRecord.TYPE_EXTRA, 'TASK_TYPE', Conf.TASK_TYPE[3])
         BrowserUtils.launchBrowser()
 
         sleep(Conf.WAIT_TIME)
@@ -56,24 +53,35 @@ class MemoryTestTask(AbstractVideoTask):
         TaskLogger.detailLog('play sucess')
         while True:
             sleep(1)
-            if myloop > 2700:
+            if myloop > 300:
                 TaskLogger.detailLog('play complete')
                 break
             myloop += 1
-
-        self.logMemory = False
-        # sleep(Conf.WAIT_TIME)
 
         print("SHUTDOWN UC")
         BrowserUtils.closeBrowser()
         sleep(Conf.WAIT_TIME)
 
-    def getKeywords(self):
-        return self.keywords
+    def onEventDetected(self, event, time):
+        TaskLogger.debugLog('###########onEventDetected: %s %s' % (event, time))
 
-    def onTimingKeyDetected(self, key, value):
-        if self.logMemory and self.playerVersion != "":
-            # TaskLogger.debugLog('onTimingKeyDetected %s %s' % (key, value))
-            # if key in self.keywords:
-            self.dataRecord.onData(self, DataRecord.TYPE_TIMING, self.currentCategory+key, value)
-        pass
+        if event == self.keyevents['t1'] or event == self.keyevents['seek']:
+            self.ignore = True
+        elif event == self.keyevents['t2']:
+            self.timeStart = time
+        elif event == self.keyevents['play']:
+            if self.ignore is True or self.timeStart is None:
+                # only if t2 without t1 or seek that counts
+                TaskLogger.detailLog('Not a t2 play, skip')
+                self.ignore = False
+                self.timeStart = None
+                return
+            deltaTime = time - self.timeStart
+            # millisecond delta
+            deltaMilli = deltaTime.seconds*1000 + deltaTime.microseconds/1000
+            self.ignore = False
+            self.timeStart = None
+            self.dataRecord.onData(self, DataRecord.TYPE_NORMAL, self.currentCategory, deltaMilli, 'T2')
+
+    def getKeyevents(self):
+        return self.keyevents.values()

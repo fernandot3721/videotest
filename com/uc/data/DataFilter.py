@@ -56,6 +56,8 @@ class CutPeak(EmptyFilter):
             caseData = data.getDataByTypeAndKey(dataType, key)
             if len(caseData.data) < 3:
                 TaskLogger.debugLog('too few data, do not cut peak')
+                data.addDataExtra(dataType, key, 'CUT-MAX', None)
+                data.addDataExtra(dataType, key, 'CUT-MIN', None)
                 continue
             maxValue = max(caseData.data)
             minValue = min(caseData.data)

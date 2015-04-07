@@ -17,8 +17,8 @@ class ResultGenerator():
         self.loadConfig()
         self.data = []
         # self.viewer = CsvViewer()
-        # self.viewer = HtmlViewer()
-        self.viewer = VsChartViewer()
+        self.viewer = HtmlViewer()
+        # self.viewer = VsChartViewer()
         pass
 
     def loadConfig(self):

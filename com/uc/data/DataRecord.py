@@ -18,7 +18,7 @@ class DataRecord():
     TYPE_EXTRA = 'TYPE_EXTRA'
 
     @abstractmethod
-    def onData(self, group, data):
+    def onData(self, task, dtype, key, value, rtype=None):
         pass
 
     @abstractmethod

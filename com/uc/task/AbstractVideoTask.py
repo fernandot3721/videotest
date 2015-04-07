@@ -9,6 +9,7 @@ from com.uc.monitor.LogcatHandler import LogcatHandler
 from com.uc.monitor.TimingHandler import TimingHandler
 from com.uc.data.DataRecord import DataRecord
 import re
+import datetime
 
 __author__ = 'Administrator'
 
@@ -84,9 +85,12 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
         for i in range(0, self.loopCount):
             self.currentLoopIndex = i
             for j in range(0, len(self.urlList)):
-                TaskLogger.infoLog("Loop %s Case %s is running" % (i, j))
+                TaskLogger.infoLog("----------------Loop %s Case %s is running" % (i, j))
                 if self.initTest(j):
+                    starttime = datetime.datetime.now()
                     self.doTest()
+                    endtime = datetime.datetime.now()
+                    TaskLogger.infoLog("----------------Loop %s Case %s run for %s and ends" % (i, j, (endtime-starttime).seconds))
 
     @abstractmethod
     def doTest(self):
@@ -104,7 +108,7 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
         if not self.playDetected:
             self.playerVersion = version
             self.playDetected = True
-            self.dataRecord.onData(self, DataRecord.TAG_EXTRA, 'PLAYER_VERSION', version)
+            self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, 'PLAYER_VERSION', version)
             TaskLogger.errorLog('player version is: %s' % self.playerVersion)
             self.setTitle('{}_{}'.format(self.title, self.playerVersion))
 
@@ -113,3 +117,15 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
 
     def onPlayerVersion(self, version):
         self.setPlayerVersion(version)
+
+    def getKeywords(self):
+        return []
+
+    def getKeyevents(self):
+        return []
+
+    def onKeywordDetected(self, key, value):
+        pass
+
+    def onEventDetected(self, event, value):
+        pass

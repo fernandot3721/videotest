@@ -13,10 +13,11 @@ class HtmlViewer(ResultViewer):
         self.data = {}
         self.dataCount = {}
         self.header = {}
-        # self.reportPath = '{}report.html'\
-            # .format(Conf.REPORT_DIR)
-        self.reportPath = '{}report-{}.html'\
-            .format(Conf.REPORT_DIR, time.strftime('%Y%m%d%H%M')[2:])
+        self.caseSeq = []
+        self.reportPath = '{}report.html'\
+            .format(Conf.REPORT_DIR)
+        # self.reportPath = '{}report-{}.html'\
+            # .format(Conf.REPORT_DIR, time.strftime('%Y%m%d%H%M')[2:])
         self.templatepath = Conf.HTML_TEMPLATE
 
     def addData(self, data):
@@ -39,18 +40,22 @@ class HtmlViewer(ResultViewer):
         taskInfo[dataType] = []
         self.dataCount[dataType] = 0
         self.header[dataType] = []
+        setHeader = False
         for key in data.getKeysByType(dataType):
             caseData = data.getDataByTypeAndKey(dataType, key)
             lineContent = caseData.data
             extras = data.getDataExtra(dataType, key)
 
+            if not setHeader:
+                for extra in extras:
+                    self.header[dataType].insert(0, extra)
+                setHeader = True
+
             count = len(lineContent)
             if count > self.dataCount[dataType]:
                 self.dataCount[dataType] = count
-                for extra in extras:
-                    self.header[dataType].append(extra)
 
-            for extra in extras:
+            for extra in self.header[dataType]:
                 lineContent.insert(0, extras[extra])
             lineContent.insert(0, key)
             taskInfo[dataType].append(lineContent)

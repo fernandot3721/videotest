@@ -1,6 +1,8 @@
 import threading
 import traceback
 import sys
+import datetime
+import time
 from abc import abstractmethod
 from com.uc.utils.TaskLogger import TaskLogger
 
@@ -55,6 +57,14 @@ class LogMonitor(threading.Thread):
                 end = len(lineStr)
             result = lineStr[start + len(prefix):end].strip()
             return result
+
+    def parseTime(self, lineStr):
+        _year = time.localtime(time.time())[0]
+        _month, _day = lineStr.split()[0].split('-')
+        _time, _micro = lineStr.split()[1].split('.')
+        _hour, _minute, _second = _time.split(':')
+        return datetime.datetime(int(_year), int(_month), int(_day), int(_hour), int(_minute), int(_second), long(_micro)*1000)
+        pass
 
     @abstractmethod
     def doMonitor(self):

@@ -8,6 +8,10 @@ class LogcatHandler(object):
         pass
 
     @abstractmethod
+    def onEventDetected(self, event, value):
+        pass
+
+    @abstractmethod
     def onVideoStartPlayer(self):
         pass
 
@@ -17,4 +21,8 @@ class LogcatHandler(object):
 
     @abstractmethod
     def getKeywords(self):
+        pass
+
+    @abstractmethod
+    def getKeyevents(self):
         pass

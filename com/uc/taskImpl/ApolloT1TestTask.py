@@ -20,7 +20,7 @@ class ApolloT1TestTask(AbstractVideoTask):
     def doTest(self):
         print("STARTUP UC")
         self.dataRecord.\
-            onData(self, DataRecord.TAG_EXTRA, 'TASK_TYPE', Conf.TASK_TYPE[1])
+            onData(self, DataRecord.TYPE_EXTRA, 'TASK_TYPE', Conf.TASK_TYPE[1])
         BrowserUtils.launchBrowser()
 
         sleep(Conf.WAIT_TIME)
@@ -53,7 +53,7 @@ class ApolloT1TestTask(AbstractVideoTask):
     def onKeywordDetected(self, key, t1):
         TaskLogger.debugLog('###########onKeywordDetected: %s %s' % (key, t1))
         if key in self.keywords:
-            self.dataRecord.onData(self.title, self.currentCategory, t1)
+            self.dataRecord.onData(self, DataRecord.TYPE_NORMAL, self.currentCategory, t1)
 
     def getKeywords(self):
         return self.keywords

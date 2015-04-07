@@ -12,7 +12,8 @@ PACKAGE_NAME = 'com.UCMobile.apollo'
 ACTIVITE_NAME = 'com.UCMobile.main.UCMobile'
 WAIT_TIME = 15
 EXTTOOLS_PATH = os.getcwd() + os.sep + 'ext_tools'
-SEVER_ADDRESS = "http://100.84.35.173:8080/"
+# SEVER_ADDRESS = "http://100.84.35.173:8080/"
+SEVER_ADDRESS = "http://192.168.0.4/"
 URLLIST_PATH = os.getcwd() + os.sep + 'com' + os.sep + 'uc' + os.sep + 'conf'
 
 # REPORT_DIR = os.environ['HOME'] + os.sep + 'work' + os.sep + 'vr' + os.sep
@@ -20,7 +21,7 @@ DATA_DIR = '/opt/lampp/htdocs/videotest/origin/'
 REPORT_DIR = '/opt/lampp/htdocs/videotest/'
 HTML_TEMPLATE = os.getcwd() + os.sep + 'template' + os.sep + 'tableTemplate.html'
 LOOP_TIME = 1
-PLAYER_COUNT = 2
+PLAYER_COUNT = 1
 PLAYER_LIB = [
                 '/home/tangjp/work/vr/apolloso/3.1.0.100/',
                 '/home/tangjp/work/vr/apolloso/2.1.0.128/',
@@ -46,15 +47,16 @@ INFO_LOG = True
 DETAIL_LOG = True
 ERROR_LOG = True
 NORMAL_LOG = True
-FILE_LOG = True
+FILE_LOG = False
 HARDCODE_APOLLO = True
 TASK_LOG_PATH = '/opt/lampp/htdocs/videotest/log/'
 # LOGGER_LEVEL = DEBUG_LOG
-TASK_TYPE = ['CORE-T1', 'APOLLO_T1', 'MEMEROY']
+TASK_TYPE = ['CORE-T1', 'APOLLO_T1', 'MEMEROY', 'APOLLO_T2']
 FILTERS = {
     'CORE-T1': ['Count', 'CutPeak', 'Average'],
     'APOLLO_T1': ['Count', 'CutPeak', 'Average'],
     'MEMEROY': ['Average'],
+    'APOLLO_T2': ['Count', 'CutPeak', 'Average'],
     }
 
 CORE_T1_URL= {#'50_l': SEVER_ADDRESS + "t1_50k/test_video_long.html",
@@ -74,6 +76,16 @@ APOLLO_T1_URL= {
         # 'movie_new_200': SEVER_ADDRESS + 't1Test_200k/mp4/t1Test_850_480_720Kbps.html',
     }
 
+APOLLO_T2_URL= {
+        # 'movie': SEVER_ADDRESS + "t1Test/mp4/t1Test_2577Kbps.html",
+        # 'tv': SEVER_ADDRESS + "t1Test/mp4/t1Test_1203Kbps.html",
+        'hd_online_': SEVER_ADDRESS + "/t1Test/m3u8/m3u8_high.html",
+        'movie_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_2577Kbps.html",
+        'tv_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_1203Kbps.html",
+        # 'movie_new': SEVER_ADDRESS + 't1Test/mp4/t1Test_850_480_720Kbps.html',
+        # 'movie_new_200': SEVER_ADDRESS + 't1Test_200k/mp4/t1Test_850_480_720Kbps.html',
+    }
+
 MEMEROY_URL= {
         # 'normal': SEVER_ADDRESS + "t1Test/mp4/t1Test_2577Kbps.html",
         'hd_online_': "http://192.168.0.4/t1Test/m3u8/m3u8_high.html",
@@ -81,12 +93,8 @@ MEMEROY_URL= {
         'st_online_': "http://192.168.0.4/t1Test/mp4/t1Test_normal.html",
     }
 
-START_PLAY_TAG = {
-        'mov_seg_dur T1': '',
-        }
-PLAYER_VERSION_TAG = {
-        '[apollo': ']',
-        }
+START_PLAY_TAG = 'mov_seg_dur T1'
+PLAYER_VERSION_TAG = ('[apollo', ']')
 CORE_T1_KEYWORD = {
         '`tl=': 'ms',
         }
@@ -95,4 +103,10 @@ APOLLO_T1_KEYWORD = {
         }
 MEMORY_KEYWORD = {
         'MemFree:': 'kB',
+        }
+APOLLO_T2_KEYEVENT = {
+        't1': '>>> nativeCreateInstance',
+        'seek': 'jni nativeSeekTo',
+        't2': 'MediaPlayerInstance::onBufferingStateUpdate() 1',
+        'play': 'play(). isPlaying = 0',
         }
