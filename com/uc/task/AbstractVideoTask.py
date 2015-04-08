@@ -90,7 +90,7 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
                     starttime = datetime.datetime.now()
                     self.doTest()
                     endtime = datetime.datetime.now()
-                    TaskLogger.infoLog("----------------Loop %s Case %s run for %s and ends" % (i, j, (endtime-starttime).seconds))
+                    TaskLogger.infoLog("----------------Loop %s Case %s run for %s and ends" % (i, j, str(endtime-starttime)))
 
     @abstractmethod
     def doTest(self):

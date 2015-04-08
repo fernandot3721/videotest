@@ -181,6 +181,6 @@ if __name__ == '__main__':
             TaskLogger.errorLog('===========TEST FAILED===========')
         manager.stopTest()
         endtime = datetime.datetime.now()
-        duration = (endtime-starttime).seconds
-        TaskLogger.infoLog("TEST COSTS %s seconds" % duration)
+        duration = endtime-starttime
+        TaskLogger.infoLog("TEST COSTS %s" % str(duration))
         TaskLogger.detailLog("Log file: file://%s" % TaskLogger.logfile)
