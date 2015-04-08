@@ -48,14 +48,16 @@ class HtmlViewer(ResultViewer):
 
             if not setHeader:
                 for extra in extras:
-                    self.header[dataType].insert(0, extra)
+                    self.header[dataType].append(extra)
+                contentSeq = self.header[dataType]
+                contentSeq.reverse()
                 setHeader = True
 
             count = len(lineContent)
             if count > self.dataCount[dataType]:
                 self.dataCount[dataType] = count
 
-            for extra in self.header[dataType]:
+            for extra in contentSeq:
                 lineContent.insert(0, extras[extra])
             lineContent.insert(0, key)
             taskInfo[dataType].append(lineContent)
