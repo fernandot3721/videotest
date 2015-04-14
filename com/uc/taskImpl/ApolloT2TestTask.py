@@ -15,6 +15,7 @@ class ApolloT2TestTask(AbstractVideoTask):
     def __init__(self):
         super(ApolloT2TestTask, self).__init__()
         self.setTitle(Conf.TASK_TYPE[3])
+        self.loopCount = Conf.LOOP_TIME_T2
         self.keyevents = Conf.APOLLO_T2_KEYEVENT
         self.ignore = False
         self.timeStart = None

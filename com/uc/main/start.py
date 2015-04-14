@@ -108,6 +108,7 @@ if __name__ == '__main__':
     # recorder.onComplete()
     # rg = ResultGenerator()
     # rg.generateResult(recorder)
+    # raise Exception("end")
 
     # AndroidUtil.switchApollo('/home/tangjp/work/vr/apolloso/2.2.0.128/')
     # result = AndroidUtil.getPrivateDirty()
@@ -121,21 +122,26 @@ if __name__ == '__main__':
     #     TaskLogger.debugLog('true')
     # else:
     #     TaskLogger.debugLog('false')
-    # raise Exception("end")
 
 
     manager = TaskManager()
 
-    # playerCount = Conf.PLAYER_COUNT
-    # if Conf.PLAYER_COUNT > len(Conf.PLAYER_LIB):
-    #     playerCount = len(Conf.PLAYER_LIB)
-    # for i in range(playerCount):
-    TaskLogger.infoLog("===========ADD TASK {}===========".format(0))
-    t2task = ApolloT2TestTask()
-    t2task.setPlayerPath(Conf.PLAYER_LIB[0])
-    t2task.setDataRecord(recorder)
-    manager.addTask(t2task)
-    t2task = None
+    playerCount = Conf.PLAYER_COUNT
+    if Conf.PLAYER_COUNT > len(Conf.PLAYER_LIB):
+        playerCount = len(Conf.PLAYER_LIB)
+    for i in range(playerCount):
+        TaskLogger.infoLog("===========ADD TASK {}===========".format(0))
+        # t2task = ApolloT2TestTask()
+        # t2task.setPlayerPath(Conf.PLAYER_LIB[i])
+        # t2task.setDataRecord(recorder)
+        # manager.addTask(t2task)
+
+        t2task = ApolloT1TestTask()
+        t2task.setPlayerPath(Conf.PLAYER_LIB[i])
+        t2task.setDataRecord(recorder)
+        manager.addTask(t2task)
+
+        t2task = None
 
     # cdCount = Conf.CD_COUNT
     # if Conf.CD_COUNT > len(Conf.CD_PARAM):

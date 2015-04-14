@@ -14,6 +14,7 @@ class ApolloT1TestTask(AbstractVideoTask):
 
     def __init__(self):
         super(ApolloT1TestTask, self).__init__()
+        self.loopCount = Conf.LOOP_TIME_T1
         self.setTitle(Conf.TASK_TYPE[1])
         self.keywords = Conf.APOLLO_T1_KEYWORD
 

@@ -9,13 +9,13 @@ from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.data.DataRecord import DataRecord
 
 
-class ApolloT2TestTask(AbstractVideoTask):
-    urlList = Conf.APOLLO_T2_URL
+class ApolloT2AndMemoryTestTask(AbstractVideoTask):
+    urlList = Conf.APOLLO_T2_M_URL
 
     def __init__(self):
-        super(ApolloT2TestTask, self).__init__()
-        self.loopCount = Conf.LOOP_TIME_T2
-        self.setTitle(Conf.TASK_TYPE[3])
+        super(ApolloT2AndMemoryTestTask, self).__init__()
+        self.loopCount = Conf.LOOP_TIME_T2_M
+        self.setTitle(Conf.TASK_TYPE[4])
         self.keyevents = Conf.APOLLO_T2_KEYEVENT
         self.ignore = False
         self.timeStart = None

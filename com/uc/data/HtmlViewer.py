@@ -14,10 +14,10 @@ class HtmlViewer(ResultViewer):
         self.dataCount = {}
         self.header = {}
         self.caseSeq = []
-        self.reportPath = '{}report.html'\
-            .format(Conf.REPORT_DIR)
-        # self.reportPath = '{}report-{}.html'\
-            # .format(Conf.REPORT_DIR, time.strftime('%Y%m%d%H%M')[2:])
+        # self.reportPath = '{}report.html'\
+            # .format(Conf.REPORT_DIR)
+        self.reportPath = '{}report-{}.html'\
+            .format(Conf.REPORT_DIR, time.strftime('%Y%m%d%H%M')[2:])
         self.templatepath = Conf.HTML_TEMPLATE
 
     def addData(self, data):
