@@ -43,7 +43,7 @@ class HtmlViewer(ResultViewer):
         setHeader = False
         for key in data.getKeysByType(dataType):
             caseData = data.getDataByTypeAndKey(dataType, key)
-            lineContent = caseData.data
+            lineContent = caseData.data[:]
             extras = data.getDataExtra(dataType, key)
 
             if not setHeader:
@@ -62,7 +62,7 @@ class HtmlViewer(ResultViewer):
             lineContent.insert(0, key)
             taskInfo[dataType].append(lineContent)
 
-    def showResult(self):
+    def showResult(self, subPath=None):
         # self.init()
         htmlFile = file(self.reportPath, 'wb')
         templateFile = file(self.templatepath, 'rb')
@@ -80,6 +80,7 @@ class HtmlViewer(ResultViewer):
                 self.writeTableHead(htmlFile, self.dataCount[TaskData.DATA_TYPE_TIMING], self.header[TaskData.DATA_TYPE_TIMING])
                 self.writeTableContent(htmlFile, self.data[taskInfo][TaskData.DATA_TYPE_TIMING])
                 self.writeTableEnd(htmlFile)
+            self.writeImage(htmlFile, subPath)
             self.writeTemplateEnd(htmlFile)
             return self.reportPath
         except:
@@ -135,6 +136,12 @@ class HtmlViewer(ResultViewer):
 
     def writeTableEnd(self, fileHandle):
         fileHandle.write("</table>\n")
+
+    def writeImage(self, fileHandle, filePath):
+        index = filePath.find(Conf.REPORT_DIR)
+        if index != -1:
+            filePath = filePath[len(Conf.REPORT_DIR):]
+        fileHandle.write("<img src='%s'></img>" % filePath)
 
     def writeTemplateEnd(self, fileHandle):
         fileHandle.write("</body>\n")

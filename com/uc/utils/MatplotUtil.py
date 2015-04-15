@@ -3,34 +3,66 @@ import numpy as np
 import math
 from com.uc.utils.TaskLogger import TaskLogger
 
+PLOT_COLOR = [
+    'red',
+    'green',
+    'blue',
+    'cyan',
+    'yellow',
+    'magenta',
+    'black'
+]
+
 
 def createChrat(path, data, seq, row, col):
+    '''
+        path: location to save the chart and also the title
+        data: data to generate charts
+        seq: sequence of the charts
+        row: rows for layout
+        col: colums for layot
+        note: it requires data includes two task with same name
+            eg: two hd_local_uss with 2.1.1 and 2.1.0 etc
+    '''
 
     i = 0
-    plt.suptitle(path)
-    for index in range(len(seq)):
-        case = seq[index]
-        i += 1
-        dataA, dataB = data[case]
-        a = map(float, dataA[1])
-        b = map(float, dataB[1])
-        # TaskLogger.debugLog('case: %s, 1:%s, 2:%s' % (case, dataA[0], dataB[0]))
+    lineCount = len(seq)
+    rowCount = lineCount/col
+    if rowCount > row:
+        row = rowCount
 
+    lengh = 4 * col
+    heigh = 1.8 * row
+
+    plt.figure(i, figsize=(lengh, heigh))
+    plt.suptitle(path)
+    for index in range(lineCount):
+        case = seq[index]
+
+        caseCount = len(data[case])
+        if caseCount > 7:
+            raise Exception("too many lines to draw")
+
+        i += 1
+        # TaskLogger.debugLog('draw %s row, %s col, %s' % (row, col, i))
         plt.subplot(row, col, i)
-        plt.plot(a, label=dataA[0], color='red')
-        plt.plot(b, label=dataB[0], color='green')
+
+        maxValue = 0.0
+        minValue = 9999.9
+        for j in range(caseCount):
+            sample = data[case][j]
+            floatSample = map(float, sample[1])
+            plt.plot(floatSample, label=sample[0], color=PLOT_COLOR[j])
+            maxValue = int(math.ceil((max(max(floatSample), maxValue)/10)))*10
+            minValue = int(math.floor((min(min(floatSample), minValue)/10)))*10
+
         plt.legend(fontsize=5, loc=0)
         plt.grid(True, color='0.8', linestyle='-')
         ax = plt.gca()
-        maxValue = int(math.ceil((max(max(a), max(b))/10)))*10
-        minValue = int(math.floor((min(min(a), min(b))/10)))*10
-        # TaskLogger.debugLog("max: %s, min:%s" % (maxValue, minValue))
         ax.set_yticks(np.linspace(minValue, maxValue, 5))
 
-        plt.xlabel("Count(per 5s)", fontsize='x-small')
-        plt.ylabel("Memory(MB)", fontsize='x-small')
-        plt.title(case)
+        plt.title(case, fontsize=10)
 
     plt.subplots_adjust(wspace=0.4, hspace=1)
-    plt.savefig(path, dpi=200, format='svg')
+    plt.savefig(path, dpi=400, format='svg')
     pass

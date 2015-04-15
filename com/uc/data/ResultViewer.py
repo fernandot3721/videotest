@@ -8,5 +8,5 @@ class ResultViewer():
         pass
 
     @abstractmethod
-    def showResult(self):
+    def showResult(self, subPath=None):
         pass

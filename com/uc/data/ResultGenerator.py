@@ -18,7 +18,7 @@ class ResultGenerator():
         self.data = []
         # self.viewer = CsvViewer()
         self.viewer = HtmlViewer()
-        # self.viewer = VsChartViewer()
+        self.subViewer = VsChartViewer()
         pass
 
     def loadConfig(self):
@@ -34,9 +34,11 @@ class ResultGenerator():
         #  show result
         for data in self.data:
             TaskLogger.debugLog('addData %s' % data)
+            self.subViewer.addData(data)
             self.viewer.addData(data)
         try:
-            self.viewer.showResult()
+            path = self.subViewer.showResult()
+            self.viewer.showResult(path)
         except:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             TaskLogger.errorLog("Exception: {}".format(exc_value))

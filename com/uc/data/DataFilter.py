@@ -102,7 +102,10 @@ class Average(EmptyFilter):
             caseData = data.getDataByTypeAndKey(dataType, key)
             total = 0
             for value in caseData.data:
-                total += float(value)
+                try:
+                    total += float(value)
+                except:
+                    caseData.data.remove(value)
             data.addDataExtra(dataType, key, 'AVG', total/len(caseData.data))
 
 class InvalidData(EmptyFilter):
