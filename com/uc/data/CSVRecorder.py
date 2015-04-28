@@ -51,7 +51,7 @@ class CSVRecorder(DataRecord):
         return self.recordPath
 
     def loadData(self, path=None):
-        self.init()
+        # self.init()
         try:
             csvfile = ''
             if (path is None):

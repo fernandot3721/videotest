@@ -2,6 +2,7 @@
 from abc import abstractmethod
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.data.TaskData import TaskData
+import numpy as np
 
 
 class DataFilter(object):
@@ -73,28 +74,43 @@ class Normalize(EmptyFilter):
     def processData(self, data):
         self.filter.processData(data)
         TaskLogger.debugLog('PROCESS DATA ' + str(self.__class__))
+        self.normalizeData(data, TaskData.DATA_TYPE_TIMING)
+        self.normalizeData(data, TaskData.DATA_TYPE_NORMAL)
         # do normal distribution
         pass
+
+    def normalizeData(self, data, dataType):
+        for key in data.getKeysByType(dataType):
+            caseData = data.getDataByTypeAndKey(dataType, key)
+            testData = map(float, caseData.data)
+            # TaskLogger.debugLog(type(testData[0]))
+            avg = np.mean(testData)
+            sdev = np.std(testData)
+            maxValue = avg + sdev
+            minValue = avg - sdev
+            data.addDataExtra(dataType, key, 'avg', avg)
+            # data.addDataExtra(dataType, key, 'stddev', sdev)
+            # TaskLogger.debugLog('max: %s' % maxValue)
+            # TaskLogger.debugLog('min: %s' % minValue)
+            count = 0
+            for value in caseData.data:
+                floatValue = float(value)
+                # TaskLogger.detailLog(floatValue)
+                if floatValue > maxValue or floatValue < minValue:
+                    # TaskLogger.debugLog('remove %s' % value)
+                    count += 1
+                    caseData.data.remove(value)
+            data.addDataExtra(dataType, key, 'NOR', count)
+            # TaskLogger.infoLog("count: %s" % count)
 
 
 class Average(EmptyFilter):
     def processData(self, data):
         self.filter.processData(data)
         TaskLogger.debugLog('PROCESS DATA ' + str(self.__class__))
-        # TaskLogger.debugLog('before==========')
-        # data.printData()
         # do average
         self.avgData(data, TaskData.DATA_TYPE_TIMING)
         self.avgData(data, TaskData.DATA_TYPE_NORMAL)
-        # cases = data.getCase()
-        # for case in cases:
-        #     total = 0
-        #     single = data.getData(case)
-        #     for value in single:
-        #         total += float(value)
-        #     data.addCaseExtra(case, 'AVG', total/len(single))
-        # TaskLogger.debugLog('after==========')
-        # data.printData()
         pass
 
     def avgData(self, data, dataType):

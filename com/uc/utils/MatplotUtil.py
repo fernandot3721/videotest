@@ -25,17 +25,17 @@ def createChrat(path, data, seq, row, col):
             eg: two hd_local_uss with 2.1.1 and 2.1.0 etc
     '''
 
-    i = 0
     lineCount = len(seq)
-    rowCount = lineCount/col
+    rowCount = int(math.ceil(float(lineCount)/col))
     if rowCount > row:
         row = rowCount
 
     lengh = 4 * col
     heigh = 1.8 * row
 
-    plt.figure(i, figsize=(lengh, heigh))
+    plt.figure(figsize=(lengh, heigh))
     plt.suptitle(path)
+    # TaskLogger.debugLog('lineCount: %s' % lineCount)
     for index in range(lineCount):
         case = seq[index]
 
@@ -43,9 +43,8 @@ def createChrat(path, data, seq, row, col):
         if caseCount > 7:
             raise Exception("too many lines to draw")
 
-        i += 1
-        # TaskLogger.debugLog('draw %s row, %s col, %s' % (row, col, i))
-        plt.subplot(row, col, i)
+        # TaskLogger.debugLog('draw %s row, %s col, %s' % (row, col, index))
+        plt.subplot(row, col, index+1)
 
         maxValue = 0.0
         minValue = 9999.9

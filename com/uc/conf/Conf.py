@@ -54,9 +54,9 @@ TASK_LOG_PATH = '/opt/lampp/htdocs/videotest/log/'
 TASK_TYPE = ['CORE-T1', 'APOLLO_T1', 'MEMEROY', 'APOLLO_T2']
 FILTERS = {
     'CORE-T1': ['Count', 'CutPeak', 'Average'],
-    'APOLLO_T1': ['Count', 'CutPeak', 'Average'],
+    'APOLLO_T1': ['Count', 'Normalize'],
     'MEMEROY': ['Average'],
-    'APOLLO_T2': ['Count', 'CutPeak', 'Average'],
+    'APOLLO_T2': ['Count', 'Average'],
     }
 
 CORE_T1_URL= {#'50_l': SEVER_ADDRESS + "t1_50k/test_video_long.html",

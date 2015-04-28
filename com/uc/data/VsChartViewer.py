@@ -13,8 +13,9 @@ class VsChartViewer(ResultViewer):
         self.data = {}
         self.caseSeq = []
         self.reportPath = '{}report-{}'\
-            .format(Conf.REPORT_DIR, 'test')
-            # .format(Conf.REPORT_DIR, time.strftime('%Y%m%d%H%M')[2:])
+            .format(Conf.REPORT_DIR, 'chart')
+        self.saveFile = time.strftime('%Y%m%d%H%M')[2:]
+        # self.saveFile = 'test'
 
     def addData(self, data):
         self.parseDataType(data, TaskData.DATA_TYPE_TIMING)
@@ -34,9 +35,9 @@ class VsChartViewer(ResultViewer):
         if not os.path.exists(self.reportPath):
             os.mkdir(self.reportPath)
         # path
-        saveFile = '%s/%s.svg' % (self.reportPath, 'test1')
+        saveFile = '%s/%s.svg' % (self.reportPath, self.saveFile)
         # saveFile = '%s/%s.png' % (self.reportPath, taskInfo)
         MatplotUtil.createChrat(saveFile, self.data, self.caseSeq, 3, 2)
         TaskLogger.detailLog('view Report: file://%s ' % saveFile)
-        TaskLogger.detailLog('view Report: http://100.84.44.238/videotest/report-test/test1.svg')
+        # TaskLogger.detailLog('view Report: http://100.84.44.238/videotest/report-test/test1.svg')
         return saveFile
