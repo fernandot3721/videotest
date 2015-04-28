@@ -83,25 +83,20 @@ class Normalize(EmptyFilter):
         for key in data.getKeysByType(dataType):
             caseData = data.getDataByTypeAndKey(dataType, key)
             testData = map(float, caseData.data)
-            # TaskLogger.debugLog(type(testData[0]))
             avg = np.mean(testData)
             sdev = np.std(testData)
             maxValue = avg + sdev
             minValue = avg - sdev
             data.addDataExtra(dataType, key, 'avg', avg)
             # data.addDataExtra(dataType, key, 'stddev', sdev)
-            # TaskLogger.debugLog('max: %s' % maxValue)
-            # TaskLogger.debugLog('min: %s' % minValue)
             count = 0
             for value in caseData.data:
                 floatValue = float(value)
-                # TaskLogger.detailLog(floatValue)
                 if floatValue > maxValue or floatValue < minValue:
                     # TaskLogger.debugLog('remove %s' % value)
                     count += 1
                     caseData.data.remove(value)
             data.addDataExtra(dataType, key, 'NOR', count)
-            # TaskLogger.infoLog("count: %s" % count)
 
 
 class Average(EmptyFilter):

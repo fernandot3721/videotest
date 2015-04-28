@@ -83,7 +83,7 @@ class CSVRecorder(DataRecord):
                 if (line[0] == DataRecord.TAG_EXTRA):
                     tempData.addExtra(line[1], line[2])
                 if (line[0] == DataRecord.TAG_END):
-                    tempData.printData()  # DEBUG ONLY
+                    # tempData.printData()  # DEBUG ONLY
                     tempData = None
             TaskLogger.debugLog('loadData end')
         except:
@@ -103,7 +103,7 @@ class CSVRecorder(DataRecord):
             for task in self.taskData.keys():
                 TaskLogger.debugLog('saveData: %s' % task)
                 # TaskLogger.debugLog(self.taskData[task])
-                self.taskData[task].printData()  # DEBUG ONLY
+                # self.taskData[task].printData()  # DEBUG ONLY
 
                 dataToWrite.append([DataRecord.TAG_START])  # TASK-DATA-START
 
