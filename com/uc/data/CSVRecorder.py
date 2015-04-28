@@ -14,8 +14,8 @@ class CSVRecorder(DataRecord):
     def __init__(self):
         self.init()
         self.recordPath = '{}record-{}.csv'\
-            .format(Conf.DATA_DIR, 'test1')
-            # .format(Conf.DATA_DIR, time.strftime('%Y%m%d%H%M')[2:])
+            .format(Conf.DATA_DIR, time.strftime('%Y%m%d%H%M')[2:])
+            # .format(Conf.DATA_DIR, 'test1')
 
     def init(self):
         self.taskData = {}

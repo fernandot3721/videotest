@@ -11,6 +11,7 @@ from com.uc.task.TaskManager import TaskManager
 from com.uc.taskImpl.CoreT1TestTask import CoreT1TestTask
 from com.uc.taskImpl.ApolloT1TestTask import ApolloT1TestTask
 from com.uc.taskImpl.ApolloT2TestTask import ApolloT2TestTask
+from com.uc.taskImpl.ApolloT2AndMemoryTestTask import ApolloT2AndMemoryTestTask 
 from com.uc.taskImpl.MemoryTestTask import MemoryTestTask
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.conf import Conf
@@ -73,7 +74,7 @@ if __name__ == '__main__':
     # recorder.onComplete()
 
     # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-test1.csv')
-    # recorder.loadData('/home/tangjp/work/vr/qiuchangtest.csv')
+    # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1504101833.csv')
 
     # filter = DataFilter()
     # # memtask = MemoryTestTask()
@@ -108,6 +109,7 @@ if __name__ == '__main__':
     # recorder.onComplete()
     # rg = ResultGenerator()
     # rg.generateResult(recorder)
+    # raise Exception("end")
 
     # AndroidUtil.switchApollo('/home/tangjp/work/vr/apolloso/2.2.0.128/')
     # result = AndroidUtil.getPrivateDirty()
@@ -121,21 +123,27 @@ if __name__ == '__main__':
     #     TaskLogger.debugLog('true')
     # else:
     #     TaskLogger.debugLog('false')
-    # raise Exception("end")
 
 
     manager = TaskManager()
 
-    # playerCount = Conf.PLAYER_COUNT
-    # if Conf.PLAYER_COUNT > len(Conf.PLAYER_LIB):
-    #     playerCount = len(Conf.PLAYER_LIB)
-    # for i in range(playerCount):
-    TaskLogger.infoLog("===========ADD TASK {}===========".format(0))
-    t2task = ApolloT2TestTask()
-    t2task.setPlayerPath(Conf.PLAYER_LIB[0])
-    t2task.setDataRecord(recorder)
-    manager.addTask(t2task)
-    t2task = None
+    playerCount = Conf.PLAYER_COUNT
+    if Conf.PLAYER_COUNT > len(Conf.PLAYER_LIB):
+        playerCount = len(Conf.PLAYER_LIB)
+    for i in range(playerCount):
+        TaskLogger.infoLog("===========ADD TASK {}===========".format(0))
+        # t2task = ApolloT2TestTask()
+        # t2task.setPlayerPath(Conf.PLAYER_LIB[i])
+        # t2task.setDataRecord(recorder)
+        # manager.addTask(t2task)
+ 
+#t2task = ApolloT2AndMemoryTestTask()
+        t2task = ApolloT1TestTask()
+        t2task.setPlayerPath(Conf.PLAYER_LIB[i])
+        t2task.setDataRecord(recorder)
+        manager.addTask(t2task)
+
+        t2task = None
 
     # cdCount = Conf.CD_COUNT
     # if Conf.CD_COUNT > len(Conf.CD_PARAM):

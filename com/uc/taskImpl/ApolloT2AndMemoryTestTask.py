@@ -9,21 +9,24 @@ from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.data.DataRecord import DataRecord
 
 
-class ApolloT2TestTask(AbstractVideoTask):
-    urlList = Conf.APOLLO_T2_URL
+class ApolloT2AndMemoryTestTask(AbstractVideoTask):
+    urlList = Conf.APOLLO_T2_M_URL
 
     def __init__(self):
-        super(ApolloT2TestTask, self).__init__()
-        self.setTitle(Conf.TASK_TYPE[3])
-        self.loopCount = Conf.LOOP_TIME_T2
+        super(ApolloT2AndMemoryTestTask, self).__init__()
+        self.loopCount = Conf.LOOP_TIME_T2_M
+        self.setTitle(Conf.TASK_TYPE[4])
         self.keyevents = Conf.APOLLO_T2_KEYEVENT
         self.ignore = False
         self.timeStart = None
+        self.keywords = Conf.MEMORY_KEYWORD
+        self.logMemory = False
 
     def doTest(self):
         print("STARTUP UC")
         self.dataRecord.\
             onData(self, DataRecord.TYPE_EXTRA, 'TASK_TYPE', Conf.TASK_TYPE[3])
+        self.logMemory = True
         BrowserUtils.launchBrowser()
 
         sleep(Conf.WAIT_TIME)
@@ -54,11 +57,12 @@ class ApolloT2TestTask(AbstractVideoTask):
         TaskLogger.detailLog('play sucess')
         while True:
             sleep(1)
-            if myloop > 300:
+            if myloop > 1800:
                 TaskLogger.detailLog('play complete')
                 break
             myloop += 1
 
+        self.logMemory = False
         print("SHUTDOWN UC")
         BrowserUtils.closeBrowser()
         sleep(Conf.WAIT_TIME)
@@ -84,5 +88,15 @@ class ApolloT2TestTask(AbstractVideoTask):
             self.timeStart = None
             self.dataRecord.onData(self, DataRecord.TYPE_NORMAL, self.currentCategory, deltaMilli, 'T2')
 
+    def onTimingKeyDetected(self, key, value):
+        if self.logMemory and self.playerVersion != "":
+            # TaskLogger.debugLog('onTimingKeyDetected %s %s' % (key, value))
+            # if key in self.keywords:
+            self.dataRecord.onData(self, DataRecord.TYPE_TIMING, self.currentCategory+key, value, 'MEMORY')
+        pass
+
     def getKeyevents(self):
         return self.keyevents.values()
+
+    def getKeywords(self):
+        return self.keywords

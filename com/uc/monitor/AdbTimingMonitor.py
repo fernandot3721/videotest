@@ -18,16 +18,15 @@ class AdbTimingMonitor(LogMonitor):
         while not self.isStop:
             try:
                 # monito uss
-                # uss = float(AndroidUtil.getPrivateDirty())/1024  # N4
-                uss = float(AndroidUtil.getPrivateClean())/1024  # SAMSUM
+                uss = float(AndroidUtil.getPrivateDirty())/1024  # N4
+                # uss = float(AndroidUtil.getPrivateClean())/1024  # SAMSUM
                 # monitor memfree
                 MemFree = float(AndroidUtil.getRealMemfree())/1024
 
                 self.handler.onTimingKeyDetected('uss', uss)
                 self.handler.onTimingKeyDetected('MemFree', MemFree)
             except:
-                TaskLogger.debugLog('parse uss failed')
-                TaskLogger.debugLog('parse MemFree failed')
+                TaskLogger.debugLog('parse memory failed')
                 pass
 
             sleep(5)

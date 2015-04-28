@@ -10,12 +10,12 @@ import os
 class TaskManager:
     taskList = []
     logcatThread = AndroidLogcat()
-    # meminfoThread = AdbTimingMonitor()
+    meminfoThread = AdbTimingMonitor()
 
     def __init__(self):
         os.system('adb logcat -c')
         self.logcatThread.start()
-        # self.meminfoThread.start()
+        self.meminfoThread.start()
         pass
 
     def shouldTerminate(self):
@@ -35,9 +35,9 @@ class TaskManager:
             TaskLogger.infoLog("===========EXECUTE TASK===========")
             for task in self.taskList:
                 self.logcatThread.setHandler(task)
-                # self.meminfoThread.setHandler(task)
+                self.meminfoThread.setHandler(task)
                 self.logcatThread.init()
-                # self.meminfoThread.init()
+                self.meminfoThread.init()
                 task.run()
             return 0
         except:
@@ -49,5 +49,6 @@ class TaskManager:
 
     def stopTest(self):
         self.logcatThread.stop()
-        # self.meminfoThread.stop()
+        self.meminfoThread.stop()
         self.logcatThread.join()
+        self.meminfoThread.join()
