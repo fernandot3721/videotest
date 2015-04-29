@@ -82,6 +82,23 @@ def switchHardCodeApollo(pathFrom):
     pass
 
 
+def getPid():
+    # cmd = 'adb shell ps | tr \"\\r\\n\" \"\\n\" | grep "%s\%"' % Conf.PACKAGE_NAME
+    cmd = 'adb shell ps | tr \"\\r\\n\" \"\\n\" | grep "%s$" | awk \'{print $2}\'' % Conf.PACKAGE_NAME
+    # TaskLogger.debugLog(cmd)
+    return os.popen(cmd).read().strip()
+
+
+def getCpuUsage(pid):
+    cmd = 'adb shell su -c \'top -d 1 -n 1\' | grep \'%s\\s\'' % pid
+    # TaskLogger.debugLog(cmd)
+    return os.popen(cmd).read().strip()
+
+def getCpu():
+    cmd = 'adb shell su -c \'top -d 0 -n 1\' | tr \"\\r\\n\" \"\\n\" | grep %s$ | awk \'{print $3}\' | tr -d \'%%\'' % Conf.PACKAGE_NAME
+    # TaskLogger.debugLog(cmd)
+    return int(os.popen(cmd).read().strip())
+
 def getPrivateDirty():
     cmd = 'adb shell dumpsys meminfo %s | grep TOTAL | awk \'{print $3}\'' % Conf.PACKAGE_NAME
     # TaskLogger.infoLog(cmd)

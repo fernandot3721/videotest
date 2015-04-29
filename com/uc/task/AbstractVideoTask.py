@@ -68,9 +68,9 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
             AndroidUtil.switchHardCodeApollo(self.playPath)
         else:
             AndroidUtil.switchApollo(self.playPath)
-        match = re.search(r'\d\.\d+', self.playPath)
-        libName = match.group(0)
-        TaskLogger.errorLog('&&&&&&&&&&&&&&&&&libName: {}'.format(libName))
+        # match = re.search(r'\d\.\d+', self.playPath)
+        # libName = match.group(0)
+        # TaskLogger.errorLog('&&&&&&&&&&&&&&&&&libName: {}'.format(libName))
         # self.setTitle('{}-{}'.format(libName, self.title))
         for key in self.urlList.keys():
             self.keyValue[key] = []
@@ -84,6 +84,7 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
         TaskLogger.infoLog("%s TEST START for %s times" % (self.title, str(self.loopCount)))
         for i in range(0, self.loopCount):
             self.currentLoopIndex = i
+            TaskLogger.infoLog("----------------run %s cases" % len(self.urlList))
             for j in range(0, len(self.urlList)):
                 TaskLogger.infoLog("----------------Loop %s Case %s is running" % (i, j))
                 if self.initTest(j):

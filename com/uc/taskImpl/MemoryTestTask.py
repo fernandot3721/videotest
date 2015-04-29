@@ -11,7 +11,7 @@ from com.uc.data.DataRecord import DataRecord
 
 
 class MemoryTestTask(AbstractVideoTask):
-    urlList = Conf.MEMEROY_URL
+    urlList = Conf.MEMORY_URL
 
     def __init__(self):
         super(MemoryTestTask, self).__init__()
@@ -71,7 +71,7 @@ class MemoryTestTask(AbstractVideoTask):
     def getKeywords(self):
         return self.keywords
 
-    def onTimingKeyDetected(self, key, value):
+    def onTimingKeyDetected(self, key, value, type=None):
         if self.logMemory and self.playerVersion != "":
             # TaskLogger.debugLog('onTimingKeyDetected %s %s' % (key, value))
             # if key in self.keywords:

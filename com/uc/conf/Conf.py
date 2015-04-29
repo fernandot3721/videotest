@@ -8,7 +8,8 @@ Created on 2015年1月22日
 '''
 import os
 
-PACKAGE_NAME = 'com.UCMobile.apollo'
+PACKAGE_NAME = 'com.mxtech.videoplayer.ad'
+# PACKAGE_NAME = 'com.UCMobile.apollo'
 ACTIVITE_NAME = 'com.UCMobile.main.UCMobile'
 WAIT_TIME = 15
 EXTTOOLS_PATH = os.getcwd() + os.sep + 'ext_tools'
@@ -24,6 +25,7 @@ LOOP_TIME = 1
 LOOP_TIME_T1 = 50
 LOOP_TIME_T2 = 1
 LOOP_TIME_T2_M = 1
+LOOP_TIME_MX_M = 1
 PLAYER_COUNT = 2
 PLAYER_LIB = [
                 '/home/tangjp/work/vr/apolloso/3.3.3.333/',
@@ -54,7 +56,7 @@ FILE_LOG = True
 HARDCODE_APOLLO = True
 TASK_LOG_PATH = '/opt/lampp/htdocs/videotest/log/'
 # LOGGER_LEVEL = DEBUG_LOG
-TASK_TYPE = ['CORE-T1', 'APOLLO_T1', 'MEMEROY', 'APOLLO_T2', 'APOLLO_T2_MEM']
+TASK_TYPE = ['CORE-T1', 'APOLLO_T1', 'MEMEROY', 'APOLLO_T2', 'APOLLO_T2_MEM', 'MXPLAYER_MEM']
 FILTERS = {
     'CORE-T1': ['Count', 'CutPeak', 'Average'],
     'APOLLO_T1': ['Count', 'Normalize'],
@@ -102,11 +104,17 @@ APOLLO_T2_M_URL= {
         'movie_new_200': SEVER_ADDRESS + 't1Test_200k/mp4/t1Test_850_480_720Kbps.html',
     }
 
-MEMEROY_URL= {
+MEMORY_URL= {
         # 'normal': SEVER_ADDRESS + "t1Test/mp4/t1Test_2577Kbps.html",
         'hd_online_': "http://192.168.0.4/t1Test/m3u8/m3u8_high.html",
         'hd_local_': "file:///sdcard/test.mp4",
         'st_online_': "http://192.168.0.4/t1Test/mp4/t1Test_normal.html",
+    }
+
+MX_MEMORY_URL= {
+        '480-mp4-': "file:///storage/emulated/0/480_272_171Kbps_15fps_986362.mp4",
+        '1280-mp4-': "file:///storage/emulated/0/1280_584_2577Kbps.mp4",
+        'super-m3u8-': SEVER_ADDRESS + "t1Test/m3u8/super/index.m3u8",
     }
 
 START_PLAY_TAG = 'mov_seg_dur T1'
@@ -125,4 +133,7 @@ APOLLO_T2_KEYEVENT = {
         'seek': 'jni nativeSeekTo',
         't2': 'MediaPlayerInstance::onBufferingStateUpdate() 1',
         'play': 'play(). isPlaying = 0',
+        }
+MX_MEMORY_KEYEVENT = {
+        'start_time': 'start_time',
         }

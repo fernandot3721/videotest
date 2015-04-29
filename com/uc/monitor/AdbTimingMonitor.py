@@ -23,10 +23,18 @@ class AdbTimingMonitor(LogMonitor):
                 # monitor memfree
                 MemFree = float(AndroidUtil.getRealMemfree())/1024
 
-                self.handler.onTimingKeyDetected('uss', uss)
-                self.handler.onTimingKeyDetected('MemFree', MemFree)
+                self.handler.onTimingKeyDetected('uss', uss, 'MEMORY')
+                self.handler.onTimingKeyDetected('MemFree', MemFree, 'MEMORY')
             except:
                 TaskLogger.debugLog('parse memory failed')
+                pass
+
+            try:
+                # monitor cpu
+                cpu = AndroidUtil.getCpu()
+                self.handler.onTimingKeyDetected('Cpu', cpu, 'CPU')
+            except:
+                TaskLogger.debugLog('parse cpu failed')
                 pass
 
             sleep(5)

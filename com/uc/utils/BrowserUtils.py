@@ -87,7 +87,7 @@ def goback():
 def closeBrowser():
     '''关闭浏览器'''
     exitCmd = "adb shell am force-stop {}".format(Conf.PACKAGE_NAME)
-    TaskLogger.normalLog(exitCmd)
+    # TaskLogger.normalLog(exitCmd)
     mySystem(exitCmd)
 
 

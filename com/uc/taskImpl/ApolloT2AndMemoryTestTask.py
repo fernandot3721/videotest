@@ -88,7 +88,7 @@ class ApolloT2AndMemoryTestTask(AbstractVideoTask):
             self.timeStart = None
             self.dataRecord.onData(self, DataRecord.TYPE_NORMAL, self.currentCategory, deltaMilli, 'T2')
 
-    def onTimingKeyDetected(self, key, value):
+    def onTimingKeyDetected(self, key, value, type=None):
         if self.logMemory and self.playerVersion != "":
             # TaskLogger.debugLog('onTimingKeyDetected %s %s' % (key, value))
             # if key in self.keywords:
