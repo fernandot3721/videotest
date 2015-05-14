@@ -13,6 +13,7 @@ from com.uc.taskImpl.ApolloT1TestTask import ApolloT1TestTask
 from com.uc.taskImpl.ApolloT2TestTask import ApolloT2TestTask
 from com.uc.taskImpl.ApolloT2AndMemoryTestTask import ApolloT2AndMemoryTestTask
 from com.uc.taskImpl.MXPlayerMemTestTask import MXPlayerMemTestTask
+from com.uc.taskImpl.VideoTestMemTestTask import VideoTestMemTestTask
 from com.uc.taskImpl.MemoryTestTask import MemoryTestTask
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.conf import Conf
@@ -83,7 +84,10 @@ if __name__ == '__main__':
     # recorder.onComplete()
 
     # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-test.csv')
-    # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1504291558.csv')
+    recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1505112125.csv')
+    recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1505121614.csv')
+    recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1505131039.csv')
+
 
     # filter = DataFilter()
     # # memtask = MemoryTestTask()
@@ -116,9 +120,9 @@ if __name__ == '__main__':
     # recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'privateDirty', '3000')
     # recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'privateDirty', '2000')
     # recorder.onComplete()
-    # rg = ResultGenerator()
-    # rg.generateResult(recorder)
-    # raise Exception("end")
+    rg = ResultGenerator()
+    rg.generateResult(recorder)
+    raise Exception("end")
 
     # AndroidUtil.switchApollo('/home/tangjp/work/vr/apolloso/2.2.0.128/')
     # result = AndroidUtil.getPrivateDirty()
@@ -134,27 +138,32 @@ if __name__ == '__main__':
     #     TaskLogger.debugLog('false')
 
     manager = TaskManager()
-    mxtask = MXPlayerMemTestTask()
-    mxtask.setDataRecord(recorder)
-    manager.addTask(mxtask)
+    # mxtask = VideoTestMemTestTask()
+    # mxtask.setDataRecord(recorder)
+    # manager.addTask(mxtask)
 
-    # playerCount = Conf.PLAYER_COUNT
-    # if Conf.PLAYER_COUNT > len(Conf.PLAYER_LIB):
-    #     playerCount = len(Conf.PLAYER_LIB)
-    # for i in range(playerCount):
-    #     TaskLogger.infoLog("===========ADD TASK {}===========".format(0))
-        # t2task = ApolloT2TestTask()
-        # t2task.setPlayerPath(Conf.PLAYER_LIB[i])
-        # t2task.setDataRecord(recorder)
-        # manager.addTask(t2task)
+    # manager = TaskManager()
+    # t2task = ApolloT2AndMemoryTestTask()
+    # t2task.setDataRecord(recorder)
+    # manager.addTask(t2task)
+
+    playerCount = Conf.PLAYER_COUNT
+    if Conf.PLAYER_COUNT > len(Conf.PLAYER_LIB):
+        playerCount = len(Conf.PLAYER_LIB)
+    for i in range(playerCount):
+        TaskLogger.infoLog("===========ADD TASK {}===========".format(0))
+        t2task = ApolloT2AndMemoryTestTask()
+        t2task.setPlayerPath(Conf.PLAYER_LIB[i])
+        t2task.setDataRecord(recorder)
+        manager.addTask(t2task)
  
-#t2task = ApolloT2AndMemoryTestTask()
-        # t2task = ApolloT1TestTask()
-        # t2task.setPlayerPath(Conf.PLAYER_LIB[i])
-        # t2task.setDataRecord(recorder)
-        # manager.addTask(t2task)
+        # t2task = ApolloT2AndMemoryTestTask()
+        # t1task = ApolloT1TestTask()
+        # t1task.setPlayerPath(Conf.PLAYER_LIB[i])
+        # t1task.setDataRecord(recorder)
+        # manager.addTask(t1task)
 
-        # t2task = None
+        # t1task = None
 
     # cdCount = Conf.CD_COUNT
     # if Conf.CD_COUNT > len(Conf.CD_PARAM):
@@ -194,8 +203,9 @@ if __name__ == '__main__':
             recorder.onComplete()
 
             TaskLogger.infoLog('===========GENERATE RESULT===========')
+            TaskLogger.debugLog(recorder.getRecordPath())
             ret = CSVRecorder()
-            ret.loadData(recorder.getRecordPath)
+            ret.loadData(recorder.getRecordPath())
             rg = ResultGenerator()
             rg.generateResult(ret)
             pass

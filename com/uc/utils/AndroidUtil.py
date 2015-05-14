@@ -90,7 +90,7 @@ def getPid():
 
 
 def getCpuUsage(pid):
-    cmd = 'adb shell su -c \'top -d 1 -n 1\' | grep \'%s\\s\'' % pid
+    cmd = 'adb shell su -c \'top -d 0 -n 1\' | grep \'%s\\s\'' % pid
     # TaskLogger.debugLog(cmd)
     return os.popen(cmd).read().strip()
 

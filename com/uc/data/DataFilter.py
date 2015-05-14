@@ -88,14 +88,16 @@ class Normalize(EmptyFilter):
             maxValue = avg + sdev
             minValue = avg - sdev
             data.addDataExtra(dataType, key, 'avg', avg)
-            # data.addDataExtra(dataType, key, 'stddev', sdev)
+
+            removeList = []
             count = 0
             for value in caseData.data:
                 floatValue = float(value)
                 if floatValue > maxValue or floatValue < minValue:
-                    # TaskLogger.debugLog('remove %s' % value)
+                    removeList.append(value)
                     count += 1
-                    caseData.data.remove(value)
+            for value in removeList:
+                caseData.data.remove(value)
             data.addDataExtra(dataType, key, 'NOR', count)
 
 

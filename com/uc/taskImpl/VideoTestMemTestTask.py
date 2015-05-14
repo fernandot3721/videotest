@@ -4,34 +4,34 @@ from time import sleep
 
 from com.uc.conf import Conf
 from com.uc.task.AbstractVideoTask import AbstractVideoTask
-from com.uc.utils import MXPlayerUtil
+from com.uc.utils import VideoTestUtil
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.data.DataRecord import DataRecord
 
 
-class MXPlayerMemTestTask(AbstractVideoTask):
-    urlList = Conf.MX_MEMORY_URL
+class VideoTestMemTestTask(AbstractVideoTask):
+    urlList = Conf.VT_MEMORY_URL
 
     def __init__(self):
-        super(MXPlayerMemTestTask, self).__init__()
-        self.loopCount = Conf.LOOP_TIME_MX_M
-        self.setTitle(Conf.TASK_TYPE[5])
-        self.keyevents = Conf.MX_MEMORY_KEYEVENT
+        super(VideoTestMemTestTask, self).__init__()
+        self.loopCount = Conf.LOOP_TIME_VT_M
+        self.setTitle(Conf.TASK_TYPE[6])
         self.ignore = False
         self.logMemory = False
+        self.keyevents = Conf.APOLLO_T1_KEYWORD
 
     def doTest(self):
         print("STARTUP MXPLAYER")
         self.dataRecord.\
-            onData(self, DataRecord.TYPE_EXTRA, 'TASK_TYPE', Conf.TASK_TYPE[5])
+            onData(self, DataRecord.TYPE_EXTRA, 'TASK_TYPE', Conf.TASK_TYPE[6])
         self.logMemory = True
-        MXPlayerUtil.launchBrowser()
+        # MXPlayerUtil.launchBrowser()
 
-        sleep(Conf.WAIT_TIME)
+        # sleep(Conf.WAIT_TIME)
 
         TaskLogger.normalLog("PLAY VIDEO:")
         TaskLogger.detailLog(self.urlList[self.currentCategory])
-        MXPlayerUtil.openURI(self.urlList[self.currentCategory])
+        VideoTestUtil.openURI(self.urlList[self.currentCategory])
 
         myloop = 0
         while True:
@@ -56,7 +56,7 @@ class MXPlayerMemTestTask(AbstractVideoTask):
 
         self.logMemory = False
         print("SHUTDOWN MXPLAYER")
-        MXPlayerUtil.closeBrowser()
+        VideoTestUtil.closeBrowser()
         sleep(Conf.WAIT_TIME)
 
     def onTimingKeyDetected(self, key, value, type=None):
@@ -68,7 +68,7 @@ class MXPlayerMemTestTask(AbstractVideoTask):
         if self.hasStartPlay:
             return
         TaskLogger.debugLog('###########onEventDetected: %s %s' % (event, time))
-        if 'start' in event:
+        if 'mov_seg_dur' in event:
             self.hasStartPlay = True
 
     def getKeyevents(self):

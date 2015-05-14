@@ -8,8 +8,9 @@ Created on 2015年1月22日
 '''
 import os
 
-PACKAGE_NAME = 'com.mxtech.videoplayer.ad'
-# PACKAGE_NAME = 'com.UCMobile.apollo'
+# PACKAGE_NAME = 'com.mxtech.videoplayer.ad'
+# PACKAGE_NAME = 'com.example.videoviewtest'
+PACKAGE_NAME = 'com.UCMobile'
 ACTIVITE_NAME = 'com.UCMobile.main.UCMobile'
 WAIT_TIME = 15
 EXTTOOLS_PATH = os.getcwd() + os.sep + 'ext_tools'
@@ -26,9 +27,11 @@ LOOP_TIME_T1 = 50
 LOOP_TIME_T2 = 1
 LOOP_TIME_T2_M = 1
 LOOP_TIME_MX_M = 1
+LOOP_TIME_VT_M = 1
 PLAYER_COUNT = 2
 PLAYER_LIB = [
-                '/home/tangjp/work/vr/apolloso/3.3.3.333/',
+                '/home/tangjp/work/vr/apolloso/2.4.2.148/',
+                '/home/tangjp/work/vr/apolloso/2.3.0.999/',
                 '/home/tangjp/work/vr/apolloso/2.2.1.137/',
                 '/home/tangjp/work/vr/apolloso/2.2.0.129/',
                 '/home/tangjp/work/vr/apolloso/2.2.0.128/',
@@ -53,16 +56,18 @@ DETAIL_LOG = True
 ERROR_LOG = True
 NORMAL_LOG = True
 FILE_LOG = True
-HARDCODE_APOLLO = True
+HARDCODE_APOLLO = False
 TASK_LOG_PATH = '/opt/lampp/htdocs/videotest/log/'
 # LOGGER_LEVEL = DEBUG_LOG
-TASK_TYPE = ['CORE-T1', 'APOLLO_T1', 'MEMEROY', 'APOLLO_T2', 'APOLLO_T2_MEM', 'MXPLAYER_MEM']
+TASK_TYPE = ['CORE-T1', 'APOLLO_T1', 'MEMEROY', 'APOLLO_T2', 'APOLLO_T2_MEM', 'MXPLAYER_MEM', 'VIDEOTEST_MEM']
 FILTERS = {
     'CORE-T1': ['Count', 'CutPeak', 'Average'],
     'APOLLO_T1': ['Count', 'Normalize'],
     'MEMEROY': ['Average'],
     'APOLLO_T2': ['Count', 'Average'],
-    'APOLLO_T2_MEM': ['Count'], 
+    'APOLLO_T2_MEM': ['Count'],
+    'MXPLAYER_MEM': ['Count', 'Normalize'],
+    'VIDEOTEST_MEM': ['Count', 'Normalize'],
     }
 
 CORE_T1_URL= {#'50_l': SEVER_ADDRESS + "t1_50k/test_video_long.html",
@@ -114,6 +119,12 @@ MEMORY_URL= {
 MX_MEMORY_URL= {
         '480-mp4-': "file:///storage/emulated/0/480_272_171Kbps_15fps_986362.mp4",
         '1280-mp4-': "file:///storage/emulated/0/1280_584_2577Kbps.mp4",
+        'super-m3u8-': SEVER_ADDRESS + "t1Test/m3u8/super/index.m3u8",
+    }
+
+VT_MEMORY_URL= {
+        # '480-mp4-': "file:///storage/emulated/0/480_272_171Kbps_15fps_986362.mp4",
+        # '1280-mp4-': "file:///storage/emulated/0/1280_584_2577Kbps.mp4",
         'super-m3u8-': SEVER_ADDRESS + "t1Test/m3u8/super/index.m3u8",
     }
 

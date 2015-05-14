@@ -44,7 +44,7 @@ class ApolloT2AndMemoryTestTask(AbstractVideoTask):
             sleep(1)
             if self.hasStartPlay is True:
                 break
-            elif myloop == 20 or myloop == 40 or myloop == 60:
+            elif myloop == 60:
                 BrowserUtils.fresh()
                 TaskLogger.detailLog('refresh')
             elif myloop > 100:
