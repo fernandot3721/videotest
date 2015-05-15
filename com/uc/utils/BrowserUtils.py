@@ -26,7 +26,7 @@ def setCDParams(key=None, value=None):
     if (not key) or (not value):
         return
 
-    extToolsPath = Conf.EXTTOOLS_PATH
+    extToolsPath = 'ext_tools'
     confPath = os.path.abspath("./confg.ini")
     jarPath = os.path.abspath(extToolsPath + "/editCDout.jar")
     paramStr = key+'='+value
