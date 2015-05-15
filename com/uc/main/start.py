@@ -84,10 +84,9 @@ if __name__ == '__main__':
     # recorder.onComplete()
 
     # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-test.csv')
-    recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1505112125.csv')
-    recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1505121614.csv')
-    recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1505131039.csv')
-
+    # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1505112125.csv')
+    # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1505121614.csv')
+    # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1505131039.csv')
 
     # filter = DataFilter()
     # # memtask = MemoryTestTask()
@@ -120,6 +119,8 @@ if __name__ == '__main__':
     # recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'privateDirty', '3000')
     # recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'privateDirty', '2000')
     # recorder.onComplete()
+
+    recorder.loadData('/home/tangjp/work/test/record-1505142012.csv')
     rg = ResultGenerator()
     rg.generateResult(recorder)
     raise Exception("end")
@@ -138,25 +139,45 @@ if __name__ == '__main__':
     #     TaskLogger.debugLog('false')
 
     manager = TaskManager()
+    mxtask = MXPlayerMemTestTask()
+    mxtask.setPackage('com.mxtech.videoplayer.ad')
+    mxtask.setActivity('.ActivityScreen')
     # mxtask = VideoTestMemTestTask()
-    # mxtask.setDataRecord(recorder)
-    # manager.addTask(mxtask)
-
-    # manager = TaskManager()
-    # t2task = ApolloT2AndMemoryTestTask()
-    # t2task.setDataRecord(recorder)
-    # manager.addTask(t2task)
+    # mxtask.setPackage('com.example.videoviewtest')
+    # mxtask.setActivity('.MainActivity')
+    mxtask.setDataRecord(recorder)
+    manager.addTask(mxtask)
 
     playerCount = Conf.PLAYER_COUNT
     if Conf.PLAYER_COUNT > len(Conf.PLAYER_LIB):
         playerCount = len(Conf.PLAYER_LIB)
     for i in range(playerCount):
         TaskLogger.infoLog("===========ADD TASK {}===========".format(0))
-        t2task = ApolloT2AndMemoryTestTask()
-        t2task.setPlayerPath(Conf.PLAYER_LIB[i])
-        t2task.setDataRecord(recorder)
-        manager.addTask(t2task)
- 
+        mxtask = VideoTestMemTestTask()
+        mxtask.setPlayerPath(Conf.PLAYER_LIB[i])
+        mxtask.setPackage('com.example.videoviewtest')
+        mxtask.setActivity('.MainActivity')
+        mxtask.setPlayerType(3)
+        mxtask.setDataRecord(recorder)
+        manager.addTask(mxtask)
+
+
+    # manager = TaskManager()
+    # t2task = ApolloT2AndMemoryTestTask()
+    # t2task.setDataRecord(recorder)
+    # manager.addTask(t2task)
+
+    # playerCount = Conf.PLAYER_COUNT
+    # if Conf.PLAYER_COUNT > len(Conf.PLAYER_LIB):
+    #     playerCount = len(Conf.PLAYER_LIB)
+    # for i in range(playerCount):
+    #     TaskLogger.infoLog("===========ADD TASK {}===========".format(0))
+    #     t2task = ApolloT2AndMemoryTestTask()
+    #     t2task.setPlayerType(1)  # for hardcode uc
+    #     t2task.setPlayerPath(Conf.PLAYER_LIB[i])
+    #     t2task.setDataRecord(recorder)
+    #     manager.addTask(t2task)
+
         # t2task = ApolloT2AndMemoryTestTask()
         # t1task = ApolloT1TestTask()
         # t1task.setPlayerPath(Conf.PLAYER_LIB[i])
@@ -191,7 +212,7 @@ if __name__ == '__main__':
     #     memtask.setDataRecord(recorder)
     #     manager.addTask(memtask)
     #     memtask = None
-
+    result = 1
     try:
         TaskLogger.infoLog('===========TEST START===========')
         result = manager.startTest()

@@ -105,8 +105,6 @@ APOLLO_T2_M_URL= {
         'ol-mp4-hd-200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_2577Kbps.html",
         'ol-m3u8-hd': SEVER_ADDRESS + "t1Test/m3u8/m3u8_super.html",
         'ol-m3u8-hd-200': SEVER_ADDRESS + "t1Test_200k/m3u8/m3u8_super.html",
-        'movie_new': SEVER_ADDRESS + 't1Test/mp4/t1Test_850_480_720Kbps.html',
-        'movie_new_200': SEVER_ADDRESS + 't1Test_200k/mp4/t1Test_850_480_720Kbps.html',
     }
 
 MEMORY_URL= {
@@ -123,8 +121,8 @@ MX_MEMORY_URL= {
     }
 
 VT_MEMORY_URL= {
-        # '480-mp4-': "file:///storage/emulated/0/480_272_171Kbps_15fps_986362.mp4",
-        # '1280-mp4-': "file:///storage/emulated/0/1280_584_2577Kbps.mp4",
+        '480-mp4-': "file:///storage/emulated/0/480_272_171Kbps_15fps_986362.mp4",
+        '1280-mp4-': "file:///storage/emulated/0/1280_584_2577Kbps.mp4",
         'super-m3u8-': SEVER_ADDRESS + "t1Test/m3u8/super/index.m3u8",
     }
 

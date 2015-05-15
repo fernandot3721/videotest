@@ -18,8 +18,8 @@ class AdbTimingMonitor(LogMonitor):
         while not self.isStop:
             try:
                 # monito uss
-                uss = float(AndroidUtil.getPrivateDirty())/1024  # N4
-                # uss = float(AndroidUtil.getPrivateClean())/1024  # SAMSUM
+                uss = float(AndroidUtil.getPrivateDirty(self.package))/1024  # N4
+                # uss = float(AndroidUtil.getPrivateClean(self.package))/1024  # SAMSUM
                 # monitor memfree
                 MemFree = float(AndroidUtil.getRealMemfree())/1024
 
@@ -31,7 +31,7 @@ class AdbTimingMonitor(LogMonitor):
 
             try:
                 # monitor cpu
-                cpu = AndroidUtil.getCpu()
+                cpu = AndroidUtil.getCpu(self.package)
                 self.handler.onTimingKeyDetected('Cpu', cpu, 'CPU')
             except:
                 # TaskLogger.debugLog('parse cpu failed')

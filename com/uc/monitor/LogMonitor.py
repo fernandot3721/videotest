@@ -9,17 +9,25 @@ from com.uc.utils.TaskLogger import TaskLogger
 
 class LogMonitor(threading.Thread):
 
-    def __init__(self):
+    def __init__(self, package=None, activity=None):
         threading.Thread.__init__(self)
         self.isRunning = True
         self.handler = None
         self.isStop = False
+        self.package = package
+        self.activity = activity
 
     def isRunning(self):
         return self.__isRunning
 
     def setHandler(self, handler):
         self.handler = handler
+
+    def setActivity(self, activity):
+        self.activity = activity
+
+    def setPackage(self, package):
+        self.package = package
 
     def run(self):
         self.isRunning = True

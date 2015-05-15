@@ -19,8 +19,10 @@ class MXPlayerMemTestTask(AbstractVideoTask):
         self.keyevents = Conf.MX_MEMORY_KEYEVENT
         self.ignore = False
         self.logMemory = False
+        self.testTime = 600
 
     def doTest(self):
+        MXPlayerUtil.closeBrowser()
         print("STARTUP MXPLAYER")
         self.dataRecord.\
             onData(self, DataRecord.TYPE_EXTRA, 'TASK_TYPE', Conf.TASK_TYPE[5])
@@ -46,10 +48,11 @@ class MXPlayerMemTestTask(AbstractVideoTask):
         # 等待视频播起来
         myloop = 0
         TaskLogger.detailLog('play sucess')
-        self.logMemory = True
+        # self.logMemory = True
+        TaskLogger.detailLog('test run for %s seconds' % self.testTime)
         while True:
             sleep(1)
-            if myloop > 180:
+            if myloop > self.testTime:
                 TaskLogger.detailLog('play complete')
                 break
             myloop += 1

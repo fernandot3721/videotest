@@ -25,6 +25,25 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
     def setPlayerPath(self, playPath):
         self.playPath = playPath
 
+    def setPlayerType(self, pType):
+        self.playerType = pType
+        # 0 for uc
+        # 1 for hardcode uc
+        # 2 for use default
+        # 3 for videotest
+
+    def setActivity(self, activity):
+        self.activity = activity
+
+    def setPackage(self, package):
+        self.package = package
+
+    def getActivity(self):
+        return self.activity
+
+    def getPackage(self):
+        return self.package
+
     def getCurrentReultList(self):
         return self.keyValue.get(self.currentCategory)
 
@@ -48,6 +67,9 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
         self.playPath = ""
         self.dataRecord = None
         self.playerVersion = ""
+        self.playerType = 0
+        self.activity = None
+        self.package = None
 
     def initTest(self, i):
         # 每次测试之前做一下初始化
@@ -64,14 +86,15 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
     def dataInit(self):
         TaskLogger.infoLog("===========SWITCH PLAYER LIB===========")
         TaskLogger.normalLog("player path is: %s" % self.playPath)
-        if Conf.HARDCODE_APOLLO:
-            AndroidUtil.switchHardCodeApollo(self.playPath)
-        else:
+        if self.playerType == 0:
             AndroidUtil.switchApollo(self.playPath)
-        # match = re.search(r'\d\.\d+', self.playPath)
-        # libName = match.group(0)
-        # TaskLogger.errorLog('&&&&&&&&&&&&&&&&&libName: {}'.format(libName))
-        # self.setTitle('{}-{}'.format(libName, self.title))
+        elif self.playerType == 1:
+            AndroidUtil.switchHardCodeApollo(self.playPath)
+        elif self.playerType == 3:
+            # switch for video test
+            AndroidUtil.switchVideoTestApollo(self.playPath)
+            pass
+
         for key in self.urlList.keys():
             self.keyValue[key] = []
 
@@ -102,7 +125,7 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
 
     def setCD(self, key, value):
         self.cdkey[key] = value
-        TaskLogger.errorLog('set param %s to %s' % (key, value))
+        TaskLogger.detailLog('set param %s to %s' % (key, value))
         self.setTitle('%s_%s_%s' % (self.title, key, value))
 
     def setPlayerVersion(self, version):
@@ -110,7 +133,7 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
             self.playerVersion = version
             self.playDetected = True
             self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, 'PLAYER_VERSION', version)
-            TaskLogger.errorLog('player version is: %s' % self.playerVersion)
+            TaskLogger.detailLog('player version is: %s' % self.playerVersion)
             self.setTitle('{}_{}'.format(self.title, self.playerVersion))
 
     def onVideoStartPlay(self):

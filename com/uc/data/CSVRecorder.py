@@ -24,8 +24,7 @@ class CSVRecorder(DataRecord):
         return self.taskData.values()
 
     def onData(self, task, dtype, key, value, rtype=None):
-        TaskLogger.\
-            detailLog('onData: %s, %s, %s, %s, %s' % (task, dtype, key, value, rtype))
+        # TaskLogger.detailLog('onData: %s, %s, %s, %s, %s' % (task, dtype, key, value, rtype))
         if task not in self.taskData:  # init
             # TaskLogger.debugLog('record: %s' % task)
             self.taskData[task] = TaskData()

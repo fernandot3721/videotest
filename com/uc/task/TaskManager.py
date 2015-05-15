@@ -38,6 +38,8 @@ class TaskManager:
                 self.meminfoThread.setHandler(task)
                 self.logcatThread.init()
                 self.meminfoThread.init()
+                self.meminfoThread.setActivity(task.getActivity())
+                self.meminfoThread.setPackage(task.getPackage())
                 task.run()
             return 0
         except:
