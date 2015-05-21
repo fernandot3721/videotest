@@ -104,7 +104,7 @@ APOLLO_T2_URL= {
 APOLLO_SEEK_URL= {
         'ol-mp4-normal': SEVER_ADDRESS + "t1Test/video_seek_test.html?" + "mp4/480_272_171Kbps_15fps_986362.mp4",
         'ol-mp4-hd': SEVER_ADDRESS + "t1Test/video_seek_test.html?" + "mp4/1280_584_2577Kbps.mp4",
-        # 'ol-m3u8-hd': SEVER_ADDRESS + "t1Test/video_seek_test.html?" + "super/index.m3u8",
+        'ol-m3u8-hd': SEVER_ADDRESS + "t1Test/video_seek_test.html?" + "m3u8/super/index.m3u8",
     }
 
 APOLLO_T2_M_URL= {
