@@ -12,7 +12,7 @@ import os
 # PACKAGE_NAME = 'com.example.videoviewtest'
 PACKAGE_NAME = 'com.UCMobile'
 ACTIVITE_NAME = 'com.UCMobile.main.UCMobile'
-WAIT_TIME = 15
+WAIT_TIME = 3
 EXTTOOLS_PATH = os.getcwd() + os.sep + 'ext_tools'
 # SEVER_ADDRESS = "http://100.84.35.173:8080/"
 SEVER_ADDRESS = "http://192.168.0.4/"
@@ -25,6 +25,7 @@ HTML_TEMPLATE = os.getcwd() + os.sep + 'template' + os.sep + 'tableTemplate.html
 LOOP_TIME = 1
 LOOP_TIME_T1 = 50
 LOOP_TIME_T2 = 1
+LOOP_TIME_SEEK = 1
 LOOP_TIME_T2_M = 1
 LOOP_TIME_MX_M = 1
 LOOP_TIME_VT_M = 1
@@ -59,7 +60,7 @@ FILE_LOG = True
 HARDCODE_APOLLO = False
 TASK_LOG_PATH = '/opt/lampp/htdocs/videotest/log/'
 # LOGGER_LEVEL = DEBUG_LOG
-TASK_TYPE = ['CORE-T1', 'APOLLO_T1', 'MEMEROY', 'APOLLO_T2', 'APOLLO_T2_MEM', 'MXPLAYER_MEM', 'VIDEOTEST_MEM']
+TASK_TYPE = ['CORE-T1', 'APOLLO_T1', 'MEMEROY', 'APOLLO_T2', 'APOLLO_T2_MEM', 'MXPLAYER_MEM', 'VIDEOTEST_MEM', 'APOLLO_SEEK']
 FILTERS = {
     'CORE-T1': ['Count', 'CutPeak', 'Average'],
     'APOLLO_T1': ['Count', 'Normalize'],
@@ -68,6 +69,7 @@ FILTERS = {
     'APOLLO_T2_MEM': ['Count'],
     'MXPLAYER_MEM': ['Count', 'Normalize'],
     'VIDEOTEST_MEM': ['Count', 'Normalize'],
+    'APOLLO_SEEK': ['Count', 'Normalize'],
     }
 
 CORE_T1_URL= {#'50_l': SEVER_ADDRESS + "t1_50k/test_video_long.html",
@@ -97,6 +99,12 @@ APOLLO_T2_URL= {
         'tv_200': SEVER_ADDRESS + "t1Test_200k/mp4/t1Test_1203Kbps.html",
         # 'movie_new': SEVER_ADDRESS + 't1Test/mp4/t1Test_850_480_720Kbps.html',
         # 'movie_new_200': SEVER_ADDRESS + 't1Test_200k/mp4/t1Test_850_480_720Kbps.html',
+    }
+
+APOLLO_SEEK_URL= {
+        'ol-mp4-normal': SEVER_ADDRESS + "t1Test/video_seek_test.html?" + "mp4/480_272_171Kbps_15fps_986362.mp4",
+        'ol-mp4-hd': SEVER_ADDRESS + "t1Test/video_seek_test.html?" + "mp4/1280_584_2577Kbps.mp4",
+        # 'ol-m3u8-hd': SEVER_ADDRESS + "t1Test/video_seek_test.html?" + "super/index.m3u8",
     }
 
 APOLLO_T2_M_URL= {
@@ -138,6 +146,12 @@ MEMORY_KEYWORD = {
         'MemFree:': 'kB',
         }
 APOLLO_T2_KEYEVENT = {
+        't1': '>>> nativeCreateInstance',
+        'seek': 'jni nativeSeekTo',
+        't2': 'MediaPlayerInstance::onBufferingStateUpdate() 1',
+        'play': 'play(). isPlaying = 0',
+        }
+APOLLO_SEEK_KEYEVENT = {
         't1': '>>> nativeCreateInstance',
         'seek': 'jni nativeSeekTo',
         't2': 'MediaPlayerInstance::onBufferingStateUpdate() 1',

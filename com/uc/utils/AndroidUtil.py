@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 import os
+import re
 from com.uc.conf import Conf
 from com.uc.utils import BrowserUtils
 from time import sleep
@@ -202,6 +203,39 @@ def testMemfree():
     else:
         TaskLogger.errorLog('MemFree detection is NOT reliable!')
         return False
+
+
+def pressplaybutton():
+    pointx = 0
+    pointy = 0
+
+    width = getscreenwidth()
+    if width > 720 and width < 800:
+        pointx = 384
+        pointy = 400
+
+    elif width > 1080 and width < 1200:
+        pointx = 540
+        pointy = 520
+
+    TaskLogger.debugLog('x: %s, y: %s' % (pointx, pointy))
+    if pointx & pointy:
+        TaskLogger.debugLog('tab play: %s %s' % (pointx, pointy))
+        os.popen("adb shell input tap %s %s" % (pointx, pointy))
+
+
+def getscreenwidth():
+    width = re.findall("(?<=init=)\d*", os.popen("adb shell dumpsys window displays").read())[0]
+    TaskLogger.debugLog('getscreenwidth %s' % width)
+    return int(width)
+
+
+def getscreenheight():
+    width = getscreenwidth()
+    TaskLogger.debugLog('getscreenheight %s' % width)
+    height = re.findall("(?<=%s.)\d*" % width, os.popen("adb shell dumpsys window displays").read())[0]
+    return int(height)
+
 
 # def testApollo():
 #   videoPath = Conf.SEVER_ADDRESS + "t1_200k/test_video_short.html"

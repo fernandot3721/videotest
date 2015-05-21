@@ -11,6 +11,7 @@ from com.uc.task.TaskManager import TaskManager
 from com.uc.taskImpl.CoreT1TestTask import CoreT1TestTask
 from com.uc.taskImpl.ApolloT1TestTask import ApolloT1TestTask
 from com.uc.taskImpl.ApolloT2TestTask import ApolloT2TestTask
+from com.uc.taskImpl.ApolloSeekTestTask import ApolloSeekTestTask
 from com.uc.taskImpl.ApolloT2AndMemoryTestTask import ApolloT2AndMemoryTestTask
 from com.uc.taskImpl.MXPlayerMemTestTask import MXPlayerMemTestTask
 from com.uc.taskImpl.VideoTestMemTestTask import VideoTestMemTestTask
@@ -120,10 +121,10 @@ if __name__ == '__main__':
     # recorder.onData(memtask, CSVRecorder.TYPE_TIMING, 'privateDirty', '2000')
     # recorder.onComplete()
 
-    recorder.loadData('/home/tangjp/work/test/record-1505142012.csv')
-    rg = ResultGenerator()
-    rg.generateResult(recorder)
-    raise Exception("end")
+    # recorder.loadData('/home/tangjp/work/test/record-1505191544.csv')
+    # rg = ResultGenerator()
+    # rg.generateResult(recorder)
+    # raise Exception("end")
 
     # AndroidUtil.switchApollo('/home/tangjp/work/vr/apolloso/2.2.0.128/')
     # result = AndroidUtil.getPrivateDirty()
@@ -139,25 +140,25 @@ if __name__ == '__main__':
     #     TaskLogger.debugLog('false')
 
     manager = TaskManager()
-    mxtask = MXPlayerMemTestTask()
-    mxtask.setPackage('com.mxtech.videoplayer.ad')
-    mxtask.setActivity('.ActivityScreen')
+    # mxtask = MXPlayerMemTestTask()
+    # mxtask.setPackage('com.mxtech.videoplayer.ad')
+    # mxtask.setActivity('.ActivityScreen')
     # mxtask = VideoTestMemTestTask()
     # mxtask.setPackage('com.example.videoviewtest')
     # mxtask.setActivity('.MainActivity')
-    mxtask.setDataRecord(recorder)
-    manager.addTask(mxtask)
+    # mxtask.setDataRecord(recorder)
+    # manager.addTask(mxtask)
 
     playerCount = Conf.PLAYER_COUNT
     if Conf.PLAYER_COUNT > len(Conf.PLAYER_LIB):
         playerCount = len(Conf.PLAYER_LIB)
     for i in range(playerCount):
         TaskLogger.infoLog("===========ADD TASK {}===========".format(0))
-        mxtask = VideoTestMemTestTask()
+        mxtask = ApolloSeekTestTask()
         mxtask.setPlayerPath(Conf.PLAYER_LIB[i])
-        mxtask.setPackage('com.example.videoviewtest')
-        mxtask.setActivity('.MainActivity')
-        mxtask.setPlayerType(3)
+        # mxtask.setPackage('com.example.videoviewtest')
+        # mxtask.setActivity('.MainActivity')
+        # mxtask.setPlayerType(3)
         mxtask.setDataRecord(recorder)
         manager.addTask(mxtask)
 
