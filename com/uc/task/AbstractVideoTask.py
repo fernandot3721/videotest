@@ -2,7 +2,7 @@
 from abc import abstractmethod
 
 from com.uc.utils.TaskLogger import TaskLogger
-from com.uc.conf import Conf
+from com.uc.conf import GConf
 from com.uc.utils import AndroidUtil
 from com.uc.utils.BrowserUtils import setCDParams
 from com.uc.monitor.LogcatHandler import LogcatHandler
@@ -45,19 +45,18 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
         return self.package
 
     def getCurrentReultList(self):
-        return self.keyValue.get(self.currentCategory)
+        return self.urlList
 
     def setTitle(self, titleStr):
         self.title = titleStr
 
     def __init__(self):
-        self.loopCount = Conf.LOOP_TIME
+        self.loopCount = GConf.getCaseInt('LOOP_TIME')
         self.currentLoopIndex = 0
         self.hasComplatePlay = False
         self.hasStartPlay = False
         self.valueCount = 0
-        self.currentCategory = ""
-        self.currentCategoryIndex = 0
+        self.caseIndex = 0
         self.title = ""
         self.keyValue = {}
         self.cdkey = {}
@@ -79,8 +78,7 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
 
         self.hasComplatePlay = False
         self.hasStartPlay = False
-        self.currentCategoryIndex = i
-        self.currentCategory = self.urlList.keys()[i]
+        self.caseIndex = i
         return True
 
     def dataInit(self):
@@ -90,12 +88,12 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
             AndroidUtil.switchApollo(self.playPath)
         elif self.playerType == 1:
             AndroidUtil.switchHardCodeApollo(self.playPath)
-        elif self.playerType == 3:
+        elif self.playerType == 2:
             # switch for video test
             AndroidUtil.switchVideoTestApollo(self.playPath)
             pass
 
-        for key in self.urlList.keys():
+        for key in self.urlList:
             self.keyValue[key] = []
 
         TaskLogger.infoLog("===========SET CD PARAM===========")

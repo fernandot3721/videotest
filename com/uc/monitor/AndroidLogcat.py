@@ -1,9 +1,11 @@
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.monitor.LogMonitor import LogMonitor
-from com.uc.conf import Conf
+from com.uc.conf import GConf
 
 import shlex
 import subprocess
+import traceback
+import sys
 
 
 class AndroidLogcat(LogMonitor):
@@ -13,7 +15,7 @@ class AndroidLogcat(LogMonitor):
         self.keywords = []
         self.keyevents = []
         self.startPlayKey = ''
-        self.playerVerKey = ''
+        self.playerVerKey = ('[apollo', ']')
         pass
 
     def doMonitor(self):
@@ -28,18 +30,27 @@ class AndroidLogcat(LogMonitor):
                 self.onRead(line)
                 if self.isStop:
                     popen.terminate()
-            except Exception as e:
-                TaskLogger.errorLog(e)
+            # except Exception as e:
+            except:
+                exc_type, exc_value, exc_traceback = sys.exc_info()
+                TaskLogger.errorLog("Exception: {}".format(exc_value))
+                TaskLogger.errorLog("#######STACK TRACE:")
+                traceback.print_tb(exc_traceback)
+                # TaskLogger.errorLog(e)
         pass
 
     def init(self):
+        # call by task manager in constructor
         self.keywords = self.handler.getKeywords()
         self.keyevents = self.handler.getKeyevents()
-        self.startPlayKey = Conf.START_PLAY_TAG
-        self.playerVerKey = Conf.PLAYER_VERSION_TAG
+        self.startPlayKey = 'mov_seg_dur T1'
         pass
 
     def onRead(self, line):
+        if self.handler is None:
+            TaskLogger.debugLog('handler not init')
+            return
+
         if self.startPlayKey in line:
             self.handler.onVideoStartPlay()
 

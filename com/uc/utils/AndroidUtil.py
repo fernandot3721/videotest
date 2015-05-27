@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 import os
-from com.uc.conf import Conf
+from com.uc.conf import GConf
 from com.uc.utils import BrowserUtils
 from time import sleep
 from com.uc.utils.TaskLogger import TaskLogger
@@ -14,14 +14,14 @@ def switchApollo(pathFrom):
         return
     TaskLogger.normalLog("switchApollo")
     BrowserUtils.closeBrowser()
-    sleep(Conf.WAIT_TIME)
+    sleep(GConf.getCaseInt('WAIT_TIME'))
 
     libffmpeg = 'libffmpeg.so'
     libu3player = 'libu3player.so'
     # pathFrom = ' /home/tangjp/work/vr/apolloso/2.8.8.888/'
     pathTmp = '/sdcard/UCDownloads/'
-    pathTo1 = '/data/data/{}/apollo1/'.format(Conf.PACKAGE_NAME)
-    pathTo2 = '/data/data/{}/apollo2/'.format(Conf.PACKAGE_NAME)
+    pathTo1 = '/data/data/{}/apollo1/'.format(GConf.getCase('PACKAGE_NAME'))
+    pathTo2 = '/data/data/{}/apollo2/'.format(GConf.getCase('PACKAGE_NAME'))
 
     pushffInCmd = "adb push %s%s %s%s" % \
         (pathFrom, libffmpeg, pathTmp, libffmpeg)
@@ -42,13 +42,13 @@ def switchApollo(pathFrom):
     os.system(pushu3InCmd)
     TaskLogger.normalLog(mvffInCmd1)
     os.system(mvffInCmd1)
-    sleep(Conf.WAIT_TIME)
+    sleep(GConf.getCaseInt('WAIT_TIME'))
     TaskLogger.normalLog(mvu3InCmd1)
     os.system(mvu3InCmd1)
-    sleep(Conf.WAIT_TIME)
+    sleep(GConf.getCaseInt('WAIT_TIME'))
     TaskLogger.normalLog(mvffInCmd2)
     os.system(mvffInCmd2)
-    sleep(Conf.WAIT_TIME)
+    sleep(GConf.getCaseInt('WAIT_TIME'))
     TaskLogger.normalLog(mvu3InCmd2)
     os.system(mvu3InCmd2)
     pass
@@ -60,13 +60,13 @@ def switchHardCodeApollo(pathFrom):
         return
     TaskLogger.normalLog("switchHardCodeApollo")
     BrowserUtils.closeBrowser()
-    sleep(Conf.WAIT_TIME)
+    sleep(GConf.getCaseInt('WAIT_TIME'))
 
     libffmpeg = 'libffmpeg.so'
     libu3player = 'libu3player.so'
     # pathFrom = ' /home/tangjp/work/vr/apolloso/2.8.8.888/'
     pathTmp = '/sdcard/UCDownloads/'
-    pathTo = '/data/data/{}/lib/'.format(Conf.PACKAGE_NAME)
+    pathTo = '/data/data/{}/lib/'.format(GConf.getCase('PACKAGE_NAME'))
 
     pushffInCmd = "adb push %s%s %s%s" % \
         (pathFrom, libffmpeg, pathTmp, libffmpeg)
@@ -83,7 +83,7 @@ def switchHardCodeApollo(pathFrom):
     os.system(pushu3InCmd)
     TaskLogger.normalLog(mvffInCmd)
     os.system(mvffInCmd)
-    sleep(Conf.WAIT_TIME)
+    sleep(GConf.getCaseInt('WAIT_TIME'))
     TaskLogger.normalLog(mvu3InCmd)
     os.system(mvu3InCmd)
     pass
@@ -95,7 +95,7 @@ def switchVideoTestApollo(pathFrom):
         return
     TaskLogger.normalLog("switchVideoTestApollo")
     VideoTestUtil.closeBrowser()
-    sleep(Conf.WAIT_TIME)
+    sleep(GConf.getCaseInt('WAIT_TIME'))
 
     libffmpeg = 'libffmpeg.so'
     libu3player = 'libu3player.so'
@@ -118,7 +118,7 @@ def switchVideoTestApollo(pathFrom):
     os.system(pushu3InCmd)
     TaskLogger.normalLog(mvffInCmd)
     os.system(mvffInCmd)
-    sleep(Conf.WAIT_TIME)
+    sleep(GConf.getCaseInt('WAIT_TIME'))
     TaskLogger.normalLog(mvu3InCmd)
     os.system(mvu3InCmd)
     pass
@@ -126,8 +126,7 @@ def switchVideoTestApollo(pathFrom):
 
 def getPid(package):
     if package is None:
-        package = Conf.PACKAGE_NAME
-    # cmd = 'adb shell ps | tr \"\\r\\n\" \"\\n\" | grep "%s\%"' % Conf.PACKAGE_NAME
+        package = GConf.getCase('PACKAGE_NAME')
     cmd = 'adb shell ps | tr \"\\r\\n\" \"\\n\" | grep "%s$" | awk \'{print $2}\'' % package
     # TaskLogger.debugLog(cmd)
     return os.popen(cmd).read().strip()
@@ -141,14 +140,14 @@ def getCpuUsage(pid):
 def getCpu(package):
     if package is None:
         # TaskLogger.errorLog('package not set')
-        package = Conf.PACKAGE_NAME
+        package = GConf.getCase('PACKAGE_NAME')
     cmd = 'adb shell su -c \'top -d 0 -n 1\' | tr \"\\r\\n\" \"\\n\" | grep %s$ | awk \'{print $3}\' | tr -d \'%%\'' % package
     # TaskLogger.debugLog(cmd)
     return int(os.popen(cmd).read().strip())
 
 def getPrivateDirty(package):
     if package is None:
-        package = Conf.PACKAGE_NAME
+        package = GConf.getCase('PACKAGE_NAME')
     cmd = 'adb shell dumpsys meminfo %s | grep TOTAL | awk \'{print $3}\'' % package
     # TaskLogger.infoLog(cmd)
     return os.popen(cmd).read().strip()
@@ -156,7 +155,7 @@ def getPrivateDirty(package):
 
 def getPrivateClean(package):
     if package is None:
-        package = Conf.PACKAGE_NAME
+        package = GConf.getCase('PACKAGE_NAME')
     cmd = 'adb shell dumpsys meminfo %s | grep TOTAL | awk \'{print $4}\'' % package
     # TaskLogger.infoLog(cmd)
     return os.popen(cmd).read().strip()
@@ -164,9 +163,8 @@ def getPrivateClean(package):
 
 def getUss(package):
     if package is None:
-        package = Conf.PACKAGE_NAME
+        package = GConf.getCase('PACKAGE_NAME')
     cmd = 'adb shell dumpsys meminfo %s | grep TOTAL | awk \'{total = $3 + $4; print total}\'' % package
-    # cmd = 'adb shell dumpsys meminfo %s | grep TOTAL | awk \'{total = $3 + $4; print total; print $3; print $4}\'' % Conf.PACKAGE_NAME
     # TaskLogger.infoLog(cmd)
     return os.popen(cmd).read().strip()
 
@@ -202,11 +200,3 @@ def testMemfree():
     else:
         TaskLogger.errorLog('MemFree detection is NOT reliable!')
         return False
-
-# def testApollo():
-#   videoPath = Conf.SEVER_ADDRESS + "t1_200k/test_video_short.html"
-#   BrowserUtils.launchBrowser()
-#   sleep(Conf.WAIT_TIME)
-#   BrowserUtils.openURI(self.urlList[self.currentCategory])
-#   sleep(Conf.WAIT_TIME)
-#   checkApolloCmd = "adb logcat"

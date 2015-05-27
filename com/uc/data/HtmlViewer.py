@@ -1,7 +1,7 @@
 from com.uc.data.ResultViewer import ResultViewer
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.data.TaskData import TaskData
-from com.uc.conf import Conf
+from com.uc.conf import GConf
 import sys
 import traceback
 import time
@@ -15,10 +15,9 @@ class HtmlViewer(ResultViewer):
         self.header = {}
         self.caseSeq = []
         # self.reportPath = '{}report.html'\
-            # .format(Conf.REPORT_DIR)
-        self.reportPath = '{}report-{}.html'\
-            .format(Conf.REPORT_DIR, time.strftime('%Y%m%d%H%M')[2:])
-        self.templatepath = Conf.HTML_TEMPLATE
+            # .format(GConf.getGlobal('REPORT_DIR'))
+        self.reportPath = '%s%s-%s.html' % (GConf.getGlobal('REPORT_DIR'), GConf.getCase('RESULT_NAME'), time.strftime('%Y%m%d%H%M')[2:])
+        self.templatepath = 'template/tableTemplate.html'
 
     def addData(self, data):
         taskInfo = {}
@@ -135,12 +134,13 @@ class HtmlViewer(ResultViewer):
             fileHandle.write("</tr>\n")
 
     def writeTableEnd(self, fileHandle):
+        fileHandle.write("</tr>\n")
         fileHandle.write("</table>\n")
 
     def writeImage(self, fileHandle, filePath):
-        index = filePath.find(Conf.REPORT_DIR)
+        index = filePath.find(GConf.getGlobal('REPORT_DIR'))
         if index != -1:
-            filePath = filePath[len(Conf.REPORT_DIR):]
+            filePath = filePath[len(GConf.getGlobal('REPORT_DIR')):]
         fileHandle.write("<img src='%s'></img>" % filePath)
 
     def writeTemplateEnd(self, fileHandle):

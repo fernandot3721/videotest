@@ -1,7 +1,7 @@
 from com.uc.data.ResultViewer import ResultViewer
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.data.TaskData import TaskData
-from com.uc.conf import Conf
+from com.uc.conf import GConf
 from com.uc.utils import MatplotUtil
 import time
 import os
@@ -13,7 +13,7 @@ class VsChartViewer(ResultViewer):
         self.data = {}
         self.caseSeq = []
         self.reportPath = '{}report-{}'\
-            .format(Conf.REPORT_DIR, 'chart')
+            .format(GConf.getGlobal('REPORT_DIR'), 'chart')
         self.saveFile = time.strftime('%Y%m%d%H%M')[2:]
         # self.saveFile = 'test'
 

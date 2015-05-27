@@ -5,7 +5,7 @@ from com.uc.data.HtmlViewer import HtmlViewer
 from com.uc.data.ChartViewer import ChartViewer
 from com.uc.data.VsChartViewer import VsChartViewer
 from com.uc.data.DataFilter import DataFilter
-from com.uc.conf import Conf
+from com.uc.conf import GConf
 from com.uc.utils.TaskLogger import TaskLogger
 from os.path import sys
 import traceback
@@ -49,7 +49,7 @@ class ResultGenerator():
     def processData(self, data):
         # use spcific config to make filter the data
         dataFilter = DataFilter()
-        filters = Conf.FILTERS[data.getExtra('TASK_TYPE')]
+        filters = GConf.getCase('FILTERS').splitlines()
         for filterName in filters:
             dataFilter = self.generateFilter(filterName, dataFilter)
         dataFilter.processData(data)

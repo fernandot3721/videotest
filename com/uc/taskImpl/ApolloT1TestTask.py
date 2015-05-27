@@ -2,7 +2,7 @@
 
 from time import sleep
 
-from com.uc.conf import Conf
+from com.uc.conf import GConf
 from com.uc.task.AbstractVideoTask import AbstractVideoTask
 from com.uc.utils import BrowserUtils
 from com.uc.utils.TaskLogger import TaskLogger
@@ -10,28 +10,29 @@ from com.uc.data.DataRecord import DataRecord
 
 
 class ApolloT1TestTask(AbstractVideoTask):
-    urlList = Conf.APOLLO_T1_URL
 
     def __init__(self):
         super(ApolloT1TestTask, self).__init__()
-        self.loopCount = Conf.LOOP_TIME_T1
-        self.setTitle(Conf.TASK_TYPE[1])
-        self.keywords = Conf.APOLLO_T1_KEYWORD
+        self.urlList = GConf.getUrlList()
+        self.loopCount = GConf.getCaseInt('LOOP_TIME')
+        self.tasktype = GConf.getCase('TASK_TYPE')
+        self.setTitle(self.tasktype)
+        self.keywords = {'mov_seg_dur T1 ': 'ms'}
 
     def doTest(self):
         print("STARTUP UC")
-        self.dataRecord.\
-            onData(self, DataRecord.TYPE_EXTRA, 'TASK_TYPE', Conf.TASK_TYPE[1])
+        self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, 'TASK_TYPE', self.tasktype)
         BrowserUtils.launchBrowser()
 
-        sleep(Conf.WAIT_TIME)
+        sleep(GConf.getCaseInt('WAIT_TIME'))
 
         print("CLEAR HISTROY")
         BrowserUtils.clearVideoCache()
 
         TaskLogger.normalLog("PLAY VIDEO:")
-        TaskLogger.detailLog(self.urlList[self.currentCategory])
-        BrowserUtils.openURI(self.urlList[self.currentCategory])
+        caseUrl = GConf.getUrl(self.urlList[self.caseIndex])
+        TaskLogger.detailLog(caseUrl)
+        BrowserUtils.openURI(caseUrl)
 
         # 等待视频播起来
         myloop = 0
@@ -45,16 +46,16 @@ class ApolloT1TestTask(AbstractVideoTask):
                 break
             myloop += 1
 
-        sleep(Conf.WAIT_TIME)
+        sleep(GConf.getCaseInt('WAIT_TIME'))
 
         print("SHUTDOWN UC")
         BrowserUtils.closeBrowser()
-        sleep(Conf.WAIT_TIME)
+        sleep(GConf.getCaseInt('WAIT_TIME'))
 
     def onKeywordDetected(self, key, t1):
         TaskLogger.debugLog('###########onKeywordDetected: %s %s' % (key, t1))
         if key in self.keywords:
-            self.dataRecord.onData(self, DataRecord.TYPE_NORMAL, self.currentCategory, t1)
+            self.dataRecord.onData(self, DataRecord.TYPE_NORMAL, self.urlList[self.caseIndex], t1)
 
     def getKeywords(self):
         return self.keywords

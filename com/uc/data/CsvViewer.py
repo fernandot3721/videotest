@@ -1,7 +1,7 @@
 from com.uc.data.ResultViewer import ResultViewer
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.data.TaskData import TaskData
-from com.uc.conf import Conf
+from com.uc.conf import GConf
 import sys
 import csv
 import traceback
@@ -13,9 +13,8 @@ class CsvViewer(ResultViewer):
         self.dataCount = 0
         self.lineInfo = {}
         # self.reportPath = '{}report.csv'\
-            # .format(Conf.REPORT_DIR)
-        self.reportPath = '{}report-{}.csv'\
-            .format(Conf.REPORT_DIR, time.strftime('%Y%m%d%H%M')[2:])
+            # .format(GConf.getGlobal('REPORT_DIR'))
+        self.reportPath = '%s%s-%s' % (GConf.getGlobal('REPORT_DIR'), GConf.getCase('RESULT_NAME'), time.strftime('%Y%m%d%H%M')[2:])
 
     def showResult(self):
         # self.init()

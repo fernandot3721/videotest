@@ -5,6 +5,8 @@ from com.uc.monitor.AdbTimingMonitor import AdbTimingMonitor
 from com.uc.utils.TaskLogger import TaskLogger
 import traceback
 import os
+from com.uc.conf import GConf
+from time import sleep
 
 
 class TaskManager:
@@ -51,6 +53,9 @@ class TaskManager:
 
     def stopTest(self):
         self.logcatThread.stop()
+        sleep(GConf.getCaseInt('WAIT_TIME'))
         self.meminfoThread.stop()
+        sleep(GConf.getCaseInt('WAIT_TIME'))
         self.logcatThread.join()
+        sleep(GConf.getCaseInt('WAIT_TIME'))
         self.meminfoThread.join()
