@@ -126,8 +126,6 @@ def getUrl(conf):
 
 def getUrlList():
     if URL is None:
-        # exc_traceback = sys.exc_info()
-        # traceback.print_tb(exc_traceback)
         print(inred('@@@@URL not init, reutrn None'))
         return None
     ret = None
@@ -135,5 +133,31 @@ def getUrlList():
         ret = URL.options('url')
     except:
         print(inred('@@@@get url list failed'))
+    finally:
+        return ret
+
+
+def getTaskList():
+    if GLOBAL is None:
+        print(inred('@@@@GLOBAL not init, return None'))
+        return None
+    ret = None
+    try:
+        ret = GLOBAL.options('task')
+    except:
+        print(inred('@@@@get task list failed'))
+    finally:
+        return ret
+
+
+def getTaskConfig(conf):
+    if GLOBAL is None:
+        print(inred('@@@@GLOBAL not init, return None'))
+        return None
+    ret = None
+    try:
+        ret = GLOBAL.get('config', conf)
+    except:
+        print(inred('@@@@getTaskConf %s failed' % conf))
     finally:
         return ret
