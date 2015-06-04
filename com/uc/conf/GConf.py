@@ -30,7 +30,7 @@ def globalConfig(path=None):
         GLOBAL = ConfigParser.ConfigParser()
         print('init GLOBAL')
     if path is None:
-        path = 'com/uc/conf/default.ini'  # default config
+        path = 'confg.ini'  # default config
     print('globalConfig: %s' % path)
     GLOBAL.read(path)
 
@@ -41,7 +41,7 @@ def caseConfig(path=None):
         CASE = ConfigParser.ConfigParser()
         print('init CASE')
     if path is None:
-        path = 'com/uc/conf/default.ini'  # default config
+        path = 'confg.ini'  # default config
     print('globalConfig: %s' % path)
     CASE.read(path)
 
@@ -52,7 +52,7 @@ def urlConfig(path=None):
         URL = ConfigParser.ConfigParser()
         print('init URL')
     if path is None:
-        path = 'com/uc/conf/default.ini'  # default config
+        path = 'confg.ini'  # default config
     print('globalConfig: %s' % path)
     URL.read(path)
 

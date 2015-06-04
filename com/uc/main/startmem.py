@@ -73,7 +73,7 @@ if __name__ == '__main__':
         playerCount = len(libList)
     for i in range(playerCount):
         TaskLogger.infoLog("===========ADD TASK {}===========".format(i))
-        mxtask = ApolloT1TestTask()
+        mxtask = ApolloT2AndMemoryTestTask()
         mxtask.setPlayerPath(libList[i])
         # mxtask.setPackage('com.example.videoviewtest')
         # mxtask.setActivity('.MainActivity')
