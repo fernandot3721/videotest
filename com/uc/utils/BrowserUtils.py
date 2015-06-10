@@ -14,7 +14,7 @@ import datetime
 import time
 
 
-def launchBrowser():
+def launchBrowser(package=None, activity=None):
     launchCmd = "adb shell am start -n {}/{}".format(GConf.getCase('PACKAGE_NAME'), GConf.getCase('ACTIVITE_NAME'))
     mySystem(launchCmd)
 

@@ -8,10 +8,14 @@ from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.utils import VideoTestUtil
 
 
-def switchApollo(pathFrom):
+def switchApollo(pathFrom, package=None):
     if pathFrom == "":
         TaskLogger.errorLog("apollo path null")
         return
+
+    if package is None:
+        package = GConf.getCase('PACKAGE_NAME')
+
     TaskLogger.normalLog("switchApollo")
     BrowserUtils.closeBrowser()
     sleep(GConf.getCaseInt('WAIT_TIME'))
@@ -20,8 +24,8 @@ def switchApollo(pathFrom):
     libu3player = 'libu3player.so'
     # pathFrom = ' /home/tangjp/work/vr/apolloso/2.8.8.888/'
     pathTmp = '/sdcard/UCDownloads/'
-    pathTo1 = '/data/data/{}/apollo1/'.format(GConf.getCase('PACKAGE_NAME'))
-    pathTo2 = '/data/data/{}/apollo2/'.format(GConf.getCase('PACKAGE_NAME'))
+    pathTo1 = '/data/data/{}/apollo1/'.format(package)
+    pathTo2 = '/data/data/{}/apollo2/'.format(package)
 
     pushffInCmd = "adb push %s%s %s%s" % \
         (pathFrom, libffmpeg, pathTmp, libffmpeg)
@@ -54,10 +58,14 @@ def switchApollo(pathFrom):
     pass
 
 
-def switchHardCodeApollo(pathFrom):
+def switchHardCodeApollo(pathFrom, package=None):
     if pathFrom == "":
         TaskLogger.errorLog("apollo path null")
         return
+
+    if package is None:
+        package = GConf.getCase('PACKAGE_NAME')
+
     TaskLogger.normalLog("switchHardCodeApollo")
     BrowserUtils.closeBrowser()
     sleep(GConf.getCaseInt('WAIT_TIME'))
@@ -66,7 +74,7 @@ def switchHardCodeApollo(pathFrom):
     libu3player = 'libu3player.so'
     # pathFrom = ' /home/tangjp/work/vr/apolloso/2.8.8.888/'
     pathTmp = '/sdcard/UCDownloads/'
-    pathTo = '/data/data/{}/lib/'.format(GConf.getCase('PACKAGE_NAME'))
+    pathTo = '/data/data/{}/lib/'.format(package)
 
     pushffInCmd = "adb push %s%s %s%s" % \
         (pathFrom, libffmpeg, pathTmp, libffmpeg)
