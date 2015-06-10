@@ -35,12 +35,12 @@ def setCDParams(key=None, value=None):
     f1.write(paramStr)
     f1.close()
 
-    mvOutCmd = "adb shell  \"cat /data/data/{}/user/us/zh-cn/ucparam.ucmd2 > sdcard/UCDownloads/ucparam.ucmd2\"".format(Conf.PACKAGE_NAME)
+    mvOutCmd = "adb shell su -c \"cat /data/data/{}/user/us/zh-cn/ucparam.ucmd2 > sdcard/UCDownloads/ucparam.ucmd2\"".format(Conf.PACKAGE_NAME)
     pullOutCmd = "adb pull sdcard/UCDownloads/ucparam.ucmd2"
     execCmd = "java -jar {}".format(jarPath)
     pushInCmd = "adb push ucparam.ucmd2 sdcard/UCDownloads/"
-    mvInCmd = "adb shell \"cat sdcard/UCDownloads/ucparam.ucmd2 > /data/data/{}/user/us/zh-cn/ucparam.ucmd2\"".format(Conf.PACKAGE_NAME)
-    powerCmd = "adb shell \"chmod 777 /data/data/com.UCMobile/user/us/zh-cn/ucparam.ucmd2\""
+    mvInCmd = "adb shell su -c \"cat sdcard/UCDownloads/ucparam.ucmd2 > /data/data/{}/user/us/zh-cn/ucparam.ucmd2\"".format(Conf.PACKAGE_NAME)
+    powerCmd = "adb shell su -c \"chmod 777 /data/data/com.UCMobile/user/us/zh-cn/ucparam.ucmd2\""
     os.system(mvOutCmd)
     os.system(pullOutCmd)
     os.system(execCmd)

@@ -100,6 +100,7 @@ def switchVideoTestApollo(pathFrom):
 
     libffmpeg = 'libffmpeg.so'
     libu3player = 'libu3player.so'
+    librender = 'librenderer.so'
     # pathFrom = ' /home/tangjp/work/vr/apolloso/2.8.8.888/'
     pathTmp = '/sdcard/UCDownloads/'
     pathTo = '/data/data/com.example.videoviewtest/lib/'
@@ -108,20 +109,28 @@ def switchVideoTestApollo(pathFrom):
         (pathFrom, libffmpeg, pathTmp, libffmpeg)
     pushu3InCmd = "adb push %s%s %s%s" % \
         (pathFrom, libu3player, pathTmp, libu3player)
+    pushreInCmd = "adb push %s%s %s%s" % \
+        (pathFrom, librender, pathTmp, librender)
     mvffInCmd = "adb shell su -c \"cat %s%s > %s%s\"" % \
         (pathTmp, libffmpeg, pathTo, libffmpeg)
     mvu3InCmd = "adb shell su -c \"cat %s%s > %s%s\"" % \
         (pathTmp, libu3player, pathTo, libu3player)
+    mvreInCmd = "adb shell su -c \"cat %s%s > %s%s\"" % \
+        (pathTmp, librender, pathTo, librender)
 
     TaskLogger.normalLog(pushffInCmd)
     os.system(pushffInCmd)
     TaskLogger.normalLog(pushu3InCmd)
     os.system(pushu3InCmd)
+    TaskLogger.normalLog(pushreInCmd)
+    os.system(pushreInCmd)
     TaskLogger.normalLog(mvffInCmd)
     os.system(mvffInCmd)
     sleep(Conf.WAIT_TIME)
     TaskLogger.normalLog(mvu3InCmd)
     os.system(mvu3InCmd)
+    TaskLogger.normalLog(mvreInCmd)
+    os.system(mvreInCmd)
     pass
 
 
