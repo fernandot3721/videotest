@@ -15,7 +15,11 @@ import time
 
 
 def launchBrowser(package=None, activity=None):
-    launchCmd = "adb shell am start -n {}/{}".format(GConf.getCase('PACKAGE_NAME'), GConf.getCase('ACTIVITE_NAME'))
+    if package is None:
+        GConf.getCase('PACKAGE_NAME')
+    if activity is None:
+        GConf.getCase('ACTIVITE_NAME')
+    launchCmd = "adb shell am start -n {}/{}".format(package, activity)
     mySystem(launchCmd)
 
 
@@ -59,9 +63,13 @@ def clearBrowserCache():
     mySystem(clearCmd)
 
 
-def openURI(url):
+def openURI(url, package=None, activity=None):
     '''打开页面'''
-    launchCmd = "adb shell am start -a android.intent.action.VIEW -n {}/{} -d {}".format(GConf.getCase('PACKAGE_NAME'), GConf.getCase('ACTIVITE_NAME'), url)
+    if package is None:
+        GConf.getCase('PACKAGE_NAME')
+    if activity is None:
+        GConf.getCase('ACTIVITE_NAME')
+    launchCmd = "adb shell am start -a android.intent.action.VIEW -n {}/{} -d {}".format(package, activity, url)
     mySystem(launchCmd)
 
 
@@ -82,9 +90,11 @@ def goback():
     mySystem(backCmd)
 
 
-def closeBrowser():
+def closeBrowser(package=None):
     '''关闭浏览器'''
-    exitCmd = "adb shell am force-stop {}".format(GConf.getCase('PACKAGE_NAME'))
+    if package is None:
+        package = GConf.getCase('PACKAGE_NAME')
+    exitCmd = "adb shell am force-stop {}".format(package)
     # TaskLogger.normalLog(exitCmd)
     mySystem(exitCmd)
 
