@@ -18,7 +18,7 @@ def inred(s):
 
 
 def initConfig():
-    print('init config============')
+    # print('init config============')
     globalConfig()
     caseConfig()
     urlConfig()
@@ -28,10 +28,10 @@ def globalConfig(path=None):
     global GLOBAL
     if GLOBAL is None:
         GLOBAL = ConfigParser.ConfigParser()
-        print('init GLOBAL')
+        # print('init GLOBAL')
     if path is None:
         path = 'confg.ini'  # default config
-    print('globalConfig: %s' % path)
+    # print('globalConfig: %s' % path)
     GLOBAL.read(path)
 
 
@@ -39,10 +39,10 @@ def caseConfig(path=None):
     global CASE
     if CASE is None:
         CASE = ConfigParser.ConfigParser()
-        print('init CASE')
+        # print('init CASE')
     if path is None:
         path = 'confg.ini'  # default config
-    print('globalConfig: %s' % path)
+    # print('globalConfig: %s' % path)
     CASE.read(path)
 
 
@@ -50,10 +50,10 @@ def urlConfig(path=None):
     global URL
     if URL is None:
         URL = ConfigParser.ConfigParser()
-        print('init URL')
+        # print('init URL')
     if path is None:
         path = 'confg.ini'  # default config
-    print('globalConfig: %s' % path)
+    # print('globalConfig: %s' % path)
     URL.read(path)
 
 

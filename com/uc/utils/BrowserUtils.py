@@ -14,11 +14,15 @@ import datetime
 import time
 
 
+def clearLogcat():
+    launchCmd = "adb shell logcat -c"
+    mySystem(launchCmd)
+
 def launchBrowser(package=None, activity=None):
     if package is None:
-        GConf.getCase('PACKAGE_NAME')
+        package = GConf.getCase('PACKAGE_NAME')
     if activity is None:
-        GConf.getCase('ACTIVITE_NAME')
+        activity = GConf.getCase('ACTIVITE_NAME')
     launchCmd = "adb shell am start -n {}/{}".format(package, activity)
     mySystem(launchCmd)
 
@@ -66,9 +70,9 @@ def clearBrowserCache():
 def openURI(url, package=None, activity=None):
     '''打开页面'''
     if package is None:
-        GConf.getCase('PACKAGE_NAME')
+        package = GConf.getCase('PACKAGE_NAME')
     if activity is None:
-        GConf.getCase('ACTIVITE_NAME')
+        activity = GConf.getCase('ACTIVITE_NAME')
     launchCmd = "adb shell am start -a android.intent.action.VIEW -n {}/{} -d {}".format(package, activity, url)
     mySystem(launchCmd)
 

@@ -1,6 +1,7 @@
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.monitor.LogMonitor import LogMonitor
 from com.uc.conf import GConf
+from com.uc.utils import BrowserUtils
 
 import shlex
 import subprocess
@@ -44,6 +45,7 @@ class AndroidLogcat(LogMonitor):
         self.keywords = self.handler.getKeywords()
         self.keyevents = self.handler.getKeyevents()
         self.startPlayKey = 'mov_seg_dur T1'
+        BrowserUtils.clearLogcat()
         pass
 
     def onRead(self, line):
@@ -63,12 +65,10 @@ class AndroidLogcat(LogMonitor):
             if key in line:
                 value = self.parseLog(line, key, self.keywords[key])
                 self.handler.onKeywordDetected(key, value)
-                return
 
         for event in self.keyevents:
             if event in line:
                 # parse time and key
                 time = self.parseTime(line)
                 self.handler.onEventDetected(event, time)
-                return
         pass

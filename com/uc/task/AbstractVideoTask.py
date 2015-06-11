@@ -8,7 +8,6 @@ from com.uc.utils.BrowserUtils import setCDParams
 from com.uc.monitor.LogcatHandler import LogcatHandler
 from com.uc.monitor.TimingHandler import TimingHandler
 from com.uc.data.DataRecord import DataRecord
-import re
 import datetime
 
 __author__ = 'Administrator'

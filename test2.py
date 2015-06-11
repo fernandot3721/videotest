@@ -47,7 +47,7 @@ def printHelpTest():
 
 
 def parseCommand(args):
-    if len(args) == 1:
+    if len(args) == 2:
         printHelp()
         return
 
@@ -72,17 +72,20 @@ def parseCommand(args):
 
 
 def parseCommandL(args):
-    length = len(args[2:])
-    if length > 2 :
-        print('###too many args!!!')
+    if args[2] == '-h':
         printHelpLaunch()
+        return
+    length = len(args[2:])
     packageUC = 'com.UCMobile'
     activityUC = 'com.UCMobile.main.UCMobile'
     packageVT = 'com.example.videoviewtest'
     activityVT = '.MainActivity'
-    elif length == 0 :
+    if length > 2 :
+        print('###too many args!!!')
+        printHelpLaunch()
+    elif length == 0:
         BrowserUtils.launchBrowser(packageUC, activityUC)
-    elif length == 1 :
+    elif length == 1:
         if args[2] == 'uc':
             BrowserUtils.launchBrowser(packageUC, activityUC)
         elif args[2] == 'vt':
@@ -90,7 +93,7 @@ def parseCommandL(args):
         else:
             print('###not enough args!!!')
             printHelpLaunch()
-    elif length == 2 :
+    elif length == 2:
         if args[3] == 'uc':
             BrowserUtils.launchBrowser(args[2], activityUC)
         elif args[3] == 'vt':
@@ -100,12 +103,15 @@ def parseCommandL(args):
     pass
 
 def parseCommandS(args):
+    if args[2] == '-h':
+        printHelpShutdown()
+        return
     length = len(args[2:])
+    packageUC = 'com.UCMobile'
+    packageVT = 'com.example.videoviewtest'
     if length > 1 :
         print('###too many args!!!')
         printHelpShutdown()
-    packageUC = 'com.UCMobile'
-    packageVT = 'com.example.videoviewtest'
     elif length == 0:
         BrowserUtils.closeBrowser(packageUC)
     else:
@@ -118,6 +124,9 @@ def parseCommandS(args):
     pass
 
 def parseCommandU(args):
+    if args[2] == '-h':
+        printHelpBrowseUrl()
+        return
     length = len(args[2:])
     packageUC = 'com.UCMobile'
     packageVT = 'com.example.videoviewtest'
@@ -149,6 +158,9 @@ def parseCommandU(args):
     pass
 
 def parseCommandT(args):
+    if args[2] == '-h':
+        printHelpTest()
+        return
     length = len(args[2:])
     config = 'confg.ini'
     if length < 1:
@@ -159,12 +171,17 @@ def parseCommandT(args):
         printHelpTest()
     elif length == 2:
         config = args[3]
-    task = args[2]
+        pass
+    print config
+    # task = args[2]
 
     # TODO put task to taskRunner and run a test by config
     pass
 
 def parseCommandC(args):
+    if args[2] == '-h':
+        printHelpChange()
+        return
     length = len(args[2:])
     if length < 2:
         print('###not enough args!!!')
