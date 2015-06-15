@@ -4,12 +4,13 @@ from com.uc.utils import BrowserUtils
 
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.conf import GConf
+from time import sleep
 
 PROG = 'TOOLBOX'
 
 def printHelp():
     global PROG
-    print('usage: %s [-c | -l | -s | -u | -t]' % PROG)
+    print('usage: %s [-c | -l | -s | -u | -t | -cpu]' % PROG)
     print('-c: change so')
     print('-l: launch app')
     print('-s: shutdown app')
@@ -18,7 +19,7 @@ def printHelp():
 
 def printHelpChange():
     print('usage: %s -c path target [package]' % PROG)
-    print(' target: uc/hardcode/videotest')
+    print(' target: uc/hc(hardcode)/vt(videotest)')
     print(' NOTE: target videotest needs no package')
 
 
@@ -38,6 +39,11 @@ def printHelpBrowseUrl():
     print('usage: %s -u url [package] [activity]' % PROG)
     print(' package dfaults to com.UCMobile, uc/vt can be used for short')
     print(' NOTE: uc/vt(videotest) activity is preconfig')
+
+
+def printHelpCPU():
+    print('usage: %s -cpu time' % PROG)
+    print(' NOTE: time represent how long each command')
 
 
 def printHelpTest():
@@ -66,9 +72,32 @@ def parseCommand(args):
         parseCommandU(args)
     elif command == '-t':
         parseCommandT(args)
+    elif command == '-cpu':
+        parseCommandCPU(args)
     else:
         print('###command unreconized!!!')
         printHelp()
+
+
+def parseCommandCPU(args):
+    if args[2] == '-h':
+        printHelpCPU()
+        return
+
+    length = len(args[2:])
+    if length > 1:
+        print('###too many args!!!')
+        printHelpCPU()
+        return
+    if length < 1:
+        print('###not enough args!!!')
+        printHelpCPU()
+    else:
+        while True:
+            cpu = AndroidUtil.getCpu('com.UCMobile')
+            TaskLogger.debugLog(cpu)
+            sleep(float(args[2]))
+    pass
 
 
 def parseCommandL(args):
@@ -200,15 +229,9 @@ def callChangeLib(path, target, package=None):
     if package is None:
         package = 'com.UCMobile'
 
-    if target == 'uc':
-        AndroidUtil.switchApollo(path, package)
-        pass
-    elif target == 'hardcode':
-        AndroidUtil.switchApollo(path, package)
-        pass
-    elif target == 'videotest':
-        AndroidUtil.switchVideoTestApollo(path)
-        pass
+    
+    if target == 'uc' or target == 'hc' or target == 'vt':
+        AndroidUtil.switchApollo(path, target, 0, package)
     else:
         print('###target (%s) incorrect!!!' % target)
         printHelpChange()

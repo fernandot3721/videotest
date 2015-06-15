@@ -5,134 +5,79 @@ from com.uc.conf import GConf
 from com.uc.utils import BrowserUtils
 from time import sleep
 from com.uc.utils.TaskLogger import TaskLogger
-from com.uc.utils import VideoTestUtil
 
 
-def switchApollo(pathFrom, package=None):
+def execCmd(cmd, wait):
+    TaskLogger.debugLog(cmd)
+    os.system(cmd)
+    sleep(wait)
+
+
+def doSwitch(pathFrom, pathTo, name, wait):
+    pathTmp = '/sdcard/UCDownloads/'
+
+    pushCmd = "adb push %s%s %s%s" % (pathFrom, name, pathTmp, name)
+    execCmd(pushCmd, wait)
+    mvCmd = "adb shell su -c \"cat %s%s > %s%s\"" % (pathTmp, name, pathTo, name)
+    execCmd(mvCmd, wait)
+    chCmd = "adb shell su -c \"chmod 777 %s%s\"" % (pathTo, name)
+    execCmd(chCmd, wait)
+
+
+def doSwitchApollo(pathFrom, pathTo, wait):
+
+    libffmpeg = 'libffmpeg.so'
+    libu3player = 'libu3player.so'
+    librender = 'librenderer.so'
+    libomx40 = 'libomxdr_40.so'
+    libomx42 = 'libomxdr_42.so'
+    libomx44 = 'libomxdr_44.so'
+
+    doSwitch(pathFrom, pathTo, libffmpeg, wait)
+    doSwitch(pathFrom, pathTo, libu3player, wait)
+    doSwitch(pathFrom, pathTo, librender, wait)
+    doSwitch(pathFrom, pathTo, libomx40, wait)
+    doSwitch(pathFrom, pathTo, libomx42, wait)
+    doSwitch(pathFrom, pathTo, libomx44, wait)
+
+def switchApollo(pathFrom, target='uc', wait=None, package=None):
     if pathFrom == "":
         TaskLogger.errorLog("apollo path null")
         return
 
     if package is None:
         package = GConf.getCase('PACKAGE_NAME')
+
+    if wait is None:
+        wait = GConf.getCaseInt('WAIT_TIME')
 
     TaskLogger.normalLog("switchApollo")
     BrowserUtils.closeBrowser()
-    sleep(GConf.getCaseInt('WAIT_TIME'))
+    sleep(wait)
 
-    libffmpeg = 'libffmpeg.so'
-    libu3player = 'libu3player.so'
-    # pathFrom = ' /home/tangjp/work/vr/apolloso/2.8.8.888/'
-    pathTmp = '/sdcard/UCDownloads/'
-    pathTo1 = '/data/data/{}/apollo1/'.format(package)
-    pathTo2 = '/data/data/{}/apollo2/'.format(package)
-
-    pushffInCmd = "adb push %s%s %s%s" % \
-        (pathFrom, libffmpeg, pathTmp, libffmpeg)
-    pushu3InCmd = "adb push %s%s %s%s" % \
-        (pathFrom, libu3player, pathTmp, libu3player)
-    mvffInCmd1 = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libffmpeg, pathTo1, libffmpeg)
-    mvu3InCmd1 = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libu3player, pathTo1, libu3player)
-    mvffInCmd2 = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libffmpeg, pathTo2, libffmpeg)
-    mvu3InCmd2 = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libu3player, pathTo2, libu3player)
-
-    TaskLogger.normalLog(pushffInCmd)
-    os.system(pushffInCmd)
-    TaskLogger.normalLog(pushu3InCmd)
-    os.system(pushu3InCmd)
-    TaskLogger.normalLog(mvffInCmd1)
-    os.system(mvffInCmd1)
-    sleep(GConf.getCaseInt('WAIT_TIME'))
-    TaskLogger.normalLog(mvu3InCmd1)
-    os.system(mvu3InCmd1)
-    sleep(GConf.getCaseInt('WAIT_TIME'))
-    TaskLogger.normalLog(mvffInCmd2)
-    os.system(mvffInCmd2)
-    sleep(GConf.getCaseInt('WAIT_TIME'))
-    TaskLogger.normalLog(mvu3InCmd2)
-    os.system(mvu3InCmd2)
-    pass
-
-
-def switchHardCodeApollo(pathFrom, package=None):
-    if pathFrom == "":
-        TaskLogger.errorLog("apollo path null")
+    if target == 'uc':
+        if package is None:
+            package = 'com.UCMobile'
+        pathTo = '/data/data/%s/apollo2/' % package
+        pathTo2 = '/data/data/%s/apollo1/' % package
+        doSwitchApollo(pathFrom, pathTo2, wait)
+        pass
+    elif target == 'hc':
+        if package is None:
+            package = 'com.UCMobile'
+        pathTo = '/data/data/%s/lib/' % package
+        pass
+    elif target == 'vt':
+        pathTo = '/data/data/com.example.videoviewtest/lib/'
+        pass
+    else:
+        TaskLogger.infoLog("not need to switch apollo")
         return
 
-    if package is None:
-        package = GConf.getCase('PACKAGE_NAME')
-
-    TaskLogger.normalLog("switchHardCodeApollo")
-    BrowserUtils.closeBrowser()
-    sleep(GConf.getCaseInt('WAIT_TIME'))
-
-    libffmpeg = 'libffmpeg.so'
-    libu3player = 'libu3player.so'
-    # pathFrom = ' /home/tangjp/work/vr/apolloso/2.8.8.888/'
-    pathTmp = '/sdcard/UCDownloads/'
-    pathTo = '/data/data/{}/lib/'.format(package)
-
-    pushffInCmd = "adb push %s%s %s%s" % \
-        (pathFrom, libffmpeg, pathTmp, libffmpeg)
-    pushu3InCmd = "adb push %s%s %s%s" % \
-        (pathFrom, libu3player, pathTmp, libu3player)
-    mvffInCmd = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libffmpeg, pathTo, libffmpeg)
-    mvu3InCmd = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libu3player, pathTo, libu3player)
-
-    TaskLogger.normalLog(pushffInCmd)
-    os.system(pushffInCmd)
-    TaskLogger.normalLog(pushu3InCmd)
-    os.system(pushu3InCmd)
-    TaskLogger.normalLog(mvffInCmd)
-    os.system(mvffInCmd)
-    sleep(GConf.getCaseInt('WAIT_TIME'))
-    TaskLogger.normalLog(mvu3InCmd)
-    os.system(mvu3InCmd)
-    pass
+    doSwitchApollo(pathFrom, pathTo, wait)
 
 
-def switchVideoTestApollo(pathFrom):
-    if pathFrom == "":
-        TaskLogger.errorLog("apollo path null")
-        return
-    TaskLogger.normalLog("switchVideoTestApollo")
-    VideoTestUtil.closeBrowser()
-    sleep(GConf.getCaseInt('WAIT_TIME'))
-
-    libffmpeg = 'libffmpeg.so'
-    libu3player = 'libu3player.so'
-    # pathFrom = ' /home/tangjp/work/vr/apolloso/2.8.8.888/'
-    pathTmp = '/sdcard/UCDownloads/'
-    pathTo = '/data/data/com.example.videoviewtest/lib/'
-
-    pushffInCmd = "adb push %s%s %s%s" % \
-        (pathFrom, libffmpeg, pathTmp, libffmpeg)
-    pushu3InCmd = "adb push %s%s %s%s" % \
-        (pathFrom, libu3player, pathTmp, libu3player)
-    mvffInCmd = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libffmpeg, pathTo, libffmpeg)
-    mvu3InCmd = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libu3player, pathTo, libu3player)
-
-    TaskLogger.normalLog(pushffInCmd)
-    os.system(pushffInCmd)
-    TaskLogger.normalLog(pushu3InCmd)
-    os.system(pushu3InCmd)
-    TaskLogger.normalLog(mvffInCmd)
-    os.system(mvffInCmd)
-    sleep(GConf.getCaseInt('WAIT_TIME'))
-    TaskLogger.normalLog(mvu3InCmd)
-    os.system(mvu3InCmd)
-    pass
-
-
-def getPid(package):
+def getPid(package=None):
     if package is None:
         package = GConf.getCase('PACKAGE_NAME')
     cmd = 'adb shell ps | tr \"\\r\\n\" \"\\n\" | grep "%s$" | awk \'{print $2}\'' % package
@@ -145,7 +90,7 @@ def getCpuUsage(pid):
     # TaskLogger.debugLog(cmd)
     return os.popen(cmd).read().strip()
 
-def getCpu(package):
+def getCpu(package=None):
     if package is None:
         # TaskLogger.errorLog('package not set')
         package = GConf.getCase('PACKAGE_NAME')

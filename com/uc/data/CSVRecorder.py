@@ -109,7 +109,7 @@ class CSVRecorder(DataRecord):
                 extras = self.taskData[task].getAllExtra()
                 title = '#'
                 for extra in extras:
-                    title += extras[extra] + '#'
+                    title += str(extras[extra]) + '#'
                     value = list([extra, extras[extra]])
                     value.insert(0, DataRecord.TAG_EXTRA)  # TASK-EXTRA
                     dataToWrite.append(value)

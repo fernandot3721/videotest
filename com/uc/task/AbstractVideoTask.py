@@ -86,10 +86,10 @@ class AbstractVideoTask(LogcatHandler, TimingHandler):
         if self.playerType == 0:
             AndroidUtil.switchApollo(self.playPath)
         elif self.playerType == 1:
-            AndroidUtil.switchHardCodeApollo(self.playPath)
+            AndroidUtil.switchApollo(self.playPath, 'hc')
         elif self.playerType == 2:
             # switch for video test
-            AndroidUtil.switchVideoTestApollo(self.playPath)
+            AndroidUtil.switchApollo(self.playPath, 'vt')
             pass
 
         for key in self.urlList:

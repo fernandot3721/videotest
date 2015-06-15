@@ -28,7 +28,7 @@ class HtmlViewer(ResultViewer):
         extras = data.getAllExtra()
         for extra in extras:
             extraData = '%s %s %s' % (extraData, extra, extras[extra])
-        taskInfo['extra'] = extraData
+        taskInfo['extra'] = extras
 
         #  case data & head
         self.parseDataType(data, TaskData.DATA_TYPE_TIMING, taskInfo)
@@ -79,7 +79,8 @@ class HtmlViewer(ResultViewer):
                 self.writeTableHead(htmlFile, self.dataCount[TaskData.DATA_TYPE_TIMING], self.header[TaskData.DATA_TYPE_TIMING])
                 self.writeTableContent(htmlFile, self.data[taskInfo][TaskData.DATA_TYPE_TIMING])
                 self.writeTableEnd(htmlFile)
-            self.writeImage(htmlFile, subPath)
+            if GConf.getCase('RESULT_IMG') is True:
+                self.writeImage(htmlFile, subPath)
             self.writeTemplateEnd(htmlFile)
             return self.reportPath
         except:
@@ -96,8 +97,12 @@ class HtmlViewer(ResultViewer):
     def writeTitle(self, fileHandle, title):
         fileHandle.write("<h1>%s</h1>\n" % title)
 
-    def writeExtra(self, fileHandle, extra):
-        fileHandle.write("<p>%s</p>\n" % extra)
+    def writeExtra(self, fileHandle, extras):
+        for extra in extras:
+            temp = '%s: %s' % (extra, extras[extra])
+            # TaskLogger.debugLog('extraData: %s , extra: %s, extras[extra]: %s' % (extraData, extra, extras[extra]))
+            # extraData = '%s %s %s' % (extraData, extra, extras[extra])
+            fileHandle.write("<p style=\"font-size: 20px\">%s</p>\n" % temp)
         fileHandle.write("\n")
         fileHandle.write("\n")
 
