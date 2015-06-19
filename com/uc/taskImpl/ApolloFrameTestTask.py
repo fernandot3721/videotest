@@ -152,7 +152,9 @@ class ApolloFrameTestTask(AbstractVideoTask):
         TaskLogger.debugLog('dropframe: %s' % self.dropframe)
         self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, self.urlList[self.caseIndex] + '| total', self.total)
         self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, self.urlList[self.caseIndex] + '| dropframe', self.dropframe)
-        total=0
+        total = 0
+        base = 0
+        num = 0
         for base, num in zip(self.standardlist, self.renderlist):
             total += (num - base)**2
 
