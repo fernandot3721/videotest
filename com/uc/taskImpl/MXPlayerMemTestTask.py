@@ -20,7 +20,7 @@ class MXPlayerMemTestTask(AbstractVideoTask):
         self.keyevents = {'start_time': 'start_time'}
         self.ignore = False
         self.logMemory = False
-        self.testTime = 600
+        self.testTime = 300
 
     def doTest(self):
         MXPlayerUtil.closeBrowser()

@@ -79,8 +79,11 @@ class HtmlViewer(ResultViewer):
                 self.writeTableHead(htmlFile, self.dataCount[TaskData.DATA_TYPE_TIMING], self.header[TaskData.DATA_TYPE_TIMING])
                 self.writeTableContent(htmlFile, self.data[taskInfo][TaskData.DATA_TYPE_TIMING])
                 self.writeTableEnd(htmlFile)
-            if GConf.getCase('RESULT_IMG') is True:
+            if GConf.getCaseBool('RESULT_IMG') is True:
+                TaskLogger.debugLog('do write img')
                 self.writeImage(htmlFile, subPath)
+            else:
+                TaskLogger.debugLog('do not write img')
             self.writeTemplateEnd(htmlFile)
             return self.reportPath
         except:

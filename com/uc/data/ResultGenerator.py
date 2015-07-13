@@ -37,10 +37,12 @@ class ResultGenerator():
             self.subViewer.addData(data)
             self.viewer.addData(data)
         try:
-            if GConf.getCase('RESULT_IMG') is True:
+            if GConf.getCaseBool('RESULT_IMG') is True:
+                TaskLogger.debugLog('do generate img')
                 path = self.subViewer.showResult()
                 self.viewer.showResult(path)
             else:
+                TaskLogger.debugLog('do not generate img')
                 self.viewer.showResult()
         except:
             exc_type, exc_value, exc_traceback = sys.exc_info()

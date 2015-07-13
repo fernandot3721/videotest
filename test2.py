@@ -231,7 +231,7 @@ def callChangeLib(path, target, package=None):
 
     
     if target == 'uc' or target == 'hc' or target == 'vt':
-        AndroidUtil.switchApollo(path, target, 0, package)
+        AndroidUtil.switchApollo(path, target, 1, package)
     else:
         print('###target (%s) incorrect!!!' % target)
         printHelpChange()

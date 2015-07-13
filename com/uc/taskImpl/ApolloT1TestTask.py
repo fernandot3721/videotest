@@ -5,6 +5,7 @@ from time import sleep
 from com.uc.conf import GConf
 from com.uc.task.AbstractVideoTask import AbstractVideoTask
 from com.uc.utils import BrowserUtils
+from com.uc.utils import AndroidUtil
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.data.DataRecord import DataRecord
 
@@ -28,6 +29,7 @@ class ApolloT1TestTask(AbstractVideoTask):
 
         print("CLEAR HISTROY")
         BrowserUtils.clearVideoCache()
+        AndroidUtil.removeCached()
 
         TaskLogger.normalLog("PLAY VIDEO:")
         caseUrl = GConf.getUrl(self.urlList[self.caseIndex])

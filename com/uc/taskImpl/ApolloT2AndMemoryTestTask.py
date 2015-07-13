@@ -63,7 +63,7 @@ class ApolloT2AndMemoryTestTask(AbstractVideoTask):
         TaskLogger.detailLog('play sucess')
         while True:
             sleep(1)
-            if myloop > 100:
+            if myloop > 300:
                 TaskLogger.detailLog('play complete')
                 break
             myloop += 1

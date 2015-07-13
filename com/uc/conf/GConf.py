@@ -111,6 +111,19 @@ def getCaseInt(conf):
         return ret
 
 
+def getCaseBool(conf):
+    if CASE is None:
+        print('CASE not init, reutrn None')
+        return None
+    ret = None
+    try:
+        ret = CASE.getboolean('case', conf)
+    except:
+        print(inred('@@@@getCaseInt %s failed' % conf))
+    finally:
+        return ret
+
+
 def getUrl(conf):
     if URL is None:
         print('URL not init, reutrn None')

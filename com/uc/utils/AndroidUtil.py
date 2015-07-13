@@ -29,6 +29,7 @@ def doSwitchApollo(pathFrom, pathTo, wait):
     libffmpeg = 'libffmpeg.so'
     libu3player = 'libu3player.so'
     librender = 'librenderer.so'
+    libomx = 'libomxdr.so'
     libomx40 = 'libomxdr_40.so'
     libomx42 = 'libomxdr_42.so'
     libomx44 = 'libomxdr_44.so'
@@ -36,6 +37,7 @@ def doSwitchApollo(pathFrom, pathTo, wait):
     doSwitch(pathFrom, pathTo, libffmpeg, wait)
     doSwitch(pathFrom, pathTo, libu3player, wait)
     doSwitch(pathFrom, pathTo, librender, wait)
+    doSwitch(pathFrom, pathTo, libomx, wait)
     doSwitch(pathFrom, pathTo, libomx40, wait)
     doSwitch(pathFrom, pathTo, libomx42, wait)
     doSwitch(pathFrom, pathTo, libomx44, wait)
@@ -58,9 +60,9 @@ def switchApollo(pathFrom, target='uc', wait=None, package=None):
     if target == 'uc':
         if package is None:
             package = 'com.UCMobile'
-        pathTo = '/data/data/%s/apollo2/' % package
-        pathTo2 = '/data/data/%s/apollo1/' % package
-        doSwitchApollo(pathFrom, pathTo2, wait)
+        pathTo2 = '/data/data/%s/apollo2/' % package
+        pathTo = '/data/data/%s/apollo1/' % package
+#doSwitchApollo(pathFrom, pathTo2, wait)
         pass
     elif target == 'hc':
         if package is None:

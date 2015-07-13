@@ -23,7 +23,8 @@ class ApolloFrameTestTask(AbstractVideoTask):
             }
         self.keyevents = {'logstart': 'start dump time info',
             'logend': 'end dump time info',
-            'play': 'XOXO'}
+            'play': 'XOXO'
+            }
         self.loging = 0
 
         # caculate frame info
@@ -31,7 +32,7 @@ class ApolloFrameTestTask(AbstractVideoTask):
         self.f2 = 0
         self.total = 0
         self.dropframe = 0
-        self.FPS = 25
+        self.FPS = 15
         self.FRAMEDUR = 1000000/self.FPS
         self.renderlist = []
         self.standardlist = []
@@ -41,7 +42,7 @@ class ApolloFrameTestTask(AbstractVideoTask):
         print("SHUTDOWN")
         BrowserUtils.closeBrowser()
         sleep(GConf.getCaseInt('WAIT_TIME'))
-        
+
         print("STARTUP")
         self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, 'TASK_TYPE', self.tasktype)
         # BrowserUtils.launchBrowser()
@@ -101,28 +102,41 @@ class ApolloFrameTestTask(AbstractVideoTask):
             return
 
         if key == 'rendertime=':
-            self.dataRecord.onData(self, DataRecord.TYPE_NORMAL, self.urlList[self.caseIndex] + '| rendertime', time)
             self.match = True
             self.rendertime = time
             return
 
         if key == 'frameTime=' and self.match is True:
+            self.dataRecord.onData(self, DataRecord.TYPE_NORMAL, self.urlList[self.caseIndex] + '| rendertime', self.rendertime)
             self.dataRecord.onData(self, DataRecord.TYPE_NORMAL, self.urlList[self.caseIndex] + '| frameTime', time)
             self.match = False
             self.frametime = time
-            
+
             if self.r2 != 0 and self.f2 != 0:
                 realrenderdur = self.rendertime - self.r2
                 baseframedur = self.frametime - self.f2
 
-                self.standardlist.append(baseframedur)
-                self.renderlist.append(realrenderdur)
-
                 self.total += 1
-                # framedelta = realrenderdur/baseframedur - 1
-                if baseframedur/self.FRAMEDUR > 1:
-        ##        if framedelta>=1:
-                    self.dropframe += int(baseframedur/self.FRAMEDUR - 1)
+                if baseframedur/self.FRAMEDUR > 1000:
+                    # it is impossible in normal situation, so drop all the data before
+                    self.dataRecord.onData(self, DataRecord.TYPE_NORMAL, self.urlList[self.caseIndex] + '| clear by', self.frametime)
+                    self.dataRecord.onData(self, DataRecord.TYPE_NORMAL, self.urlList[self.caseIndex] + '| drop count', self.total)
+                    self.renderlist = []
+                    self.standardlist = []
+                    self.total = 0
+                else:
+                    self.renderlist.append(realrenderdur)
+                    self.standardlist.append(baseframedur)
+                    self.dataRecord.onData(self, DataRecord.TYPE_NORMAL, self.urlList[self.caseIndex] + '| render interval', realrenderdur)
+                    # self.dataRecord.onData(self, DataRecord.TYPE_NORMAL, self.urlList[self.caseIndex] + '| standard interval', baseframedur)
+
+
+                    framedelta = int(realrenderdur/self.FRAMEDUR - 1)
+                    if framedelta >= 1:
+                        self.dropframe += framedelta
+                        self.dataRecord.onData(self, DataRecord.TYPE_NORMAL, self.urlList[self.caseIndex] + '| dropframe by', realrenderdur)
+                        self.dataRecord.onData(self, DataRecord.TYPE_NORMAL, self.urlList[self.caseIndex] + '| dropframe count', framedelta)
+
             self.r2 = self.rendertime
             self.f2 = self.frametime
 
@@ -145,12 +159,11 @@ class ApolloFrameTestTask(AbstractVideoTask):
     def getKeyevents(self):
         return self.keyevents.values()
 
-
     def calculateFrame(self):
         TaskLogger.debugLog('========================calculateFrame=======================')
-        TaskLogger.debugLog('total: %s' % self.total)
+        # TaskLogger.debugLog('total: %s' % self.total)
         TaskLogger.debugLog('dropframe: %s' % self.dropframe)
-        self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, self.urlList[self.caseIndex] + '| total', self.total)
+        self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, self.urlList[self.caseIndex] + '| total frames', self.total)
         self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, self.urlList[self.caseIndex] + '| dropframe', self.dropframe)
         total = 0
         base = 0
@@ -158,14 +171,17 @@ class ApolloFrameTestTask(AbstractVideoTask):
         for base, num in zip(self.standardlist, self.renderlist):
             total += (num - base)**2
 
-        TaskLogger.debugLog('base %s' % type(base))
-        TaskLogger.debugLog('num %s' % type(num))
-        TaskLogger.debugLog('total %s' % type(total))
+        # TaskLogger.debugLog('base %s' % type(base))
+        # TaskLogger.debugLog('num %s' % type(num))
+        # TaskLogger.debugLog('total %s' % type(total))
 
-        TaskLogger.debugLog('frame duration: %s' % (base/1000))
-        TaskLogger.debugLog('std duration: %s' % round((total/len(self.renderlist))**(1.0/2)/1000,2))
-        TaskLogger.debugLog('fps: %s' % round(1.0/base*10**6))
+        # TaskLogger.debugLog('frame duration: %s' % (base/1000))
+        # TaskLogger.debugLog('std duration: %s' % round((total/len(self.renderlist))**(1.0/2)/1000,2))
+        # TaskLogger.debugLog('fps: %s' % round(1.0/base*10**6))
+        # TaskLogger.debugLog('total: %s' % total)
 
-        self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, self.urlList[self.caseIndex] + '- frame duration', base/1000)
-        self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, self.urlList[self.caseIndex] + '- std duration', round((total/len(self.renderlist))**(1.0/2)/1000,2))
-        self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, self.urlList[self.caseIndex] + '- fps', round(1.0/base*10**6))
+        self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, self.urlList[self.caseIndex] + '-std duration', round((total/len(self.renderlist))**(1.0/2)/1000,2))
+        self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, self.urlList[self.caseIndex] + '-last frame fps', round(1.0/base*10**6))
+        self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, self.urlList[self.caseIndex] + '-last frame duration', base/1000)
+        self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, self.urlList[self.caseIndex] + '=========STANDAR FPS', self.FPS)
+        self.dataRecord.onData(self, DataRecord.TYPE_EXTRA, self.urlList[self.caseIndex] + '=========STANDAR FRAMEDUR', self.FRAMEDUR)

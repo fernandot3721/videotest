@@ -20,7 +20,7 @@ class VideoTestMemTestTask(AbstractVideoTask):
         self.ignore = False
         self.logMemory = False
         self.keyevents = {'mov_seg_dur T1 ': 'ms'}
-        self.testTime = 600
+        self.testTime = 300
 
     def doTest(self):
         VideoTestUtil.closeBrowser()
