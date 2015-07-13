@@ -2,7 +2,7 @@
 import time
 from com.uc.utils.TaskLogger import TaskLogger
 import traceback
-from com.uc.conf import Conf
+from com.uc.conf import GConf
 import csv
 from com.uc.data.DataRecord import DataRecord
 from com.uc.data.TaskData import TaskData
@@ -13,9 +13,8 @@ class CSVRecorder(DataRecord):
 
     def __init__(self):
         self.init()
-        self.recordPath = '{}record-{}.csv'\
-            .format(Conf.DATA_DIR, time.strftime('%Y%m%d%H%M')[2:])
-            # .format(Conf.DATA_DIR, 'test1')
+        self.recordPath = '%s%s-record-%s.csv' % (GConf.getGlobal('DATA_DIR'), GConf.getCase('RESULT_NAME'), time.strftime('%Y%m%d%H%M')[2:])
+            # .format(GConf.getGlobal('DATA_DIR'), 'test1')
 
     def init(self):
         self.taskData = {}
@@ -110,7 +109,7 @@ class CSVRecorder(DataRecord):
                 extras = self.taskData[task].getAllExtra()
                 title = '#'
                 for extra in extras:
-                    title += extras[extra] + '#'
+                    title += str(extras[extra]) + '#'
                     value = list([extra, extras[extra]])
                     value.insert(0, DataRecord.TAG_EXTRA)  # TASK-EXTRA
                     dataToWrite.append(value)

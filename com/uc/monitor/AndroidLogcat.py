@@ -1,9 +1,12 @@
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.monitor.LogMonitor import LogMonitor
-from com.uc.conf import Conf
+from com.uc.conf import GConf
+from com.uc.utils import BrowserUtils
 
 import shlex
 import subprocess
+import traceback
+import sys
 
 
 class AndroidLogcat(LogMonitor):
@@ -13,7 +16,7 @@ class AndroidLogcat(LogMonitor):
         self.keywords = []
         self.keyevents = []
         self.startPlayKey = ''
-        self.playerVerKey = ''
+        self.playerVerKey = ('[apollo', ']')
         pass
 
     def doMonitor(self):
@@ -28,18 +31,28 @@ class AndroidLogcat(LogMonitor):
                 self.onRead(line)
                 if self.isStop:
                     popen.terminate()
-            except Exception as e:
-                TaskLogger.errorLog(e)
+            # except Exception as e:
+            except:
+                exc_type, exc_value, exc_traceback = sys.exc_info()
+                TaskLogger.errorLog("Exception: {}".format(exc_value))
+                TaskLogger.errorLog("#######STACK TRACE:")
+                traceback.print_tb(exc_traceback)
+                # TaskLogger.errorLog(e)
         pass
 
     def init(self):
+        # call by task manager in constructor
         self.keywords = self.handler.getKeywords()
         self.keyevents = self.handler.getKeyevents()
-        self.startPlayKey = Conf.START_PLAY_TAG
-        self.playerVerKey = Conf.PLAYER_VERSION_TAG
+        self.startPlayKey = 'mov_seg_dur T1'
+        BrowserUtils.clearLogcat()
         pass
 
     def onRead(self, line):
+        if self.handler is None:
+            TaskLogger.debugLog('handler not init')
+            return
+
         if self.startPlayKey in line:
             self.handler.onVideoStartPlay()
 
@@ -52,12 +65,10 @@ class AndroidLogcat(LogMonitor):
             if key in line:
                 value = self.parseLog(line, key, self.keywords[key])
                 self.handler.onKeywordDetected(key, value)
-                return
 
         for event in self.keyevents:
             if event in line:
                 # parse time and key
                 time = self.parseTime(line)
                 self.handler.onEventDetected(event, time)
-                return
         pass

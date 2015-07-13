@@ -42,19 +42,21 @@ if __name__ == '__main__':
     # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1505121614.csv')
     # recorder.loadData('/opt/lampp/htdocs/videotest/origin/record-1505131039.csv')
 
-    # try:
-    #     path = GConf.getGlobal('REPORT_DIR')
-    #     print path
-    #     recorder.loadData('/home/tangjp/work/test/record-1505142012.csv')
-    #     rg = ResultGenerator()
-    #     rg.generateResult(recorder)
-    # except:
-    #     exc_type, exc_value, exc_traceback = sys.exc_info()
-    #     TaskLogger.errorLog("Exception: {}".format(exc_value))
-    #     TaskLogger.errorLog("#######STACK TRACE:")
-    #     traceback.print_tb(exc_traceback)
-    # finally:
-    #     raise Exception("end")
+    try:
+        path = GConf.getGlobal('REPORT_DIR')
+        print path
+        recorder.loadData('/home/tangjp/work/vr/test/wangjb-cache-mem-t2-record-1507012121.csv')
+        # recorder.loadData('/opt/lampp/htdocs/videotest/origin/vt-vs-mx-mem-record-1506251042.csv')
+        # recorder.loadData('/home/tangjp/work/vr/test/241_vs_231_for_T1-record-1506241915.csv')
+        rg = ResultGenerator()
+        rg.generateResult(recorder)
+    except:
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        TaskLogger.errorLog("Exception: {}".format(exc_value))
+        TaskLogger.errorLog("#######STACK TRACE:")
+        traceback.print_tb(exc_traceback)
+    finally:
+        raise Exception("end")
 
 
     manager = TaskManager()

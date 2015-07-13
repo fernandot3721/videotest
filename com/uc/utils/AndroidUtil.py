@@ -2,142 +2,88 @@
 
 import os
 import re
-from com.uc.conf import Conf
+from com.uc.conf import GConf
 from com.uc.utils import BrowserUtils
 from time import sleep
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.utils import VideoTestUtil
 
 
-def switchApollo(pathFrom):
-    if pathFrom == "":
-        TaskLogger.errorLog("apollo path null")
-        return
-    TaskLogger.normalLog("switchApollo")
-    BrowserUtils.closeBrowser()
-    sleep(Conf.WAIT_TIME)
+def execCmd(cmd, wait):
+    TaskLogger.debugLog(cmd)
+    os.system(cmd)
+    sleep(wait)
 
-    libffmpeg = 'libffmpeg.so'
-    libu3player = 'libu3player.so'
-    # pathFrom = ' /home/tangjp/work/vr/apolloso/2.8.8.888/'
+
+def doSwitch(pathFrom, pathTo, name, wait):
     pathTmp = '/sdcard/UCDownloads/'
-    pathTo1 = '/data/data/{}/apollo1/'.format(Conf.PACKAGE_NAME)
-    pathTo2 = '/data/data/{}/apollo2/'.format(Conf.PACKAGE_NAME)
 
-    pushffInCmd = "adb push %s%s %s%s" % \
-        (pathFrom, libffmpeg, pathTmp, libffmpeg)
-    pushu3InCmd = "adb push %s%s %s%s" % \
-        (pathFrom, libu3player, pathTmp, libu3player)
-    mvffInCmd1 = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libffmpeg, pathTo1, libffmpeg)
-    mvu3InCmd1 = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libu3player, pathTo1, libu3player)
-    mvffInCmd2 = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libffmpeg, pathTo2, libffmpeg)
-    mvu3InCmd2 = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libu3player, pathTo2, libu3player)
-
-    TaskLogger.normalLog(pushffInCmd)
-    os.system(pushffInCmd)
-    TaskLogger.normalLog(pushu3InCmd)
-    os.system(pushu3InCmd)
-    TaskLogger.normalLog(mvffInCmd1)
-    os.system(mvffInCmd1)
-    sleep(Conf.WAIT_TIME)
-    TaskLogger.normalLog(mvu3InCmd1)
-    os.system(mvu3InCmd1)
-    sleep(Conf.WAIT_TIME)
-    TaskLogger.normalLog(mvffInCmd2)
-    os.system(mvffInCmd2)
-    sleep(Conf.WAIT_TIME)
-    TaskLogger.normalLog(mvu3InCmd2)
-    os.system(mvu3InCmd2)
-    pass
+    pushCmd = "adb push %s%s %s%s" % (pathFrom, name, pathTmp, name)
+    execCmd(pushCmd, wait)
+    mvCmd = "adb shell su -c \"cat %s%s > %s%s\"" % (pathTmp, name, pathTo, name)
+    execCmd(mvCmd, wait)
+    chCmd = "adb shell su -c \"chmod 777 %s%s\"" % (pathTo, name)
+    execCmd(chCmd, wait)
 
 
-def switchHardCodeApollo(pathFrom):
-    if pathFrom == "":
-        TaskLogger.errorLog("apollo path null")
-        return
-    TaskLogger.normalLog("switchHardCodeApollo")
-    BrowserUtils.closeBrowser()
-    sleep(Conf.WAIT_TIME)
-
-    libffmpeg = 'libffmpeg.so'
-    libu3player = 'libu3player.so'
-    # pathFrom = ' /home/tangjp/work/vr/apolloso/2.8.8.888/'
-    pathTmp = '/sdcard/UCDownloads/'
-    pathTo = '/data/data/{}/lib/'.format(Conf.PACKAGE_NAME)
-
-    pushffInCmd = "adb push %s%s %s%s" % \
-        (pathFrom, libffmpeg, pathTmp, libffmpeg)
-    pushu3InCmd = "adb push %s%s %s%s" % \
-        (pathFrom, libu3player, pathTmp, libu3player)
-    mvffInCmd = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libffmpeg, pathTo, libffmpeg)
-    mvu3InCmd = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libu3player, pathTo, libu3player)
-
-    TaskLogger.normalLog(pushffInCmd)
-    os.system(pushffInCmd)
-    TaskLogger.normalLog(pushu3InCmd)
-    os.system(pushu3InCmd)
-    TaskLogger.normalLog(mvffInCmd)
-    os.system(mvffInCmd)
-    sleep(Conf.WAIT_TIME)
-    TaskLogger.normalLog(mvu3InCmd)
-    os.system(mvu3InCmd)
-    pass
-
-
-def switchVideoTestApollo(pathFrom):
-    if pathFrom == "":
-        TaskLogger.errorLog("apollo path null")
-        return
-    TaskLogger.normalLog("switchVideoTestApollo")
-    VideoTestUtil.closeBrowser()
-    sleep(Conf.WAIT_TIME)
+def doSwitchApollo(pathFrom, pathTo, wait):
 
     libffmpeg = 'libffmpeg.so'
     libu3player = 'libu3player.so'
     librender = 'librenderer.so'
-    # pathFrom = ' /home/tangjp/work/vr/apolloso/2.8.8.888/'
-    pathTmp = '/sdcard/UCDownloads/'
-    pathTo = '/data/data/com.example.videoviewtest/lib/'
+    libomx = 'libomxdr.so'
+    libomx40 = 'libomxdr_40.so'
+    libomx42 = 'libomxdr_42.so'
+    libomx44 = 'libomxdr_44.so'
 
-    pushffInCmd = "adb push %s%s %s%s" % \
-        (pathFrom, libffmpeg, pathTmp, libffmpeg)
-    pushu3InCmd = "adb push %s%s %s%s" % \
-        (pathFrom, libu3player, pathTmp, libu3player)
-    pushreInCmd = "adb push %s%s %s%s" % \
-        (pathFrom, librender, pathTmp, librender)
-    mvffInCmd = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libffmpeg, pathTo, libffmpeg)
-    mvu3InCmd = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, libu3player, pathTo, libu3player)
-    mvreInCmd = "adb shell su -c \"cat %s%s > %s%s\"" % \
-        (pathTmp, librender, pathTo, librender)
+    doSwitch(pathFrom, pathTo, libffmpeg, wait)
+    doSwitch(pathFrom, pathTo, libu3player, wait)
+    doSwitch(pathFrom, pathTo, librender, wait)
+    doSwitch(pathFrom, pathTo, libomx, wait)
+    doSwitch(pathFrom, pathTo, libomx40, wait)
+    doSwitch(pathFrom, pathTo, libomx42, wait)
+    doSwitch(pathFrom, pathTo, libomx44, wait)
 
-    TaskLogger.normalLog(pushffInCmd)
-    os.system(pushffInCmd)
-    TaskLogger.normalLog(pushu3InCmd)
-    os.system(pushu3InCmd)
-    TaskLogger.normalLog(pushreInCmd)
-    os.system(pushreInCmd)
-    TaskLogger.normalLog(mvffInCmd)
-    os.system(mvffInCmd)
-    sleep(Conf.WAIT_TIME)
-    TaskLogger.normalLog(mvu3InCmd)
-    os.system(mvu3InCmd)
-    TaskLogger.normalLog(mvreInCmd)
-    os.system(mvreInCmd)
-    pass
+def switchApollo(pathFrom, target='uc', wait=None, package=None):
+    if pathFrom == "":
+        TaskLogger.errorLog("apollo path null")
+        return
 
-
-def getPid(package):
     if package is None:
-        package = Conf.PACKAGE_NAME
-    # cmd = 'adb shell ps | tr \"\\r\\n\" \"\\n\" | grep "%s\%"' % Conf.PACKAGE_NAME
+        package = GConf.getCase('PACKAGE_NAME')
+
+    if wait is None:
+        wait = GConf.getCaseInt('WAIT_TIME')
+
+    TaskLogger.normalLog("switchApollo")
+    BrowserUtils.closeBrowser()
+    sleep(wait)
+
+    if target == 'uc':
+        if package is None:
+            package = 'com.UCMobile'
+        pathTo2 = '/data/data/%s/apollo2/' % package
+        pathTo = '/data/data/%s/apollo1/' % package
+#doSwitchApollo(pathFrom, pathTo2, wait)
+        pass
+    elif target == 'hc':
+        if package is None:
+            package = 'com.UCMobile'
+        pathTo = '/data/data/%s/lib/' % package
+        pass
+    elif target == 'vt':
+        pathTo = '/data/data/com.example.videoviewtest/lib/'
+        pass
+    else:
+        TaskLogger.infoLog("not need to switch apollo")
+        return
+
+    doSwitchApollo(pathFrom, pathTo, wait)
+
+
+def getPid(package=None):
+    if package is None:
+        package = GConf.getCase('PACKAGE_NAME')
     cmd = 'adb shell ps | tr \"\\r\\n\" \"\\n\" | grep "%s$" | awk \'{print $2}\'' % package
     # TaskLogger.debugLog(cmd)
     return os.popen(cmd).read().strip()
@@ -148,17 +94,17 @@ def getCpuUsage(pid):
     # TaskLogger.debugLog(cmd)
     return os.popen(cmd).read().strip()
 
-def getCpu(package):
+def getCpu(package=None):
     if package is None:
         # TaskLogger.errorLog('package not set')
-        package = Conf.PACKAGE_NAME
+        package = GConf.getCase('PACKAGE_NAME')
     cmd = 'adb shell su -c \'top -d 0 -n 1\' | tr \"\\r\\n\" \"\\n\" | grep %s$ | awk \'{print $3}\' | tr -d \'%%\'' % package
     # TaskLogger.debugLog(cmd)
     return int(os.popen(cmd).read().strip())
 
 def getPrivateDirty(package):
     if package is None:
-        package = Conf.PACKAGE_NAME
+        package = GConf.getCase('PACKAGE_NAME')
     cmd = 'adb shell dumpsys meminfo %s | grep TOTAL | awk \'{print $3}\'' % package
     # TaskLogger.infoLog(cmd)
     return os.popen(cmd).read().strip()
@@ -166,7 +112,7 @@ def getPrivateDirty(package):
 
 def getPrivateClean(package):
     if package is None:
-        package = Conf.PACKAGE_NAME
+        package = GConf.getCase('PACKAGE_NAME')
     cmd = 'adb shell dumpsys meminfo %s | grep TOTAL | awk \'{print $4}\'' % package
     # TaskLogger.infoLog(cmd)
     return os.popen(cmd).read().strip()
@@ -174,9 +120,8 @@ def getPrivateClean(package):
 
 def getUss(package):
     if package is None:
-        package = Conf.PACKAGE_NAME
+        package = GConf.getCase('PACKAGE_NAME')
     cmd = 'adb shell dumpsys meminfo %s | grep TOTAL | awk \'{total = $3 + $4; print total}\'' % package
-    # cmd = 'adb shell dumpsys meminfo %s | grep TOTAL | awk \'{total = $3 + $4; print total; print $3; print $4}\'' % Conf.PACKAGE_NAME
     # TaskLogger.infoLog(cmd)
     return os.popen(cmd).read().strip()
 
@@ -212,44 +157,3 @@ def testMemfree():
     else:
         TaskLogger.errorLog('MemFree detection is NOT reliable!')
         return False
-
-
-def pressplaybutton():
-    pointx = 0
-    pointy = 0
-
-    width = getscreenwidth()
-    if width > 720 and width < 800:
-        pointx = 384
-        pointy = 400
-
-    elif width > 1080 and width < 1200:
-        pointx = 540
-        pointy = 520
-
-    TaskLogger.debugLog('x: %s, y: %s' % (pointx, pointy))
-    if pointx & pointy:
-        TaskLogger.debugLog('tab play: %s %s' % (pointx, pointy))
-        os.popen("adb shell input tap %s %s" % (pointx, pointy))
-
-
-def getscreenwidth():
-    width = re.findall("(?<=init=)\d*", os.popen("adb shell dumpsys window displays").read())[0]
-    TaskLogger.debugLog('getscreenwidth %s' % width)
-    return int(width)
-
-
-def getscreenheight():
-    width = getscreenwidth()
-    TaskLogger.debugLog('getscreenheight %s' % width)
-    height = re.findall("(?<=%s.)\d*" % width, os.popen("adb shell dumpsys window displays").read())[0]
-    return int(height)
-
-
-# def testApollo():
-#   videoPath = Conf.SEVER_ADDRESS + "t1_200k/test_video_short.html"
-#   BrowserUtils.launchBrowser()
-#   sleep(Conf.WAIT_TIME)
-#   BrowserUtils.openURI(self.urlList[self.currentCategory])
-#   sleep(Conf.WAIT_TIME)
-#   checkApolloCmd = "adb logcat"

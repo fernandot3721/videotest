@@ -5,7 +5,7 @@
 
 import os
 
-from com.uc.conf import Conf
+from com.uc.conf import GConf
 import xlrd
 import shlex
 from com.uc.utils.TaskLogger import TaskLogger
@@ -14,10 +14,16 @@ import datetime
 import time
 
 
-def launchBrowser():
-    # launchCmd = "adb shell am start -a android.intent.action.VIEW -n {}/{} -d {} -e policy UCM_ONE_WINDOW".format(Conf.PACKAGE_NAME, Conf.ACTIVITE_NAME, "http://www.baidu.com")
-    launchCmd = "adb shell am start -n {}/{}".format(Conf.PACKAGE_NAME, Conf.ACTIVITE_NAME)
-    # TaskLogger.errorLog(launchCmd)
+def clearLogcat():
+    launchCmd = "adb shell logcat -c"
+    mySystem(launchCmd)
+
+def launchBrowser(package=None, activity=None):
+    if package is None:
+        package = GConf.getCase('PACKAGE_NAME')
+    if activity is None:
+        activity = GConf.getCase('ACTIVITE_NAME')
+    launchCmd = "adb shell am start -n {}/{}".format(package, activity)
     mySystem(launchCmd)
 
 
@@ -26,7 +32,7 @@ def setCDParams(key=None, value=None):
     if (not key) or (not value):
         return
 
-    extToolsPath = Conf.EXTTOOLS_PATH
+    extToolsPath = 'ext_tools'
     confPath = os.path.abspath("./confg.ini")
     jarPath = os.path.abspath(extToolsPath + "/editCDout.jar")
     paramStr = key+'='+value
@@ -35,12 +41,12 @@ def setCDParams(key=None, value=None):
     f1.write(paramStr)
     f1.close()
 
-    mvOutCmd = "adb shell su -c \"cat /data/data/{}/user/us/zh-cn/ucparam.ucmd2 > sdcard/UCDownloads/ucparam.ucmd2\"".format(Conf.PACKAGE_NAME)
+    mvOutCmd = "adb shell  \"cat /data/data/{}/user/us/zh-cn/ucparam.ucmd2 > sdcard/UCDownloads/ucparam.ucmd2\"".format(GConf.getCase('PACKAGE_NAME'))
     pullOutCmd = "adb pull sdcard/UCDownloads/ucparam.ucmd2"
     execCmd = "java -jar {}".format(jarPath)
     pushInCmd = "adb push ucparam.ucmd2 sdcard/UCDownloads/"
-    mvInCmd = "adb shell su -c \"cat sdcard/UCDownloads/ucparam.ucmd2 > /data/data/{}/user/us/zh-cn/ucparam.ucmd2\"".format(Conf.PACKAGE_NAME)
-    powerCmd = "adb shell su -c \"chmod 777 /data/data/com.UCMobile/user/us/zh-cn/ucparam.ucmd2\""
+    mvInCmd = "adb shell \"cat sdcard/UCDownloads/ucparam.ucmd2 > /data/data/{}/user/us/zh-cn/ucparam.ucmd2\"".format(GConf.getCase('PACKAGE_NAME'))
+    powerCmd = "adb shell \"chmod 777 /data/data/com.UCMobile/user/us/zh-cn/ucparam.ucmd2\""
     os.system(mvOutCmd)
     os.system(pullOutCmd)
     os.system(execCmd)
@@ -51,31 +57,35 @@ def setCDParams(key=None, value=None):
 
 def clearVideoCache():
     '''清理视频缓存'''
-    clearCmd = "adb shell am start -n {}/{} -e clear_video_cache 1".format(Conf.PACKAGE_NAME, Conf.ACTIVITE_NAME)
+    clearCmd = "adb shell am start -n {}/{} -e clear_video_cache 1".format(GConf.getCase('PACKAGE_NAME'), GConf.getCase('ACTIVITE_NAME'))
     mySystem(clearCmd)
 
 
 def clearBrowserCache():
     '''清理浏览器所有缓存'''
-    clearCmd = "adb shell \"pm clear {}\"".format(Conf.PACKAGE_NAME, Conf.ACTIVITE_NAME)
+    clearCmd = "adb shell \"pm clear {}\"".format(GConf.getCase('PACKAGE_NAME'), GConf.getCase('ACTIVITE_NAME'))
     mySystem(clearCmd)
 
 
-def openURI(url):
+def openURI(url, package=None, activity=None):
     '''打开页面'''
-    launchCmd = "adb shell am start -a android.intent.action.VIEW -n {}/{} -d {}".format(Conf.PACKAGE_NAME, Conf.ACTIVITE_NAME, url)
+    if package is None:
+        package = GConf.getCase('PACKAGE_NAME')
+    if activity is None:
+        activity = GConf.getCase('ACTIVITE_NAME')
+    launchCmd = "adb shell am start -a android.intent.action.VIEW -n {}/{} -d {}".format(package, activity, url)
     mySystem(launchCmd)
 
 
 def openURIInCurrentWindow(url):
     '''打开页面'''
-    cmd = "adb shell am start -n {}/{} -e open_url_in_current_window {}".format(Conf.PACKAGE_NAME, Conf.ACTIVITE_NAME,url)
+    cmd = "adb shell am start -n {}/{} -e open_url_in_current_window {}".format(GConf.getCase('PACKAGE_NAME'), GConf.getCase('ACTIVITE_NAME'),url)
     mySystem(cmd)
 
 
 def fresh():
     '''打开页面'''
-    refreshCmd = "adb shell am start -n {}/{} -e click refresh".format(Conf.PACKAGE_NAME, Conf.ACTIVITE_NAME)
+    refreshCmd = "adb shell am start -n {}/{} -e click refresh".format(GConf.getCase('PACKAGE_NAME'), GConf.getCase('ACTIVITE_NAME'))
     mySystem(refreshCmd)
 
 
@@ -84,9 +94,11 @@ def goback():
     mySystem(backCmd)
 
 
-def closeBrowser():
+def closeBrowser(package=None):
     '''关闭浏览器'''
-    exitCmd = "adb shell am force-stop {}".format(Conf.PACKAGE_NAME)
+    if package is None:
+        package = GConf.getCase('PACKAGE_NAME')
+    exitCmd = "adb shell am force-stop {}".format(package)
     # TaskLogger.normalLog(exitCmd)
     mySystem(exitCmd)
 

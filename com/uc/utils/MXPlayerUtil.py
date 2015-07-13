@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-from com.uc.conf import Conf
+from com.uc.conf import GConf
 import shlex
 from com.uc.utils.TaskLogger import TaskLogger
 import subprocess

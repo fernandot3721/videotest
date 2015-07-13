@@ -1,7 +1,7 @@
 from com.uc.data.ResultViewer import ResultViewer
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.data.TaskData import TaskData
-from com.uc.conf import Conf
+from com.uc.conf import GConf
 import sys
 import traceback
 import time
@@ -15,10 +15,9 @@ class HtmlViewer(ResultViewer):
         self.header = {}
         self.caseSeq = []
         # self.reportPath = '{}report.html'\
-            # .format(Conf.REPORT_DIR)
-        self.reportPath = '{}report-{}.html'\
-            .format(Conf.REPORT_DIR, time.strftime('%Y%m%d%H%M')[2:])
-        self.templatepath = Conf.HTML_TEMPLATE
+            # .format(GConf.getGlobal('REPORT_DIR'))
+        self.reportPath = '%s%s-%s.html' % (GConf.getGlobal('REPORT_DIR'), GConf.getCase('RESULT_NAME'), time.strftime('%Y%m%d%H%M')[2:])
+        self.templatepath = 'template/tableTemplate.html'
 
     def addData(self, data):
         taskInfo = {}
@@ -29,7 +28,7 @@ class HtmlViewer(ResultViewer):
         extras = data.getAllExtra()
         for extra in extras:
             extraData = '%s %s %s' % (extraData, extra, extras[extra])
-        taskInfo['extra'] = extraData
+        taskInfo['extra'] = extras
 
         #  case data & head
         self.parseDataType(data, TaskData.DATA_TYPE_TIMING, taskInfo)
@@ -80,7 +79,11 @@ class HtmlViewer(ResultViewer):
                 self.writeTableHead(htmlFile, self.dataCount[TaskData.DATA_TYPE_TIMING], self.header[TaskData.DATA_TYPE_TIMING])
                 self.writeTableContent(htmlFile, self.data[taskInfo][TaskData.DATA_TYPE_TIMING])
                 self.writeTableEnd(htmlFile)
-            self.writeImage(htmlFile, subPath)
+            if GConf.getCaseBool('RESULT_IMG') is True:
+                TaskLogger.debugLog('do write img')
+                self.writeImage(htmlFile, subPath)
+            else:
+                TaskLogger.debugLog('do not write img')
             self.writeTemplateEnd(htmlFile)
             return self.reportPath
         except:
@@ -97,8 +100,12 @@ class HtmlViewer(ResultViewer):
     def writeTitle(self, fileHandle, title):
         fileHandle.write("<h1>%s</h1>\n" % title)
 
-    def writeExtra(self, fileHandle, extra):
-        fileHandle.write("<p>%s</p>\n" % extra)
+    def writeExtra(self, fileHandle, extras):
+        for extra in extras:
+            temp = '%s: %s' % (extra, extras[extra])
+            # TaskLogger.debugLog('extraData: %s , extra: %s, extras[extra]: %s' % (extraData, extra, extras[extra]))
+            # extraData = '%s %s %s' % (extraData, extra, extras[extra])
+            fileHandle.write("<p style=\"font-size: 20px\">%s</p>\n" % temp)
         fileHandle.write("\n")
         fileHandle.write("\n")
 
@@ -135,12 +142,13 @@ class HtmlViewer(ResultViewer):
             fileHandle.write("</tr>\n")
 
     def writeTableEnd(self, fileHandle):
+        fileHandle.write("</tr>\n")
         fileHandle.write("</table>\n")
 
     def writeImage(self, fileHandle, filePath):
-        index = filePath.find(Conf.REPORT_DIR)
+        index = filePath.find(GConf.getGlobal('REPORT_DIR'))
         if index != -1:
-            filePath = filePath[len(Conf.REPORT_DIR):]
+            filePath = filePath[len(GConf.getGlobal('REPORT_DIR')):]
         fileHandle.write("<img src='%s'></img>" % filePath)
 
     def writeTemplateEnd(self, fileHandle):

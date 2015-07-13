@@ -2,7 +2,7 @@
 
 from time import sleep
 
-from com.uc.conf import Conf
+from com.uc.conf import GConf
 from com.uc.task.AbstractVideoTask import AbstractVideoTask
 from com.uc.utils import BrowserUtils
 from com.uc.utils.TaskLogger import TaskLogger
@@ -11,32 +11,33 @@ from com.uc.data.DataRecord import DataRecord
 
 
 class MemoryTestTask(AbstractVideoTask):
-    urlList = Conf.MEMORY_URL
 
     def __init__(self):
         super(MemoryTestTask, self).__init__()
-        self.setTitle(Conf.TASK_TYPE[2])
-        self.keywords = Conf.MEMORY_KEYWORD
+        self.urlList = GConf.getUrlList()
+        self.tasktype = GConf.getCase('TASK_TYPE')
+        self.setTitle(self.tasktype)
         self.logMemory = False
 
     def doTest(self):
         print("STARTUP UC")
         self.dataRecord.\
-            onData(self, DataRecord.TYPE_EXTRA, 'TASK_TYPE', Conf.TASK_TYPE[2])
+            onData(self, DataRecord.TYPE_EXTRA, 'TASK_TYPE', tasktype)
         if not AndroidUtil.testMemfree():
             return
         self.logMemory = True
         BrowserUtils.launchBrowser()
 
-        sleep(Conf.WAIT_TIME)
+        sleep(GConf.getCaseInt('WAIT_TIME'))
 
         print("CLEAR HISTROY")
         BrowserUtils.clearVideoCache()
-        sleep(Conf.WAIT_TIME)
+        sleep(GConf.getCaseInt('WAIT_TIME'))
 
         TaskLogger.normalLog("PLAY VIDEO:")
-        TaskLogger.detailLog(self.urlList[self.currentCategory])
-        BrowserUtils.openURI(self.urlList[self.currentCategory])
+        caseUrl = GConf.getUrl(self.urlList[self.caseIndex])
+        TaskLogger.detailLog(caseUrl)
+        BrowserUtils.openURI(caseUrl)
 
         myloop = 0
         while True:
@@ -62,18 +63,15 @@ class MemoryTestTask(AbstractVideoTask):
             myloop += 1
 
         self.logMemory = False
-        # sleep(Conf.WAIT_TIME)
+        # sleep(GConf.getCaseInt('WAIT_TIME'))
 
         print("SHUTDOWN UC")
         BrowserUtils.closeBrowser()
-        sleep(Conf.WAIT_TIME)
-
-    def getKeywords(self):
-        return self.keywords
+        sleep(GConf.getCaseInt('WAIT_TIME'))
 
     def onTimingKeyDetected(self, key, value, type=None):
         if self.logMemory and self.playerVersion != "":
             # TaskLogger.debugLog('onTimingKeyDetected %s %s' % (key, value))
             # if key in self.keywords:
-            self.dataRecord.onData(self, DataRecord.TYPE_TIMING, self.currentCategory+key, value)
+            self.dataRecord.onData(self, DataRecord.TYPE_TIMING, self.urlList[self.caseIndex]+key, value)
         pass

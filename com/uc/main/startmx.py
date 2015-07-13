@@ -15,7 +15,6 @@ from com.uc.taskImpl.ApolloT2AndMemoryTestTask import ApolloT2AndMemoryTestTask
 from com.uc.taskImpl.MXPlayerMemTestTask import MXPlayerMemTestTask
 from com.uc.taskImpl.VideoTestMemTestTask import VideoTestMemTestTask
 from com.uc.taskImpl.MemoryTestTask import MemoryTestTask
-from com.uc.taskImpl.ApolloFrameTestTask import ApolloFrameTestTask
 from com.uc.utils.TaskLogger import TaskLogger
 from com.uc.conf import GConf
 import datetime
@@ -74,11 +73,11 @@ if __name__ == '__main__':
         playerCount = len(libList)
     for i in range(playerCount):
         TaskLogger.infoLog("===========ADD TASK {}===========".format(i))
-        mxtask = ApolloFrameTestTask()
+        mxtask = MXPlayerMemTestTask()
         mxtask.setPlayerPath(libList[i])
-        # mxtask.setPackage('com.example.videoviewtest')
-        # mxtask.setActivity('.MainActivity')
-        mxtask.setPlayerType(GConf.getGlobalInt('LIBPOS'))
+        mxtask.setPackage('com.mxtech.videoplayer.ad')
+        mxtask.setActivity('.ActivityScreen')
+        mxtask.setPlayerType(3)
         mxtask.setDataRecord(recorder)
         manager.addTask(mxtask)
 

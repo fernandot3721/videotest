@@ -1,5 +1,5 @@
 # encoding: utf-8
-from com.uc.conf import Conf
+from com.uc.conf import GConf
 import time
 import threading
 
@@ -23,18 +23,17 @@ def inblue(s):
 class TaskLogger():
 
     instance = None
-    logfile = '%s%s.log' % (Conf.TASK_LOG_PATH, time.strftime('%Y%m%d%H%M')[2:])
 
     @staticmethod
     def debugLog(s):
-        if Conf.DEBUG_LOG:
+        if GConf.getGlobal('DEBUG_LOG'):
             print(inyellow(s))
             if TaskLogger.instance is not None:
                 TaskLogger.instance.writeLog('%s\n' % s)
 
     @staticmethod
     def errorLog(s):
-        if Conf.ERROR_LOG:
+        if GConf.getGlobal('ERROR_LOG'):
             print(inred(threading.currentThread()))
             print(inred(s))
             if TaskLogger.instance is not None:
@@ -42,28 +41,29 @@ class TaskLogger():
 
     @staticmethod
     def infoLog(s):
-        if Conf.INFO_LOG:
+        if GConf.getGlobal('INFO_LOG'):
             print(ingreen(s))
             if TaskLogger.instance is not None:
                 TaskLogger.instance.writeLog('%s\n' % s)
 
     @staticmethod
     def detailLog(s):
-        if Conf.DETAIL_LOG:
+        if GConf.getGlobal('DETAIL_LOG'):
             print(inblue(s))
             if TaskLogger.instance is not None:
                 TaskLogger.instance.writeLog('%s\n' % s)
 
     @staticmethod
     def normalLog(s):
-        if Conf.NORMAL_LOG:
+        if GConf.getGlobal('NORMAL_LOG'):
             print(s)
             if TaskLogger.instance is not None:
                 TaskLogger.instance.writeLog('%s\n' % s)
 
     def __init__(self):
-        if Conf.FILE_LOG:
-            self.__fileHandle = open(TaskLogger.logfile, 'wb')
+        if GConf.getGlobal('FILE_LOG'):
+            self.logfile = '%s%s.log' % (GConf.getGlobal('TASK_LOG_PATH'), time.strftime('%Y%m%d%H%M')[2:])
+            self.__fileHandle = open(self.logfile, 'wb')
             pass
         self.__instance = None
 
@@ -71,7 +71,7 @@ class TaskLogger():
         self.__fileHandle.close()
 
     def writeLog(self, s):
-        if Conf.FILE_LOG:
+        if GConf.getGlobal('FILE_LOG'):
             self.__fileHandle.write(s)
 
     @staticmethod
